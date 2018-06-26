@@ -8,8 +8,8 @@ import os
 machine = socket.getfqdn()
 if "bsc.mn" in machine:
     SCHRODINGER = "/gpfs/projects/bsc72/SCHRODINGER_ACADEMIC"
-    PELE = "/gpfs/projects/bsc72/PELE++/mniv/rev12455"
-    ADAPTIVE = "/gpfs/projects/bsc72/adaptiveSampling/bin/v1.4.2"
+    PELE = "/gpfs/projects/bsc72/PELE++/mniv/rev090518"
+    ADAPTIVE = "/gpfs/projects/bsc72/adaptiveSampling/bin/v1.5"
     MPIRUN = "/apps/INTEL/2017.4/impi/2017.3.196/bin64"
     LICENSE = "/gpfs/projects/bsc72/PELE++/license"
     MMSHARE = None
@@ -19,8 +19,8 @@ if "bsc.mn" in machine:
 
 elif "mn.bsc" in machine:
     SCHRODINGER = "/gpfs/projects/bsc72/SCHRODINGER_ACADEMIC_NORD"
-    PELE = "/gpfs/projects/bsc72/PELE++/nord/rev12489"
-    ADAPTIVE = "/gpfs/projects/bsc72/adaptiveSampling/bin_nord/v1.4.2_schr"
+    PELE = "/gpfs/projects/bsc72/PELE++/nord/rev090518"
+    ADAPTIVE = "/gpfs/projects/bsc72/adaptiveSampling/bin_nord/v1.5_schr"
     MPIRUN = "/apps/OPENMPI/1.8.1-mellanox/bin"
     LICENSE = "/gpfs/projects/bsc72/PELE++/license"
     MMSHARE = None
