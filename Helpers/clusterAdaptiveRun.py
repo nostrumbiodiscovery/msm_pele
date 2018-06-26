@@ -5,9 +5,7 @@ import numpy as np
 import argparse
 from AdaptivePELE.utilities import utilities
 from AdaptivePELE.freeEnergies import cluster, extractCoords
-from pympler import summary
-from pympler import tracker
-from pympler import muppy
+  
 
 def parseArgs():
     parser = argparse.ArgumentParser(description="Script that reclusters the Adaptive clusters")
