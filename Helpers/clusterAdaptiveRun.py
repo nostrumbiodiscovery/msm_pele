@@ -45,6 +45,17 @@ def writeInitialStructures(centers_info, filename_template, topology=None):
         else:
             splitTrajectory.main("", [trajectory, ], topology, [snap_num+1,],template=filename_template % cluster_num)
 
+def split_by_sasa(centers_info, filename_template, topology=None):
+    sasas = []
+    for cluster_num in centers_info:
+        epoch_num, traj_num, snap_num = map(int, centers_info[cluster_num]['structure'])
+        sasa = get_sasa(epoch_num, traj_num, snap_num)
+        sasas.append(sasa)
+    retrieve_sasa_blocks(sasa)
+
+def get_sasa(epoch_num, traj_num, snap_num):
+    report = os.path.join(epoch_num, "report_{}".format(traj_num))
+    report_data = pd.read_csv(report, sep='    ', engine='python')
 
 def get_centers_info(trajectoryFolder, trajectoryBasename, num_clusters, clusterCenters):
     centersInfo = {x: {"structure": None, "minDist": 1e6, "center": None} for x in xrange(num_clusters)}
@@ -76,7 +87,7 @@ def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=N
     folders = utilities.get_epoch_folders(".")
     folders.sort(key=int)
 
-    clusteringObject = cluster.Cluster(num_clusters, trajectoryFolder,
+    clusteringObject = cluster.Cluster(num_clusters*2, trajectoryFolder,
                                        trajectoryBasename, alwaysCluster=False,
                                        stride=stride)
     clusteringObject.clusterTrajectories()
