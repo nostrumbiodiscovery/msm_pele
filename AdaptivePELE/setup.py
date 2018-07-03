@@ -35,18 +35,18 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 if use_cython:
     ext_modules += [
-        Extension("atomset.atomset", ["atomset/atomset.pyx"], include_dirs=["atomset"]),
-        Extension("atomset.SymmetryContactMapEvaluator", ["atomset/SymmetryContactMapEvaluator.pyx"], include_dirs=["atomset"]),
-        Extension("atomset.RMSDCalculator", ["atomset/RMSDCalculator.pyx"], include_dirs=["atomset"]),
-        Extension("freeEnergies.utils", ["freeEnergies/utils.pyx"], include_dirs=["freeEnergies"])
+        Extension("AdaptivePELE.atomset.atomset", ["AdaptivePELE/atomset/atomset.pyx"], include_dirs=["AdaptivePELE", "AdaptivePELE/atomset"]),
+        Extension("AdaptivePELE.atomset.SymmetryContactMapEvaluator", ["AdaptivePELE/atomset/SymmetryContactMapEvaluator.pyx"], include_dirs=["AdaptivePELE", "AdaptivePELE/atomset"]),
+        Extension("AdaptivePELE.atomset.RMSDCalculator", ["AdaptivePELE/atomset/RMSDCalculator.pyx"], include_dirs=["AdaptivePELE", "AdaptivePELE/atomset"]),
+        Extension("AdaptivePELE.freeEnergies.utils", ["AdaptivePELE/freeEnergies/utils.pyx"], include_dirs=["AdaptivePELE", "AdaptivePELE/freeEnergies"])
     ]
     cmdclass.update({'build_ext': build_ext})
 else:
     ext_modules += [
-        Extension("atomset.atomset", ["atomset/atomset.c"], include_dirs=["atomset"]),
-        Extension("atomset.SymmetryContactMapEvaluator", ["atomset/SymmetryContactMapEvaluator.c"], include_dirs=["atomset"]),
-        Extension("atomset.RMSDCalculator", ["atomset/RMSDCalculator.c"], include_dirs=["atomset"]),
-        Extension("freeEnergies.utils", ["freeEnergies/utils.c"], include_dirs=["freeEnergies"])
+        Extension("AdaptivePELE.atomset.atomset", ["AdaptivePELE/atomset/atomset.c"], include_dirs=["AdaptivePELE", "AdaptivePELE/atomset"]),
+        Extension("AdaptivePELE.atomset.SymmetryContactMapEvaluator", ["AdaptivePELE/atomset/SymmetryContactMapEvaluator.c"], include_dirs=["AdaptivePELE", "AdaptivePELE/atomset"]),
+        Extension("AdaptivePELE.atomset.RMSDCalculator", ["AdaptivePELE/atomset/RMSDCalculator.c"], include_dirs=["AdaptivePELE", "AdaptivePELE/atomset"]),
+        Extension("AdaptivePELE.freeEnergies.utils", ["AdaptivePELE/freeEnergies/utils.c"], include_dirs=["AdaptivePELE", "AdaptivePELE/freeEnergies"])
     ]
 
 setup(
