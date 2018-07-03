@@ -120,6 +120,13 @@ FILES_SP = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates
                  os.path.join(DIR, "Templates/adaptive_exit.conf"), os.path.join(DIR, "Templates/adaptive_long.conf"),
                  os.path.join(DIR, "Templates/pele_exit.conf")]
 
+FILES_XP2 = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_XP2.conf"),
+                      os.path.join(DIR, "Templates/adaptive_exit.conf"), os.path.join(DIR, "Templates/adaptive_long.conf"),
+                      os.path.join(DIR, "Templates/pele_exit.conf")]
+FILES_TEST_XP2 = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_XP2.conf"),
+                         os.path.join(DIR, "Templates/adaptive_exit_test.conf"), os.path.join(DIR, "Templates/adaptive_long_test.conf"),
+                         os.path.join(DIR, "Templates/pele_exit.conf")]
+
 FILES_XP = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_XP.conf"),
                  os.path.join(DIR, "Templates/adaptive_exit.conf"), os.path.join(DIR, "Templates/adaptive_long.conf"),
                  os.path.join(DIR, "Templates/pele_exit.conf")]
