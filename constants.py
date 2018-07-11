@@ -25,8 +25,8 @@ elif "mn.bsc" in machine:
     LICENSE = "/gpfs/projects/bsc72/PELE++/license"
     MMSHARE = None
     # Provisional workaround until best_struct.py is fixed
-    ACCEPTED_STEPS_NAME = "AcceptedSteps"
-    CRITERIA = "SASA"
+    ACCEPTED_STEPS_NAME = "numberOfAcceptedPeleSteps"
+    CRITERIA = "sasaLig"
 
 elif "bsccv" in machine:
     SCHRODINGER = "/data2/bsc72/SCHRODINGER_ACADEMIC"
