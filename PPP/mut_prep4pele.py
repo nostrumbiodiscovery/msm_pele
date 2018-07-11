@@ -26,7 +26,7 @@ addNonstdAminoacid('LYN', 'neutral', 'acyclic', 'large', 'polar', 'buried')
 
 
 def main(input_pdb, pele_dir, output_pdb=["",], no_gaps_ter=False, charge_terminals=False, make_unique=False,
-         remove_terminal_missing=False, mutant_multiple=False, mutation=""):
+         remove_terminal_missing=False, mutant_multiple=False, mutation="", mid_chain_nonstd_residue=[]):
     if not output_pdb[0]:
         output = os.path.splitext(os.path.basename(input_pdb))[0]
         output_pdb[0] = os.path.join(pele_dir,"{}_processed.pdb".format(output))
@@ -78,7 +78,7 @@ def main(input_pdb, pele_dir, output_pdb=["",], no_gaps_ter=False, charge_termin
         else:
             not_proteic_ligand = None
             PDBwriter(output_pdb[0], WritingAtomNames(structure2use), make_unique, residues2remove,
-                      no_gaps_ter, not_proteic_ligand, gaps, not_gaps)
+                      no_gaps_ter, not_proteic_ligand, gaps, not_gaps, mid_chain_nonstd_residue)
 
         coordinated_atoms_ids = {}
         for metal, atoms_list in metals2coordinate.iteritems():
