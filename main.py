@@ -113,6 +113,7 @@ if __name__ == "__main__":
     parser.add_argument("--restart", type=str, help="Restart the platform from [all, pele, msm] with these keywords", default=cs.PLATFORM_RESTART)
     parser.add_argument("--gridres", type=str, help="Rotamers angle resolution", default=cs.GRIDRES)
     parser.add_argument("--precision", action='store_true', help="Use a more agressive control file to achieve better convergence")
+    parser.add_argument("--precision2", action='store_true', help="Use an intermidiate control file to achieve better convergence")
     parser.add_argument("--test", action='store_true', help="Run a fast MSM_PELE test")
     parser.add_argument("--user_center", "-c", nargs='+', type=float, help='center of the box', default=None)
     parser.add_argument("--user_radius", "-r", type=float,  help="Radius of the box", default=None)
