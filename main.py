@@ -2,6 +2,7 @@ import os
 import MSM_PELE.Helpers.check_env_var as env
 env.check_dependencies()
 import shutil
+import sys
 import argparse
 import MSM_PELE.constants as cs
 import MSM_PELE.PlopRotTemp.main as plop
@@ -29,7 +30,8 @@ def run(args):
         syst = sp.SystemBuilder.build_system(args.system, args.mae_lig, args.residue, env.pele_dir)
 
         # Prepare System
-        system_fix, missing_residues, gaps, metals, protein_constraints = ppp.main(syst.system, env.pele_dir, charge_terminals=args.charge_ter, no_gaps_ter=args.gaps_ter)
+        system_fix, missing_residues, gaps, metals, protein_constraints = ppp.main(syst.system, env.pele_dir, charge_terminals=args.charge_ter,
+                no_gaps_ter=args.gaps_ter, mid_chain_nonstd_residue=env.nonstandard)
         env.logger.info(cs.SYSTEM.format(system_fix, missing_residues, gaps, metals))
 
         # Parametrize Ligand
@@ -119,6 +121,7 @@ if __name__ == "__main__":
     parser.add_argument("--user_radius", "-r", type=float,  help="Radius of the box", default=None)
     parser.add_argument("--folder", "-wf", type=str,  help="Folder to apply the restart to", default=None)
     parser.add_argument("--pdb", action='store_true',  help="Use pdb files as output")
+    parser.add_argument("--nonstandard", nargs="+",  help="Mid Chain non standard residues to be treated as ATOM not HETATOM")
     
     args = parser.parse_args()
     if(args.clust > args.cpus and args.restart != "msm" and not args.test ):

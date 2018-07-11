@@ -28,6 +28,7 @@ class EnviroBuilder(object):
         self.test = args.test
         self.folder = args.folder
         self.pdb = args.pdb
+        self.nonstandard = args.nonstandard 
         self.build_constant_paths()
 
     @classmethod
