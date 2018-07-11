@@ -24,18 +24,22 @@ class EnviroBuilder(object):
         self.native = args.native
         self.chain = args.chain
         self.mae_lig = args.mae_lig
-        self.clusters = args.clust = args.clust if not args.test else 3
+        self.clusters = args.clust = args.clust if not args.test else 2
         self.test = args.test
-        self.work_folder = args.work_folder
-
+        self.folder = args.folder
+        self.pdb = args.pdb
         self.build_constant_paths()
 
     @classmethod
     def build_env(cls, args):
-        if args.test:
+        if args.test and not args.precision2:
             env = cls(cs.FOLDERS, cs.FILES_TEST, args)
+	elif args.test and args.precision2:
+            env = cls(cs.FOLDERS, cs.FILES_TEST_XP2, args)
         elif args.precision:
             env = cls(cs.FOLDERS, cs.FILES_XP, args)
+        elif args.precision2:
+            env = cls(cs.FOLDERS, cs.FILES_XP2, args)
         else:
             env = cls(cs.FOLDERS, cs.FILES_SP, args)
         env.create()
@@ -47,16 +51,18 @@ class EnviroBuilder(object):
         self.rotamers_file = None
         self.random_num = random.randrange(1, 70000)
         self.license = '''"{}"'''.format(cs.LICENSE)
+
         if self.test:
             self.equil_steps = 1
         else:
             self.equil_steps = int(cs.EQ_STEPS/self.cpus) if self.cpus < cs.EQ_STEPS else 1
 
-        if self.work_folder:
-            self.pele_dir = os.path.abspath(self.work_folder)
-        else:
-            pele_dir = os.path.abspath("{}_Pele".format(self.residue))
+        pele_dir = os.path.abspath("{}_Pele".format(self.residue))
+
+        if not self.folder:
             self.pele_dir = is_repited(pele_dir) if self.restart == "all" else is_last(pele_dir)
+        else:
+            self.pele_dir = os.path.abspath(self.folder)
 
         if self.mae_lig:
             self.system_fix = os.path.join(self.pele_dir, "{}_complex_processed.pdb".format(os.path.abspath(os.path.splitext(self.system)[0])))
@@ -76,6 +82,7 @@ class EnviroBuilder(object):
         self.clusters_output = os.path.join(self.cluster_output, "clusters_{}_KMeans_allSnapshots.pdb".format(self.clusters))
         self.ligand_ref = os.path.join(self.pele_dir, "ligand.pdb")
         self.native = cs.NATIVE.format(os.path.abspath(self.native), self.chain) if self.native else cs.NATIVE.format(os.path.abspath(self.ligand_ref), self.chain)
+        self.topology = None if self.pdb else os.path.join(self.adap_ex_output, "topology.pdb")
 
     def create(self):
         if self.restart == "all":

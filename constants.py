@@ -8,8 +8,8 @@ import os
 machine = socket.getfqdn()
 if "bsc.mn" in machine:
     SCHRODINGER = "/gpfs/projects/bsc72/SCHRODINGER_ACADEMIC"
-    PELE = "/gpfs/projects/bsc72/PELE++/mniv/rev12455"
-    ADAPTIVE = "/gpfs/projects/bsc72/adaptiveSampling/bin/v1.4.2"
+    PELE = "/gpfs/projects/bsc72/PELE++/nord/rev090518"
+    PELE_BIN = "PELE-1.5_mpi"
     MPIRUN = "/apps/INTEL/2017.4/impi/2017.3.196/bin64"
     LICENSE = "/gpfs/projects/bsc72/PELE++/license"
     MMSHARE = None
@@ -19,8 +19,8 @@ if "bsc.mn" in machine:
 
 elif "mn.bsc" in machine:
     SCHRODINGER = "/gpfs/projects/bsc72/SCHRODINGER_ACADEMIC_NORD"
-    PELE = "/gpfs/projects/bsc72/PELE++/nord/rev12489"
-    ADAPTIVE = "/gpfs/projects/bsc72/adaptiveSampling/bin_nord/v1.4.2_schr"
+    PELE = "/gpfs/projects/bsc72/PELE++/nord/rev090518"
+    PELE_BIN = "PELE-1.5_mpi"
     MPIRUN = "/apps/OPENMPI/1.8.1-mellanox/bin"
     LICENSE = "/gpfs/projects/bsc72/PELE++/license"
     MMSHARE = None
@@ -31,7 +31,7 @@ elif "mn.bsc" in machine:
 elif "bsccv" in machine:
     SCHRODINGER = "/data2/bsc72/SCHRODINGER_ACADEMIC"
     PELE = "/data/EAPM/PELE/PELE++/life/rev12489"
-    ADAPTIVE = "/data2/bsc72/AdaptiveSampling/bin/v1.4.2_bis"
+    PELE_BIN = "PELE-1.5_mpi"
     MPIRUN = "/data2/apps/OPENMPI/1.6.1/bin"
     #LICENSE = "/gpfs/projects/bsc72/PELE++/license"
     MMSHARE = None
@@ -44,8 +44,8 @@ elif "bsccv" in machine:
 else:
     SCHRODINGER = "/sNow/easybuild/centos/7.4.1708/Skylake/software/schrodinger2017-4/"
     PELE = "/sNow/easybuild/centos/7.4.1708/Skylake/software/PELE/1.5.0.2524/"
-    ADAPTIVE = "/home/dsoler/repos/AdaptivePELE/"
-    MPIRUN = "/sNow/easybuild/centos/7.4.1708/Skylake/software/OpenMPI/1.8.4-GCC-4.9.2/bin"
+    PELE_BIN = "/home/dsoler/cleanPELE_rev/build_gnu/Pele_mpi" 
+    MPIRUN = "/sNow/easybuild/centos/7.4.1708/Skylake/software/OpenMPI/2.1.2-GCC-6.4.0-2.28/bin/"
     LICENSE = "/sNow/easybuild/centos/7.4.1708/Skylake/software/PELE/licenses/"
     MMSHARE = None
     # Provisional workaround until best_struct.py is fixed
@@ -76,7 +76,7 @@ GRIDRES = '10.0'
 ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "SEED"]
 EX_ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "EQ_STEPS", "SEED"]
 EX_PELE_KEYWORDS = ["NATIVE", "FORCEFIELD", "CHAIN", "CONSTRAINTS", "CPUS", "LICENSES"]
-PELE_KEYWORDS = ["BOX_CENTER", "BOX_RADIUS"]
+PELE_KEYWORDS = ["BOX_CENTER", "BOX_RADIUS", "SASA_min", "SASA_max"]
 NATIVE = '''
                         {{
 
@@ -119,6 +119,13 @@ FOLDERS = ["",
 FILES_SP = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_SP.conf"),
                  os.path.join(DIR, "Templates/adaptive_exit.conf"), os.path.join(DIR, "Templates/adaptive_long.conf"),
                  os.path.join(DIR, "Templates/pele_exit.conf")]
+
+FILES_XP2 = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_XP2.conf"),
+                      os.path.join(DIR, "Templates/adaptive_exit.conf"), os.path.join(DIR, "Templates/adaptive_long.conf"),
+                      os.path.join(DIR, "Templates/pele_exit.conf")]
+FILES_TEST_XP2 = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_XP2.conf"),
+                         os.path.join(DIR, "Templates/adaptive_exit_test.conf"), os.path.join(DIR, "Templates/adaptive_long_test.conf"),
+                         os.path.join(DIR, "Templates/pele_exit.conf")]
 
 FILES_XP = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_XP.conf"),
                  os.path.join(DIR, "Templates/adaptive_exit.conf"), os.path.join(DIR, "Templates/adaptive_long.conf"),
