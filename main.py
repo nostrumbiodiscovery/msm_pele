@@ -56,7 +56,6 @@ def run(args):
         adaptive_exit = ad.SimulationBuilder(env.ad_ex_temp, env.topology, cs.EX_ADAPTIVE_KEYWORDS, cs.RESTART, env.adap_ex_output,
             env.adap_ex_input, env.cpus, env.pele_exit_temp, env.residue, env.equil_steps, env.random_num)
         adaptive_exit.run(hook=True)
-        sys.exit()
         env.logger.info("ExitPath Adaptive run successfully")
 
 
