@@ -30,7 +30,7 @@ elif "mn.bsc" in machine:
 
 elif "bsccv" in machine:
     SCHRODINGER = "/data2/bsc72/SCHRODINGER_ACADEMIC"
-    PELE = "/data/EAPM/PELE/PELE++/life/rev12489"
+    PELE = "/data/EAPM/PELE/PELE++/bin/rev040718"
     PELE_BIN = "PELE-1.5_mpi"
     MPIRUN = "/data2/apps/OPENMPI/1.6.1/bin"
     #LICENSE = "/gpfs/projects/bsc72/PELE++/license"
