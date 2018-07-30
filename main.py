@@ -5,7 +5,7 @@ import shutil
 import sys
 import argparse
 import MSM_PELE.constants as cs
-import MSM_PELE.PlopRotTemp.main as plop
+import MSM_PELE.PlopRotTemp.launcher as plop
 import MSM_PELE.Helpers.helpers as hp
 import MSM_PELE.Helpers.pele_env as pele
 import MSM_PELE.Helpers.simulation as ad
