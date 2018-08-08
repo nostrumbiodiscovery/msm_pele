@@ -433,8 +433,6 @@ def main(folder_name=".", atom_Ids="", lig_resname="", numtotalSteps=0, enforceS
             print("Gathering trajs in %s" % constants.gatherTrajsFolder)
             gatherTrajs(constants, folder_it, setNumber, non_Repeat)
     
-    print("Gathering trajs in %s" % constants.gatherTrajsFolder)
-        gatherTrajs(constants, folder_it, setNumber, non_Repeat)
 
 
 if __name__ == "__main__":
