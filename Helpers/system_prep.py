@@ -1,10 +1,10 @@
 import os
-from schrodinger import structure as st
+import subprocess
+import argparse
 import MSM_PELE.Helpers.pele_env as pl
-
+import MSM_PELE.constants as cs
 
 class SystemBuilder(pl.EnviroBuilder):
-
     def __init__(self, receptor, ligand, residue, pele_dir):
         self.receptor = receptor
         self.ligand = ligand
@@ -14,14 +14,19 @@ class SystemBuilder(pl.EnviroBuilder):
 
     @classmethod
     def build_system(cls, receptor, ligand, residue, pele_dir, output=False):
+        print(ligand)
+        SPYTHON = os.path.join(cs.SCHRODINGER, "utilities/python")
         if ligand:
             system = cls(receptor, ligand, residue, pele_dir)
-            system.lig_ref = system.convert_pdb()
+            system.lig_ref = os.path.join(pele_dir, "ligand.pdb")
+            subprocess.call("{} {} {} {} --mae".format(SPYTHON, __file__, system.ligand, system.lig_ref).split())
             system.system = system.build_complex()
         else:
             system = cls(receptor, ligand, residue, pele_dir)
             system.receptor, system.lig_ref = system.retrieve_receptor(output=output)
-            system.lig, system.residue = system.convert_mae()
+            subprocess.call("{} {} {} {}".format(SPYTHON, __file__, system.lig_ref, pele_dir).split())
+            system.lig = "{}.mae".format(residue)
+            system.residue = residue
         return system
 
     def build_complex(self):
@@ -92,8 +97,50 @@ class SystemBuilder(pl.EnviroBuilder):
 
         return "".join(receptor_text), ligand
 
-    def convert_pdb(self):
-        name = os.path.join(self.pele_dir, "ligand.pdb")
-        for structure in st.StructureReader(self.ligand):
-            structure.write(name)
-        return name
+def convert_pdb(mae_file, output_dir):
+    from schrodinger import structure as st
+    for structure in st.StructureReader(mae_file):
+        structure.write(output_dir)
+
+
+def convert_mae(pdb):
+    """
+        Desciption: From each structure retrieve
+        a .mae file of the ligand in the receptor.
+        Output:
+             structure_mae: ligand
+             res = residue
+    """
+    from schrodinger import structure as st
+    for structure in st.StructureReader(pdb):
+        for residue in structure.residue:
+            res = residue.pdbres.strip()
+            str_name = "{}".format(res)
+            try:
+                structure.write(str_name + ".mae")
+            except ValueError:
+                str_name = "{}".format(res)
+            finally:
+                structure.write(str_name + ".mae")
+                structure_mae = "{}.mae".format(str_name)
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("ligand", help="ligand input file to convert")
+    parser.add_argument("output_dir", help="output directory to dump the converted file")
+    parser.add_argument("--mae", action="store_true", help="Whether to convert to mae (--mae) or pdb (not --mae)")
+    args = parser.parse_args()
+    return args.ligand, args.output_dir, args.mae
+
+
+
+
+if __name__ == "__main__":
+    input_file, output_dir, ligand_mae = parse_args()
+    print(input_file)
+    if ligand_mae:
+        convert_pdb(input_file, output_dir)
+    else:
+        convert_mae(input_file)
+        
+

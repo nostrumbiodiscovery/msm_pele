@@ -419,15 +419,21 @@ def main(folder_name=".", atom_Ids="", lig_resname="", numtotalSteps=0, enforceS
 
     for folder_it in folders:
         pathFolder = os.path.join(folderWithTrajs, folder_it)
-        print("Extracting coords from folder %s" % folder_it)
         ligand_trajs_folder = os.path.join(pathFolder, constants.ligandTrajectoryFolder)
         if writeLigandTrajectory and not os.path.exists(ligand_trajs_folder):
             os.makedirs(ligand_trajs_folder)
-        writeFilenamesExtractedCoordinates(pathFolder, lig_resname, atom_Ids, writeLigandTrajectory, constants, protein_CA, sidechains, pool=pool, topology=topology)
+        if not glob.glob(constants.extractedTrajectoryFolder % pathFolder):
+            print("Extracting coords from folder %s" % folder_it)
+            writeFilenamesExtractedCoordinates(pathFolder, lig_resname, atom_Ids, writeLigandTrajectory, constants, protein_CA, sidechains, pool=pool, topology=topology)
         if not non_Repeat:
             print("Repeating snapshots from folder %s" % folder_it)
             repeatExtractedSnapshotsInFolder(pathFolder, constants, numtotalSteps, pool=None)
-        print("Gathering trajs in %s" % constants.gatherTrajsFolder)
+        
+        if not glob.glob(os.path.join(folderWithTrajs, constants.gatherTrajsFolder, "traj*.*")):
+            print("Gathering trajs in %s" % constants.gatherTrajsFolder)
+            gatherTrajs(constants, folder_it, setNumber, non_Repeat)
+    
+    print("Gathering trajs in %s" % constants.gatherTrajsFolder)
         gatherTrajs(constants, folder_it, setNumber, non_Repeat)
 
 
