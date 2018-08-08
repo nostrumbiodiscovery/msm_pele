@@ -70,43 +70,23 @@ def patch_environ():
 
 
 def check_dependencies():
-        #Update libraries
-        patch_environ()
-
         #Update env_variables
+        adaptive_folder = os.path.join(constants.DIR, "AdaptivePELE")
         if "PYTHONPATH" in os.environ:
-            os.environ["PYTHONPATH"] = "{}:{}".format(constants.DIR, os.environ["PYTHONPATH"])
+            os.environ["PYTHONPATH"] = "{}:{}:{}".format(adaptive_folder, constants.DIR, os.environ["PYTHONPATH"])
         else:
-             os.environ["PYTHONPATH"] = constants.DIR
-
-        os.environ["SCHRODINGER"] = constants.SCHRODINGER
+            os.environ["PYTHONPATH"] = "{}:{}".format(adaptive_folder, constants.DIR)
         os.environ["PELE"] = constants.PELE
-
-        # Provisonal line, may be necessary for old schrodinger versions
-        if constants.MMSHARE is not None:
-            os.environ["MMSHARE_EXEC"] = constants.MMSHARE
-
-        sys.path.append(os.path.join(os.environ["SCHRODINGER"], "internal/lib/python2.7/site-packages/"))
-
+        
+        #Update binaries
         try:
             os.environ["PATH"] = "{}:{}".format(os.environ["PATH"], constants.MPIRUN)
         except ValueError:
             os.environ["PATH"] = constants.MPIRUN
 
         #Check dependencies
-        try:
-            os.environ["SCHRODINGER"]
-        except KeyError:
-            raise("Change SCHRODINGER path in constants.py module")
-
-        try:
-            pele_bin_path = os.path.join(os.environ["PELE"], "bin")
-            os.environ["PATH"] = "{}:{}".format(os.environ["PATH"], pele_bin_path)
-        except KeyError:
-            raise("Change PELE path in constants.py module")
-
         if not find_executable("mpirun"):
             raise ValueError("Change mpirun path in constants.py module")
 
-        if not find_executable("Pele_mpi") and not find_executable("PELE-1.5_mpi"):
-            raise ValueError("Change Pele path in constants.py module")
+        if not find_executable(constants.PELE_BIN):
+            raise ValueError("Change PELE_BIN in constants.py module")

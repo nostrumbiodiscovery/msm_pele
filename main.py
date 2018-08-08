@@ -4,7 +4,7 @@ env.check_dependencies()
 import shutil
 import argparse
 import MSM_PELE.constants as cs
-import MSM_PELE.PlopRotTemp.main as plop
+import MSM_PELE.PlopRotTemp.launcher as plop
 import MSM_PELE.Helpers.helpers as hp
 import MSM_PELE.Helpers.pele_env as pele
 import MSM_PELE.Helpers.simulation as ad
@@ -29,7 +29,8 @@ def run(args):
         syst = sp.SystemBuilder.build_system(args.system, args.mae_lig, args.residue, env.pele_dir)
 
         # Prepare System
-        system_fix, missing_residues, gaps, metals, protein_constraints = ppp.main(syst.system, env.pele_dir, charge_terminals=args.charge_ter, no_gaps_ter=args.gaps_ter)
+        system_fix, missing_residues, gaps, metals, protein_constraints = ppp.main(syst.system, env.pele_dir, charge_terminals=args.charge_ter,
+                no_gaps_ter=args.gaps_ter, mid_chain_nonstd_residue=env.nonstandard)
         env.logger.info(cs.SYSTEM.format(system_fix, missing_residues, gaps, metals))
 
         # Parametrize Ligand
@@ -41,7 +42,7 @@ def run(args):
         for res, __, _ in missing_residues:
             if res != args.residue:
                 env.logger.info("Creating template for residue {}".format(res))
-                mr.create_template(system_fix, res, env.pele_dir, args.forcefield)
+                mr.create_template(args, env)
                 env.logger.info("Template {}z created".format(res))
 
         # Fill in Simulation Templates
@@ -77,7 +78,7 @@ def run(args):
         env.logger.info("Running standard Pele")
         ad.SimulationBuilder(env.pele_temp,  env.topology, cs.PELE_KEYWORDS, center, radius, BS_sasa_min, BS_sasa_max)
         adaptive_long = ad.SimulationBuilder(env.ad_l_temp,  env.topology, cs.ADAPTIVE_KEYWORDS,
-            cs.RESTART, env.adap_l_output, env.adap_l_input, args.cpus, env.pele_temp, args.residue, env.random_num)
+            cs.RESTART, env.adap_l_output, env.adap_l_input, env.cpus, env.pele_temp, args.residue, env.random_num)
         adaptive_long.run()
         env.logger.info("Pele run successfully")
 
@@ -119,6 +120,7 @@ if __name__ == "__main__":
     parser.add_argument("--user_radius", "-r", type=float,  help="Radius of the box", default=None)
     parser.add_argument("--folder", "-wf", type=str,  help="Folder to apply the restart to", default=None)
     parser.add_argument("--pdb", action='store_true',  help="Use pdb files as output")
+    parser.add_argument("--nonstandard", nargs="+",  help="Mid Chain non standard residues to be treated as ATOM not HETATOM", default = [])
     parser.add_argument("--lagtime", type=int,  help="MSM Lagtime to use", default=100)
     parser.add_argument("--msm_clust", type=int,  help="Number of clusters created to converge MSM", default=200)
     
