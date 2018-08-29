@@ -425,13 +425,10 @@ def main(folder_name=".", atom_Ids="", lig_resname="", numtotalSteps=0, enforceS
         if not glob.glob(constants.extractedTrajectoryFolder % pathFolder):
             print("Extracting coords from folder %s" % folder_it)
             writeFilenamesExtractedCoordinates(pathFolder, lig_resname, atom_Ids, writeLigandTrajectory, constants, protein_CA, sidechains, pool=pool, topology=topology)
-        if not non_Repeat:
+        if not non_Repeat and not glob.glob(constants.outputTrajectoryFolder % pathFolder):
             print("Repeating snapshots from folder %s" % folder_it)
             repeatExtractedSnapshotsInFolder(pathFolder, constants, numtotalSteps, pool=None)
-        
-        if not glob.glob(os.path.join(folderWithTrajs, constants.gatherTrajsFolder, "traj*.*")):
-            print("Gathering trajs in %s" % constants.gatherTrajsFolder)
-            gatherTrajs(constants, folder_it, setNumber, non_Repeat)
+        gatherTrajs(constants, folder_it, setNumber, non_Repeat)
     
 
 
