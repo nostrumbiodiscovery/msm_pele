@@ -1,7 +1,7 @@
 import os
 import glob
-from MSM_PELE.AdaptivePELE.AdaptivePELE.freeEnergies import extractCoords, prepareMSMFolders, estimateDGAdaptive
-from MSM_PELE.AdaptivePELE.AdaptivePELE.freeEnergies import getRepresentativeStructures as getRepr
+from MSM_PELE.AdaptivePELE.freeEnergies import extractCoords, prepareMSMFolders, estimateDGAdaptive
+from MSM_PELE.AdaptivePELE.freeEnergies import getRepresentativeStructures as getRepr
 import MSM_PELE.Helpers.tica as td
 import MSM_PELE.Helpers.helpers as hp
 import shutil

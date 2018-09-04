@@ -30,7 +30,7 @@ here = path.abspath(path.dirname(__file__))
 ext_modules = []
 cmdclass = {}
 # Get the long description from the README file
-with open(path.join(here, 'AdaptivePELE/README.rst'), encoding='utf-8') as f:
+with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 if use_cython:
@@ -54,7 +54,7 @@ setup(
     version="1.5",
     description='Enhanced sampling of molecular simulations',
     long_description=long_description,
-    url="https://github.com/cescgina/AdaptivePELE",
+    url="https://github.com/cescgina/MSM_PELE.AdaptivePELE",
     author='Daniel Lecina, Joan Francesc Gilabert',
     author_email='danilecina@gmail.com, cescgina@gmail.com',
     license='',
