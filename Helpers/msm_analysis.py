@@ -23,7 +23,7 @@ N_BEST = 5
 
 def analyse_results(env, args, runTica=True):
     lagtime = 1 if args.test else env.lagtime
-    lagtimes = None if args.test else None
+    lagtimes = None if args.test else [1, 10, 25, 50, 100, 250, 400, 500, 600, 1000]
     clusters = 2 if args.test else env.msm_clust
     numtotal_steps = 2 if args.test else 1000
     with hp.cd(env.adap_l_output):
