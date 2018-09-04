@@ -29,15 +29,15 @@ class EnviroBuilder(object):
         self.folder = args.folder
         self.pdb = args.pdb
         self.nonstandard = args.nonstandard 
-    	self.lagtime = args.lagtime
-    	self.msm_clust = args.msm_clust
+        self.lagtime = args.lagtime
+        self.msm_clust = args.msm_clust
         self.build_constant_paths()
 
     @classmethod
     def build_env(cls, args):
         if args.test and not args.precision2:
             env = cls(cs.FOLDERS, cs.FILES_TEST, args)
-	elif args.test and args.precision2:
+        elif args.test and args.precision2:
             env = cls(cs.FOLDERS, cs.FILES_TEST_XP2, args)
         elif args.precision:
             env = cls(cs.FOLDERS, cs.FILES_XP, args)
