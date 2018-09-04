@@ -25,13 +25,14 @@ def analyse_results(env, args, runTica=True):
     lagtime = 1 if args.test else env.lagtime
     lagtimes = None if args.test else None
     clusters = 2 if args.test else env.msm_clust
+    numtotal_steps = 2 if args.test else 1000
     with hp.cd(env.adap_l_output):
     	trajs_per_epoch = len(glob.glob(os.path.join("0", "*report*")))
         if runTica:
             td.main(DIMENSIONS, clusters, args.residue, lagtime, trajs_per_epoch, 1000)
             return()
         else:
-            extractCoords.main(lig_resname=args.residue, non_Repeat=False, atom_Ids="", nProcessors=args.cpus, parallelize=True, topology=env.topology)
+            extractCoords.main(lig_resname=args.residue, non_Repeat=False, numtotalSteps=numtotal_steps, atom_Ids="", nProcessors=args.cpus, parallelize=True, topology=env.topology)
             prepareMSMFolders.main()
             estimateDGAdaptive.main(trajs_per_epoch, lagtime, clusters, lagtimes=lagtimes)
             results_file = summerize(env.adap_l_output)
