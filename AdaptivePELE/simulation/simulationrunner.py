@@ -9,6 +9,7 @@ import sys
 import numpy as np
 import ast
 import glob
+import subprocess32
 from builtins import range
 from AdaptivePELE.constants import constants, blockNames
 from AdaptivePELE.simulation import simulationTypes
@@ -257,7 +258,7 @@ class PeleSimulation(SimulationRunner):
         PDBinitial.initialise(initialStruct, resname=resname)
         return repr(PDBinitial.getCOM())
 
-    def runSimulation(self, runningControlFile=""):
+    def runSimulation(self, runningControlFile="", limitTime=None):
         """
             Run a short PELE simulation
 
@@ -273,11 +274,20 @@ class PeleSimulation(SimulationRunner):
         toRun = " ".join(toRun)
         print(toRun)
         startTime = time.time()
-        proc = subprocess.Popen(toRun, stdout=subprocess.PIPE, shell=True, universal_newlines=True)
-        (out, err) = proc.communicate()
-        print(out)
-        if err:
-            print(err)
+	if limitTime:
+		try:
+			print("AA {}".format(limitTime))
+        		proc = subprocess32.Popen(toRun, stdout=subprocess.PIPE,  shell=True,  universal_newlines=True)
+        		(out, err) = proc.communicate(timeout=limitTime)
+		except subprocess32.TimeoutExpired:
+			print("killing")
+			proc.kill()
+	else:		
+        	proc = subprocess.Popen(toRun, stdout=subprocess.PIPE, shell=True, universal_newlines=True)
+        	(out, err) = proc.communicate()
+        	print(out)
+        	if err:
+            		print(err)
 
         endTime = time.time()
         print("PELE took %.2f sec" % (endTime - startTime))

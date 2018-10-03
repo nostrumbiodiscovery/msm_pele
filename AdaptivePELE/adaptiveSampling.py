@@ -537,6 +537,7 @@ def main(jsonParams, clusteringHook=None):
     initialStructuresWildcard = generalParams[blockNames.GeneralParams.initialStructures]
     writeAll = generalParams.get(blockNames.GeneralParams.writeAllClustering, False)
     nativeStructure = generalParams.get(blockNames.GeneralParams.nativeStructure, '')
+    time = print(simulationrunnerBlock)
     resname = str(clusteringBlock[blockNames.ClusteringTypes.params][blockNames.ClusteringTypes.ligandResname])
 
     print("================================")
@@ -565,8 +566,8 @@ def main(jsonParams, clusteringHook=None):
 
     outputPathConstants = constants.OutputPathConstants(outputPath)
 
-    if not debug:
-        atexit.register(utilities.cleanup, outputPathConstants.tmpFolder)
+    #if not debug:
+        #atexit.register(utilities.cleanup, outputPathConstants.tmpFolder)
 
     utilities.makeFolder(outputPath)
     utilities.makeFolder(outputPathConstants.tmpFolder)
@@ -600,7 +601,6 @@ def main(jsonParams, clusteringHook=None):
                                  "BOX_RADIUS": simulationRunner.parameters.boxRadius}
     if simulationRunner.parameters.modeMovingBox is not None and simulationRunner.parameters.boxCenter is None:
         simulationRunner.parameters.boxCenter = simulationRunner.selectInitialBoxCenter(initialStructuresAsString, resname)
-
     for i in range(firstRun, simulationRunner.parameters.iterations):
         print("Iteration", i)
 
@@ -610,7 +610,7 @@ def main(jsonParams, clusteringHook=None):
         print("Production run...")
         if not debug:
             startTime = time.time()
-            simulationRunner.runSimulation(outputPathConstants.tmpControlFilename % i)
+            simulationRunner.runSimulation(outputPathConstants.tmpControlFilename % i, limitTime=limitTime)
             endTime = time.time()
             print("PELE %s sec" % (endTime - startTime))
 
