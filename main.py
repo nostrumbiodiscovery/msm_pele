@@ -78,8 +78,8 @@ def run(args):
         env.logger.info("Running standard Pele")
         ad.SimulationBuilder(env.pele_temp,  env.topology, cs.PELE_KEYWORDS, center, radius, BS_sasa_min, BS_sasa_max)
         adaptive_long = ad.SimulationBuilder(env.ad_l_temp,  env.topology, cs.ADAPTIVE_KEYWORDS,
-            cs.RESTART, env.adap_l_output, env.adap_l_input, env.cpus, env.pele_temp, args.residue, env.random_num)
-        adaptive_long.run()
+            cs.RESTART, env.adap_l_output, env.adap_l_input, args.cpus, env.pele_temp, args.residue, env.random_num)
+        adaptive_long.run(limitTime=args.time)
         env.logger.info("Pele run successfully")
 
     if args.restart in ["all", "adaptive", "pele", "msm"]:
@@ -123,6 +123,7 @@ if __name__ == "__main__":
     parser.add_argument("--nonstandard", nargs="+",  help="Mid Chain non standard residues to be treated as ATOM not HETATOM", default = [])
     parser.add_argument("--lagtime", type=int,  help="MSM Lagtime to use", default=100)
     parser.add_argument("--msm_clust", type=int,  help="Number of clusters created to converge MSM", default=200)
+    parser.add_argument("--time", type=int,  help="Limit of time to run pele exploration", default=None)
     
     args = parser.parse_args()
     if(args.clust > args.cpus and args.restart != "msm" and not args.test ):
