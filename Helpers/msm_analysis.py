@@ -1,8 +1,9 @@
 import os
 import glob
-from MSM_PELE.AdaptivePELE.AdaptivePELE.freeEnergies import extractCoords, prepareMSMFolders, estimateDGAdaptive
-from MSM_PELE.AdaptivePELE.AdaptivePELE.freeEnergies import getRepresentativeStructures as getRepr
+from MSM_PELE.AdaptivePELE.freeEnergies import extractCoords, prepareMSMFolders, estimateDGAdaptive
+from MSM_PELE.AdaptivePELE.freeEnergies import getRepresentativeStructures as getRepr
 import MSM_PELE.Helpers.tica as td
+import MSM_PELE.Helpers.plotMSMAdvancedInfo as pt
 import MSM_PELE.Helpers.helpers as hp
 import shutil
 import numpy as np
@@ -41,6 +42,7 @@ def analyse_results(env, args, runTica=True):
             for i, folder in enumerate(MSM_folders):
 		try:
 		    getRepr.main(os.path.join(env.adap_l_output, folder, REPRESENTATIVES_FILE), ".", output=REPRESENTATIVES_STRUCTURES % i, topology=env.topology)
+  		    pt.main(4, i+1, 5, ".", True, True, True, None, None, env.system_fix, True, False, None, folder)
 		except IndexError: 
 		    pass
 

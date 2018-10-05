@@ -28,9 +28,11 @@ class EnviroBuilder(object):
         self.test = args.test
         self.folder = args.folder
         self.pdb = args.pdb
+	self.nonstandard = args.nonstandard
         self.lagtime = args.lagtime
         self.msm_clust = args.msm_clust
         self.build_constant_paths()
+	self.time = '"time" : {},'.format(args.time) if args.time  else ""
 
     @classmethod
     def build_env(cls, args):
