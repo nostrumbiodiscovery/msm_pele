@@ -37,6 +37,7 @@ class SimulationParameters:
         self.peleSteps = 0
         self.seed = 0
         self.exitCondition = None
+	self.time = None
         self.boxCenter = None
         self.boxRadius = 20
         self.modeMovingBox = None
@@ -50,6 +51,7 @@ class SimulationParameters:
         self.reportName = None
         self.trajectoryName = None
         self.srun = False
+        self.srunParameters = None
         self.numberEquilibrationStructures = 10
 
 
@@ -258,7 +260,7 @@ class PeleSimulation(SimulationRunner):
         PDBinitial.initialise(initialStruct, resname=resname)
         return repr(PDBinitial.getCOM())
 
-    def runSimulation(self, runningControlFile="", limitTime=None):
+    def runSimulation(self, runningControlFile=""):
         """
             Run a short PELE simulation
 
@@ -268,17 +270,17 @@ class PeleSimulation(SimulationRunner):
         self.createSymbolicLinks()
 
         if self.parameters.srun:
-            toRun = ["srun", self.parameters.executable, runningControlFile]
+            toRun = ["srun", "-n", str(self.parameters.processors)]+ self.parameters.srunParameters +[self.parameters.executable, runningControlFile]
         else:
             toRun = ["mpirun -np " + str(self.parameters.processors), self.parameters.executable, runningControlFile]
         toRun = " ".join(toRun)
         print(toRun)
         startTime = time.time()
-	if limitTime:
+	if self.parameters.time:
 		try:
-			print("AA {}".format(limitTime))
+			print("A")
         		proc = subprocess32.Popen(toRun, stdout=subprocess.PIPE,  shell=True,  universal_newlines=True)
-        		(out, err) = proc.communicate(timeout=limitTime)
+        		(out, err) = proc.communicate(timeout=self.parameters.time)
 		except subprocess32.TimeoutExpired:
 			print("killing")
 			proc.kill()
@@ -288,6 +290,7 @@ class PeleSimulation(SimulationRunner):
         	print(out)
         	if err:
             		print(err)
+
 
         endTime = time.time()
         print("PELE took %.2f sec" % (endTime - startTime))
@@ -776,6 +779,7 @@ class RunnerBuilder:
         params = SimulationParameters()
         if simulationType == blockNames.SimulationType.pele:
             params.processors = paramsBlock[blockNames.SimulationParams.processors]
+            params.time = paramsBlock.get(blockNames.SimulationParams.time, None)
             params.dataFolder = paramsBlock.get(blockNames.SimulationParams.dataFolder, constants.DATA_FOLDER)
             params.documentsFolder = paramsBlock.get(blockNames.SimulationParams.documentsFolder, constants.DOCUMENTS_FOLDER)
             params.executable = paramsBlock.get(blockNames.SimulationParams.executable, constants.PELE_EXECUTABLE)
@@ -799,6 +803,11 @@ class RunnerBuilder:
             params.equilibrationLength = paramsBlock.get(blockNames.SimulationParams.equilibrationLength)
             params.numberEquilibrationStructures = paramsBlock.get(blockNames.SimulationParams.numberEquilibrationStructures, 10)
             params.srun = paramsBlock.get(blockNames.SimulationParams.srun, False)
+            params.srunParameters = paramsBlock.get(blockNames.SimulationParams.srunParameters, None)
+            if params.srunParameters is not None:
+                params.srunParameters = params.srunParameters.strip().split()
+            else:
+                params.srunParameters = []
             exitConditionBlock = paramsBlock.get(blockNames.SimulationParams.exitCondition, None)
             if exitConditionBlock:
                 exitConditionBuilder = ExitConditionBuilder()

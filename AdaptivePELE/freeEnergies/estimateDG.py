@@ -123,7 +123,6 @@ def copyWorkingTrajectories(fileWildcard, length=None, ntrajs=None, bootstrap=Tr
             traj_len = length =len(traj)  # so that later eveything is copied
 	else:
 	    traj_len = length
-        print(traj[skipFirstSteps:length+1, :])
         try:
             trimmedTraj = traj[skipFirstSteps:length+1, :]
             if len(trimmedTraj) > 0:
