@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('Agg')
 import os
 import MSM_PELE.Helpers.check_env_var as env
 env.check_dependencies()
@@ -46,8 +48,8 @@ def run(args):
                 env.logger.info("Template {}z created".format(res))
 
         # Fill in Simulation Templates
-        ad.SimulationBuilder(env.pele_exit_temp,  env.topology, cs.EX_PELE_KEYWORDS, env.native, args.forcefield, args.chain, "\n".join(protein_constraints), args.cpus, env.license)
-        ad.SimulationBuilder(env.pele_temp,  env.topology, cs.EX_PELE_KEYWORDS, env.native, args.forcefield, args.chain, "\n".join(protein_constraints), args.cpus, env.license)
+        ad.SimulationBuilder(env.pele_exit_temp,  env.topology, cs.EX_PELE_KEYWORDS, env.native, args.forcefield, args.chain, "\n".join(protein_constraints), args.cpus, env.license, env.log)
+        ad.SimulationBuilder(env.pele_temp,  env.topology, cs.EX_PELE_KEYWORDS, env.native, args.forcefield, args.chain, "\n".join(protein_constraints), args.cpus, env.license, env.log)
 
     if args.restart in ["all", "adaptive"]:
         # Run Adaptive Exit
@@ -78,7 +80,7 @@ def run(args):
         env.logger.info("Running standard Pele")
         ad.SimulationBuilder(env.pele_temp,  env.topology, cs.PELE_KEYWORDS, center, radius, BS_sasa_min, BS_sasa_max)
         adaptive_long = ad.SimulationBuilder(env.ad_l_temp,  env.topology, cs.ADAPTIVE_KEYWORDS,
-            cs.RESTART, env.adap_l_output, env.adap_l_input, args.cpus, env.pele_temp, args.residue, env.random_num)
+            cs.RESTART, env.adap_l_output, env.adap_l_input, args.cpus, env.pele_temp, args.residue, env.random_num, env.steps)
         adaptive_long.run(limitTime=args.time)
         env.logger.info("Pele run successfully")
 
@@ -122,8 +124,10 @@ if __name__ == "__main__":
     parser.add_argument("--pdb", action='store_true',  help="Use pdb files as output")
     parser.add_argument("--nonstandard", nargs="+",  help="Mid Chain non standard residues to be treated as ATOM not HETATOM", default = [])
     parser.add_argument("--lagtime", type=int,  help="MSM Lagtime to use", default=100)
+    parser.add_argument("--steps", type=int,  help="MSM Steps to use", default=10000)
     parser.add_argument("--msm_clust", type=int,  help="Number of clusters created to converge MSM", default=200)
     parser.add_argument("--time", type=int,  help="Limit of time to run pele exploration", default=None)
+    parser.add_argument("--log", action='store_true',  help="Print LogFiles when running PELE")
     
     args = parser.parse_args()
     if(args.clust > args.cpus and args.restart != "msm" and not args.test ):
