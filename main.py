@@ -80,8 +80,8 @@ def run(args):
         env.logger.info("Running standard Pele")
         ad.SimulationBuilder(env.pele_temp,  env.topology, cs.PELE_KEYWORDS, center, radius, BS_sasa_min, BS_sasa_max)
         adaptive_long = ad.SimulationBuilder(env.ad_l_temp,  env.topology, cs.ADAPTIVE_KEYWORDS,
-            cs.RESTART, env.adap_l_output, env.adap_l_input, args.cpus, env.pele_temp, args.residue, env.random_num, env.steps)
-        adaptive_long.run(limitTime=args.time)
+            cs.RESTART, env.adap_l_output, env.adap_l_input, args.cpus, env.pele_temp, args.residue, env.random_num, env.time, env.steps)
+        adaptive_long.run()
         env.logger.info("Pele run successfully")
 
     if args.restart in ["all", "adaptive", "pele", "msm"]:

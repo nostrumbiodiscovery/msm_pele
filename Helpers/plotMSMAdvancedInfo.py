@@ -7,9 +7,17 @@ from AdaptivePELE.utilities import utilities
 from AdaptivePELE.atomset import atomset
 from AdaptivePELE.freeEnergies import computeDeltaG
 from msmtools.analysis import rdl_decomposition
+<<<<<<< HEAD
 import matplotlib
 matplotlib.use('pdf')
 import matplotlib.pyplot as plt
+=======
+import matplotlib as mpl
+mpl.use('Agg')
+import matplotlib.pyplot as plt
+plt.style.use("ggplot")
+
+>>>>>>> 78eae4247914e7f68c40fa69ca958f7eef871263
 
 def parse_arguments():
     """
@@ -39,6 +47,10 @@ def parse_arguments():
 
 def main(nEigenvectors, nRuns, m, outputFolder, plotEigenvectors, plotGMRQ, plotPMF, clusters, lagtimes, native, save_plots, showPlots, filtered, destFolder, resname):
     minPos = get_min_Pos(native, resname)
+<<<<<<< HEAD
+=======
+    print(nEigenvectors, nRuns, m, outputFolder, plotEigenvectors, plotGMRQ, plotPMF, clusters, lagtimes, minPos, save_plots, showPlots, filtered, destFolder, resname)
+>>>>>>> 78eae4247914e7f68c40fa69ca958f7eef871263
     if save_plots and outputFolder is None:
         outputFolder = "plots_MSM"
     eigenPlots = os.path.join(outputFolder, "eigenvector_plots")

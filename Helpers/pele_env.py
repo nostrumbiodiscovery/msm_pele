@@ -34,6 +34,7 @@ class EnviroBuilder(object):
         self.msm_clust = args.msm_clust
 	self.log = '"simulationLogPath" : "$OUTPUT_PATH/logFile.txt",' if args.log else ""
         self.build_constant_paths()
+	self.time = '"time" : {},'.format(args.time) if args.time  else ""
 
     @classmethod
     def build_env(cls, args):
