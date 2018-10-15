@@ -53,7 +53,6 @@ else:
     CRITERIA = "sasaLig"
 
 
-
 ############################
 # PRIVATE CONSTANTS
 #############################
@@ -73,10 +72,10 @@ EQ_STEPS = 50
 GRIDRES = '10.0'
 
 # TEMPLATE KEYWORDS
-ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "SEED"]
+ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "SEED", "STEPS"]
 EX_ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "EQ_STEPS", "SEED"]
-EX_PELE_KEYWORDS = ["NATIVE", "FORCEFIELD", "CHAIN", "CONSTRAINTS", "CPUS", "LICENSES"]
-PELE_KEYWORDS = ["BOX_CENTER", "BOX_RADIUS", "SASA_min", "SASA_max"]
+EX_PELE_KEYWORDS = ["NATIVE", "FORCEFIELD", "CHAIN", "CONSTRAINTS", "CPUS", "LICENSES", "LOGFILE"]
+PELE_KEYWORDS = ["BOX_CENTER", "BOX_RADIUS", "SASA_min", "SASA_max", "LOGFILE"]
 NATIVE = '''
                         {{
 
@@ -104,7 +103,7 @@ SYSTEM = "System {} checked successfully\n\t**Missing residues found {}\n\t**Gap
 
 
 # FOLDERS&PATH
-DIR = os.path.abspath(os.path.dirname(__file__))
+DIR = os.path.dirname(__file__)
 ADAPTIVE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "Adaptive/clusterAdaptiveRun.py"))
 FOLDERS = ["",
            "DataLocal/Templates/OPLS2005/HeteroAtoms/",

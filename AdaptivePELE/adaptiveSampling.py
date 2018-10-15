@@ -514,7 +514,7 @@ def preparePeleControlFile(epoch, outputPathConstants, simulationRunner, peleCon
     simulationRunner.makeWorkingControlFile(outputPathConstants.tmpControlFilename % epoch, peleControlFileDictionary)
 
 
-def main(jsonParams, clusteringHook=None):
+def main(jsonParams, clusteringHook=None, limitTime=None):
     """
         Main body of the adaptive sampling program.
 
@@ -537,7 +537,6 @@ def main(jsonParams, clusteringHook=None):
     initialStructuresWildcard = generalParams[blockNames.GeneralParams.initialStructures]
     writeAll = generalParams.get(blockNames.GeneralParams.writeAllClustering, False)
     nativeStructure = generalParams.get(blockNames.GeneralParams.nativeStructure, '')
-    time = print(simulationrunnerBlock)
     resname = str(clusteringBlock[blockNames.ClusteringTypes.params][blockNames.ClusteringTypes.ligandResname])
 
     print("================================")
