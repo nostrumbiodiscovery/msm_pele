@@ -108,6 +108,7 @@ class SimulationType:
 class SimulationParams:
     params = "params"
     processors = "processors"
+    time = "time"
     executable = "executable"
     templetizedControlFile = "controlFile"
     dataFolder = "data"
@@ -136,6 +137,7 @@ class SimulationParams:
     numTrajs = "numberTrajectories"
     equilibrationLength = "equilibrationLength"
     srun = "useSrun"
+    srunParameters = "srunParameters"
 
 
 class ExitConditionType:

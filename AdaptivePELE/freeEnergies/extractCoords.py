@@ -22,6 +22,9 @@ from AdaptivePELE.freeEnergies import utils
 # sys.setdefaultencoding('utf-8')
 
 
+MDTRAJ_FORMATS = set(['.xtc', '.dcd', '.dtr', '.trr'])
+
+
 class Constants:
     def __init__(self):
         self.extractedTrajectoryFolder = "%s/extractedCoordinates"
@@ -215,7 +218,7 @@ def writeFilenameExtractedCoordinates(filename, lig_resname, atom_Ids, pathFolde
                 coords = getPDBCOM(allCoordinates, lig_resname)
             else:
                 coords = getAtomCoord(allCoordinates, lig_resname, atom_Ids)
-    elif ext == ".xtc":
+    elif ext in MDTRAJ_FORMATS:
         coords = extractCoordinatesXTCFile(filename, lig_resname, atom_Ids, writeCA, topology, indexes, sidechains)
     else:
         raise ValueError("Unrecongnized file extension for %s" % filename)
@@ -231,7 +234,7 @@ def writeFilenamesExtractedCoordinates(pathFolder, lig_resname, atom_Ids, writeL
 
     originalPDBfiles = glob.glob(os.path.join(pathFolder, '*traj*.*'))
     ext = os.path.splitext(originalPDBfiles[0])[1]
-    if ext == ".xtc":
+    if ext in MDTRAJ_FORMATS:
         indexes = extractIndexesTopology(topology, lig_resname, atom_Ids, writeCA, sidechains)
     else:
         indexes = None
@@ -312,7 +315,6 @@ def repeatExtractedSnapshotsInTrajectory(inputTrajectory, constants, numtotalSte
     try:
         reportFile = glob.glob(os.path.join(origDataFolder, constants.reportName + trajectoryNumber))[0]
     except IndexError:
-        print("folder", origDataFolder)
         sys.exit("Couldn't find file that matches: %s" % os.path.join(origDataFolder, constants.reportName + trajectoryNumber))
 
     with open(inputTrajectory) as f:
@@ -419,12 +421,13 @@ def main(folder_name=".", atom_Ids="", lig_resname="", numtotalSteps=0, enforceS
 
     for folder_it in folders:
         pathFolder = os.path.join(folderWithTrajs, folder_it)
-        print("Extracting coords from folder %s" % folder_it)
         ligand_trajs_folder = os.path.join(pathFolder, constants.ligandTrajectoryFolder)
         if writeLigandTrajectory and not os.path.exists(ligand_trajs_folder):
             os.makedirs(ligand_trajs_folder)
-        writeFilenamesExtractedCoordinates(pathFolder, lig_resname, atom_Ids, writeLigandTrajectory, constants, protein_CA, sidechains, pool=pool, topology=topology)
-        if not non_Repeat:
+	if not glob.glob(constants.extractedTrajectoryFolder % pathFolder):
+            print("Extracting coords from folder %s" % folder_it)
+            writeFilenamesExtractedCoordinates(pathFolder, lig_resname, atom_Ids, writeLigandTrajectory, constants, protein_CA, sidechains, pool=pool, topology=topology)
+        if not non_Repeat and not glob.glob(constants.outputTrajectoryFolder % pathFolder):
             print("Repeating snapshots from folder %s" % folder_it)
             repeatExtractedSnapshotsInFolder(pathFolder, constants, numtotalSteps, pool=None)
         print("Gathering trajs in %s" % constants.gatherTrajsFolder)

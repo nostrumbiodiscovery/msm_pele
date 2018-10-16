@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import os
 import socket
-import MSM_PELE.constants as cs
 machine = socket.getfqdn()
 
 print("MACHINE", machine)
@@ -28,10 +27,7 @@ elif machine == "bscls309":
     PELE_EXECUTABLE = "/home/jgilaber/PELE/PELE-1.5/bin/PELE-1.5_mpi"
     DATA_FOLDER = "/home/jgilaber/PELE/PELE-1.5/Data"
     DOCUMENTS_FOLDER = "/home/jgilaber/PELE/PELE-1.5/Documents"
-else:
-    PELE_EXECUTABLE = cs.PELE_BIN
-    DATA_FOLDER = os.path.join(cs.PELE, "Data")
-    DOCUMENTS_FOLDER = os.path.join(cs.PELE, "Documents")
+
 
 inputFileTemplate = "{ \"files\" : [ { \"path\" : \"%s\" } ] }"
 trajectoryBasename = "*traj*"

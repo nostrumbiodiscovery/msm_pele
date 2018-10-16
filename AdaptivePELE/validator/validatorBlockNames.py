@@ -129,6 +129,7 @@ class SimulationParams:
         "documents": "basestring",
         "destination": "basestring",
         "origin": "basestring",
+	"time": "numbers.Real",
         "processors": "numbers.Real",
         "controlFile": "basestring",
         "seed": "numbers.Real",
@@ -142,6 +143,7 @@ class SimulationParams:
         "equilibrationLength": "numbers.Real",
         "numberEquilibrationStructures": "numbers.Real",
         "useSrun": "bool",
+        "srunParameters": "basestring",
         "exitCondition": "dict"
     }
     exitCondition = {

@@ -514,7 +514,7 @@ def preparePeleControlFile(epoch, outputPathConstants, simulationRunner, peleCon
     simulationRunner.makeWorkingControlFile(outputPathConstants.tmpControlFilename % epoch, peleControlFileDictionary)
 
 
-def main(jsonParams, clusteringHook=None):
+def main(jsonParams, clusteringHook=None, limitTime=None):
     """
         Main body of the adaptive sampling program.
 
