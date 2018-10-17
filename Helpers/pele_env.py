@@ -34,7 +34,7 @@ class EnviroBuilder(object):
         self.msm_clust = args.msm_clust
 	self.log = '"simulationLogPath" : "$OUTPUT_PATH/logFile.txt",' if args.log else ""
         self.build_constant_paths()
-	self.time = '"time" : {},'.format(args.time) if args.time  else ""
+	self.renumber = args.nonrenum
 
     @classmethod
     def build_env(cls, args):
@@ -71,9 +71,9 @@ class EnviroBuilder(object):
             self.pele_dir = os.path.abspath(self.folder)
 
         if self.mae_lig:
-            self.system_fix = os.path.join(self.pele_dir, "{}_complex_processed.pdb".format(os.path.abspath(os.path.splitext(self.system)[0])))
+            self.system_fix = os.path.join(self.pele_dir, "{}_complex_processed.pdb".format(os.path.splitext(os.path.basename(self.system))[0]))
         else:
-            self.system_fix = os.path.join(self.pele_dir, "{}_processed.pdb".format(os.path.abspath(os.path.splitext(self.system)[0])))
+            self.system_fix = os.path.join(self.pele_dir, "{}_processed.pdb".format(os.path.splitext(os.path.basename(self.system))[0]))
 
         self.adap_ex_input = os.path.join(self.pele_dir, os.path.basename(self.system_fix))
         self.adap_ex_output = os.path.join(self.pele_dir, "output_adaptive_exit")

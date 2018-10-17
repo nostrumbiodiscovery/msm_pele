@@ -14,6 +14,7 @@ class SystemBuilder(pl.EnviroBuilder):
 
     @classmethod
     def build_system(cls, receptor, ligand, residue, pele_dir, output=False):
+        print(ligand)
         SPYTHON = os.path.join(cs.SCHRODINGER, "utilities/python")
         if ligand:
             system = cls(receptor, ligand, residue, pele_dir)
@@ -136,6 +137,7 @@ def parse_args():
 
 if __name__ == "__main__":
     input_file, output_dir, ligand_mae = parse_args()
+    print(input_file)
     if ligand_mae:
         convert_pdb(input_file, output_dir)
     else:
