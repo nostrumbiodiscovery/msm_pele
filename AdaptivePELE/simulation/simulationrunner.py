@@ -9,7 +9,6 @@ import sys
 import numpy as np
 import ast
 import glob
-import subprocess32
 from builtins import range
 from AdaptivePELE.constants import constants, blockNames
 from AdaptivePELE.simulation import simulationTypes
@@ -24,7 +23,10 @@ try:
     basestring
 except NameError:
     basestring = str
-
+try:
+    import subprocess32
+except ImportError:
+    import subprocess
 
 class SimulationParameters:
     def __init__(self):
