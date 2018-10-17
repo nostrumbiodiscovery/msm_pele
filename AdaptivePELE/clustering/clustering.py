@@ -495,6 +495,8 @@ class Cluster:
             :param path: Filename of the file to write
             :type path: str
         """
+        if topology is None:
+            topology = []
         self.pdb.writePDB(str(path))
 
     def getContacts(self):

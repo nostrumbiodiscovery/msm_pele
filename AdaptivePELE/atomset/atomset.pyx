@@ -239,11 +239,7 @@ cdef class Atom:
             self.z = float(atomContent[46:54])
 
             self.type = re.sub(self._chargePattern, u"", atomContent[76:80]).strip().upper()
-            if self.type in self._ATOM_WEIGHTS:
-                self.mass = self._ATOM_WEIGHTS[self.type]
-            else:
-                print("WARNING!: Information about atom type not available, trying to guess from its name, mass properties might be wrong.")
-                self.mass = self._ATOM_WEIGHTS[self.name[0]]
+            self.mass = self._ATOM_WEIGHTS[self.type]
 
             if atomContent.startswith(u'ATOM'):
                 self.protein = True
@@ -291,11 +287,7 @@ cdef class Atom:
         self.z = z
 
         self.type = element
-        if self.type in self._ATOM_WEIGHTS:
-            self.mass = self._ATOM_WEIGHTS[self.type]
-        else:
-            print("WARNING!: Information about atom type not available, trying to guess from its name, mass properties might be wrong.")
-            self.mass = self._ATOM_WEIGHTS[self.name[0]]
+        self.mass = self._ATOM_WEIGHTS[self.type]
 
         self.protein = isProtein
 
@@ -583,6 +575,7 @@ cdef class PDB:
             resnumStr = u""
         else:
             resnumStr = u"%d" % (resnum)
+        frame *= 10
         self.pdb = self.join_PDB_lines(topology, frame)  # in case one wants to write it
         for iatom in range(len(topology)):
             atomLine = topology[iatom]

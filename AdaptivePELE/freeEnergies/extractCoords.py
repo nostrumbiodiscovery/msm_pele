@@ -22,9 +22,6 @@ from AdaptivePELE.freeEnergies import utils
 # sys.setdefaultencoding('utf-8')
 
 
-MDTRAJ_FORMATS = set(['.xtc', '.dcd', '.dtr', '.trr'])
-
-
 class Constants:
     def __init__(self):
         self.extractedTrajectoryFolder = "%s/extractedCoordinates"
@@ -218,7 +215,7 @@ def writeFilenameExtractedCoordinates(filename, lig_resname, atom_Ids, pathFolde
                 coords = getPDBCOM(allCoordinates, lig_resname)
             else:
                 coords = getAtomCoord(allCoordinates, lig_resname, atom_Ids)
-    elif ext in MDTRAJ_FORMATS:
+    elif ext == ".xtc":
         coords = extractCoordinatesXTCFile(filename, lig_resname, atom_Ids, writeCA, topology, indexes, sidechains)
     else:
         raise ValueError("Unrecongnized file extension for %s" % filename)
@@ -234,7 +231,7 @@ def writeFilenamesExtractedCoordinates(pathFolder, lig_resname, atom_Ids, writeL
 
     originalPDBfiles = glob.glob(os.path.join(pathFolder, '*traj*.*'))
     ext = os.path.splitext(originalPDBfiles[0])[1]
-    if ext in MDTRAJ_FORMATS:
+    if ext == ".xtc":
         indexes = extractIndexesTopology(topology, lig_resname, atom_Ids, writeCA, sidechains)
     else:
         indexes = None
@@ -273,16 +270,15 @@ def buildFullTrajectory(steps, trajectory, numtotalSteps, inputTrajectory):
     counter = 0
     if len(trajectory) > 0:
         sthWrongInTraj = False
-        for i in range(len(trajectory) - 1):
-            try:
-                repeated = steps[i+1] - steps[i]
-            except IndexError:
-                print("sth wrong in trajectory %s. This is likely to disagreement between report and trajectory files. Please, fix it manually" % inputTrajectory)
-                sthWrongInTraj = True
-                break
-
+        for i in range(len(steps) - 1):
+            repeated = steps[i+1, 0] - steps[i, 0]
             for _ in range(repeated):
-                snapshot = trajectory[i].split()
+                try:
+                    snapshot = trajectory[steps[i, 1]].split()
+                except IndexError:
+                    print("sth wrong in trajectory %s. This is likely to disagreement between report and trajectory files. Please, fix it manually" % inputTrajectory)
+                    sthWrongInTraj = True
+                    break
                 snapshot[0] = str(counter)
                 snapshot = ' '.join(snapshot)
                 completeTrajectory.append(snapshot)
@@ -315,22 +311,21 @@ def repeatExtractedSnapshotsInTrajectory(inputTrajectory, constants, numtotalSte
     try:
         reportFile = glob.glob(os.path.join(origDataFolder, constants.reportName + trajectoryNumber))[0]
     except IndexError:
+        print("folder", origDataFolder)
         sys.exit("Couldn't find file that matches: %s" % os.path.join(origDataFolder, constants.reportName + trajectoryNumber))
 
     with open(inputTrajectory) as f:
         trajectory = f.read().splitlines()
 
-    acceptedSteps = np.loadtxt(reportFile, dtype='int', comments='#', usecols=(1,))
+    acceptedSteps = np.loadtxt(reportFile, dtype='int', comments='#', usecols=(1,2))
 
     fullTrajectory = buildFullTrajectory(acceptedSteps, trajectory, numtotalSteps, inputTrajectory)
 
     if len(fullTrajectory) > 0:
         outputFilename = os.path.join(constants.outputTrajectoryFolder % origDataFolder, constants.baseExtractedTrajectoryName + trajectoryNumber + '.dat')
-        outputFile = open(outputFilename, 'w')
-        for snapshot in fullTrajectory:
-            outputFile.write("%s\n" % snapshot)
-        outputFile.close()
-
+        with open(outputFilename, "w") as outputFile:
+            for snapshot in fullTrajectory:
+                outputFile.write("%s\n" % snapshot)
 
 def repeatExtractedSnapshotsInFolder(folder_name, constants, numtotalSteps, pool=None):
     inputTrajectoryFolder = constants.extractedTrajectoryFolder % folder_name
@@ -431,7 +426,7 @@ def main(folder_name=".", atom_Ids="", lig_resname="", numtotalSteps=0, enforceS
             print("Repeating snapshots from folder %s" % folder_it)
             repeatExtractedSnapshotsInFolder(pathFolder, constants, numtotalSteps, pool=None)
         print("Gathering trajs in %s" % constants.gatherTrajsFolder)
-        gatherTrajs(constants, folder_it, setNumber, non_Repeat)
+       	gatherTrajs(constants, folder_it, setNumber, non_Repeat)
 
 
 if __name__ == "__main__":
