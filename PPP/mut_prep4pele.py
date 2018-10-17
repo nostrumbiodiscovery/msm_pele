@@ -26,7 +26,7 @@ addNonstdAminoacid('LYN', 'neutral', 'acyclic', 'large', 'polar', 'buried')
 
 
 def main(input_pdb, pele_dir, output_pdb=["",], no_gaps_ter=False, charge_terminals=False, make_unique=False,
-         remove_terminal_missing=False, mutant_multiple=False, mutation="", mid_chain_nonstd_residue=[]):
+         remove_terminal_missing=False, mutant_multiple=False, mutation="", mid_chain_nonstd_residue=[], renumber=True):
     if not output_pdb[0]:
         output = os.path.splitext(os.path.basename(input_pdb))[0]
         output_pdb[0] = os.path.join(pele_dir,"{}_processed.pdb".format(output))
@@ -46,7 +46,7 @@ def main(input_pdb, pele_dir, output_pdb=["",], no_gaps_ter=False, charge_termin
         gaps, not_gaps = {}, {}
     print "* Checking for insertion codes."
     insertion_codes = [icode for icode in initial_structure.getIcodes() if icode]
-    if insertion_codes:
+    if insertion_codes and renumber:
         print " *The structure will be renumbered starting from 1 for each chain."
         structure2use = RenumberStructure(initial_structure, gaps, not_gaps)
     else:
