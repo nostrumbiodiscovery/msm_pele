@@ -3,7 +3,6 @@ import glob
 from MSM_PELE.AdaptivePELE.freeEnergies import extractCoords, prepareMSMFolders, estimateDGAdaptive
 from MSM_PELE.AdaptivePELE.freeEnergies import getRepresentativeStructures as getRepr
 import MSM_PELE.Helpers.tica as td
-import MSM_PELE.Helpers.plotMSMAdvancedInfo as pt
 import MSM_PELE.Helpers.helpers as hp
 import MSM_PELE.Helpers.plotMSMAdvancedInfo as pt
 import shutil
@@ -43,10 +42,10 @@ def analyse_results(env, args, runTica=True):
 	    print(MSM_folders)
             for i, folder in enumerate(MSM_folders):
 		try:
-		    getRepr.main(os.path.join(env.adap_l_output, folder, REPRESENTATIVES_FILE), ".", output=REPRESENTATIVES_STRUCTURES % i, topology=env.topology)
+			getRepr.main(os.path.join(env.adap_l_output, folder, REPRESENTATIVES_FILE), ".", output=REPRESENTATIVES_STRUCTURES % i, topology=env.topology)
 		except IndexError: 
 		    pass
-		pt.main(4, i+1, 5, ".", True, True, True, None, None, env.system_fix, True, False, None, folder, env.residue)
+		pt.main(4, i+1, 5, folder, True, True, True, None, None, env.system_fix, True, False, None, folder, env.residue)
 
 def summerize(pele_path):
     results_file = os.path.join(pele_path, "results.txt")

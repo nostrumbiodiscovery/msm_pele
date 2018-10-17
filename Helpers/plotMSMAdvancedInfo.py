@@ -1,3 +1,6 @@
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 from builtins import range
 import os
 import numpy as np
@@ -7,10 +10,6 @@ from AdaptivePELE.utilities import utilities
 from AdaptivePELE.atomset import atomset
 from AdaptivePELE.freeEnergies import computeDeltaG
 from msmtools.analysis import rdl_decomposition
-import matplotlib as mpl
-mpl.use('Agg')
-import matplotlib.pyplot as plt
-plt.style.use("ggplot")
 
 def parse_arguments():
     """
