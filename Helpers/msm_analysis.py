@@ -32,7 +32,7 @@ def analyse_results(env, args, runTica=True):
             td.main(DIMENSIONS, clusters, args.residue, lagtime, trajs_per_epoch, 1000)
             return()
         else:
-            extractCoords.main(lig_resname=args.residue, non_Repeat=False, atom_Ids="", nProcessors=args.cpus, parallelize=True, topology=env.topology)
+            extractCoords.main(lig_resname=args.residue, non_Repeat=False, atom_Ids="", nProcessors=args.cpus, parallelize=False, topology=env.topology)
             prepareMSMFolders.main()
             estimateDGAdaptive.main(trajs_per_epoch, lagtime, clusters, lagtimes=lagtimes)
             results_file = summerize(env.adap_l_output)
