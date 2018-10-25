@@ -103,7 +103,7 @@ def convert_pdb(mae_file, output_dir):
         structure.write(output_dir)
 
 
-def convert_mae(pdb):
+def convert_mae(pdb, output_dir="."):
     """
         Desciption: From each structure retrieve
         a .mae file of the ligand in the receptor.
@@ -115,7 +115,7 @@ def convert_mae(pdb):
     for structure in st.StructureReader(pdb):
         for residue in structure.residue:
             res = residue.pdbres.strip()
-            str_name = "{}".format(res)
+            str_name = os.path.abspath(os.path.join(output_dir, "{}".format(res)))
             try:
                 structure.write(str_name + ".mae")
             except ValueError:
@@ -141,6 +141,6 @@ if __name__ == "__main__":
     if ligand_mae:
         convert_pdb(input_file, output_dir)
     else:
-        convert_mae(input_file)
+        convert_mae(input_file, output_dir)
         
 

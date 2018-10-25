@@ -293,8 +293,6 @@ def main(mae_file, residue, pele_dir, forcefield="OPLS2005", max_tors=4, nrot=10
             print("\n")
 
 
-
-
     if (clean):
         for file in files2clean:
             print('Removing Intermediate File: {}'.format(file))
@@ -363,6 +361,8 @@ def parse_args():
     
     return args.mae_file, args.residue, args.output, args.mtor, args.n, args.core, args.mae_charges, args.clean, args.gridres, args.force
 
+print("Statement")
+print(__name__ == "__main__")
 if __name__ == "__main__":
     mae_file, residue, output, mtor, n, core, mae_charge, clean, gridres, forcefield = parse_args() 
     main(mae_file, residue, output, forcefield, mtor, n, core, mae_charge, clean, gridres)
