@@ -120,7 +120,8 @@ def copyWorkingTrajectories(fileWildcard, length=None, ntrajs=None, bootstrap=Tr
         writenFiles.append(dst)
         traj = np.loadtxt(trajFile)
         if length is None:
-            traj_len = len(traj)  # so that later eveything is copied
+	    traj_len = len(traj)
+            #traj_len = length =len(traj)  # so that later eveything is copied
 	else:
 	    traj_len = length
         try:

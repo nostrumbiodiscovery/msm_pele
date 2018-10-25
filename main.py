@@ -37,14 +37,16 @@ def run(args):
 
         # Parametrize Ligand
         env.logger.info("Creating template for residue {}".format(args.residue))
-        plop.parametrize_miss_residues(args, env, syst)
+	with hp.cd(env.pele_dir):
+        	plop.parametrize_miss_residues(args, env, syst)
         env.logger.info("Template {}z created".format(args.residue.lower()))
 
         # Parametrize missing residues
         for res, __, _ in missing_residues:
             if res != args.residue:
                 env.logger.info("Creating template for residue {}".format(res))
-                mr.create_template(args, env)
+		with hp.cd(env.pele_dir):
+                	mr.create_template(args, env)
                 env.logger.info("Template {}z created".format(res))
 
         # Fill in Simulation Templates
@@ -84,7 +86,7 @@ def run(args):
         adaptive_long.run(limitTime=args.time)
         env.logger.info("Pele run successfully")
 
-    if args.restart in ["all", "adaptive", "pele", "msm"]:
+    if args.restart in ["all", "adaptive", "pele", "msm", "analyse"]:
 
         # MSM Analysis
         env.logger.info("Running MSM analysis")

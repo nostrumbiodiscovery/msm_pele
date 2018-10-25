@@ -23,15 +23,16 @@ class EnviroBuilder(object):
         self.restart = args.restart
         self.native = args.native
         self.chain = args.chain
-        self.mae_lig = args.mae_lig
+        self.mae_lig = os.path.abspath(args.mae_lig)
         self.clusters = args.clust = args.clust if not args.test else 2
         self.test = args.test
         self.folder = args.folder
         self.pdb = args.pdb
 	self.nonstandard = args.nonstandard
-        self.lagtime = args.lagtime
+        self.lagtime = 1 if args.test else args.lagtime
+	self.lagtimes = None if args.test else [50, 100, 200, 500]
         self.steps = args.steps if not self.test else 1
-        self.msm_clust = args.msm_clust
+        self.msm_clust = 2 if args.test else args.msm_clust
 	self.log = '"simulationLogPath" : "$OUTPUT_PATH/logFile.txt",' if args.log else ""
         self.build_constant_paths()
 	self.renumber = args.nonrenum
