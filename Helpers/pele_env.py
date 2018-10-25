@@ -23,7 +23,7 @@ class EnviroBuilder(object):
         self.restart = args.restart
         self.native = args.native
         self.chain = args.chain
-        self.mae_lig = os.path.abspath(args.mae_lig)
+        self.mae_lig = os.path.abspath(args.mae_lig) if args.mae_lig else None
         self.clusters = args.clust = args.clust if not args.test else 2
         self.test = args.test
         self.folder = args.folder
