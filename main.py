@@ -115,7 +115,7 @@ if __name__ == "__main__":
     parser.add_argument("--mtor", type=int, help="Gives the maximum number of torsions allowed in each group.  Will freeze bonds to extend the core if necessary.", default=4)
     parser.add_argument("--n", type=int, help="Maximum Number of Entries in Rotamer File", default=1000)
     parser.add_argument("--clean", help="Whether to clean up all the intermediate files", action='store_true')
-    parser.add_argument("--restart", type=str, help="Restart the platform from [all, pele, msm] with these keywords", default=cs.PLATFORM_RESTART)
+    parser.add_argument("--restart", type=str, help="Restart the platform from [all, adaptive, pele, msm, analyse] with these keywords", default=cs.PLATFORM_RESTART)
     parser.add_argument("--gridres", type=str, help="Rotamers angle resolution", default=cs.GRIDRES)
     parser.add_argument("--precision", action='store_true', help="Use a more agressive control file to achieve better convergence")
     parser.add_argument("--precision2", action='store_true', help="Use an intermediate control file to achieve better convergence")
