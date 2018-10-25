@@ -19,7 +19,6 @@ class EnviroBuilder(object):
         self.forcefield = args.forcefield
         self.residue = args.residue
         self.templates = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), "PeleTemplates"))
-        self.cpus = args.cpus = args.cpus if not args.test else 4 
         self.restart = args.restart
         self.native = args.native
         self.chain = args.chain
@@ -34,8 +33,15 @@ class EnviroBuilder(object):
         self.steps = args.steps if not self.test else 1
         self.msm_clust = 2 if args.test else args.msm_clust
 	self.log = '"simulationLogPath" : "$OUTPUT_PATH/logFile.txt",' if args.log else ""
-        self.build_constant_paths()
 	self.renumber = args.nonrenum
+        if args.test:
+            self.cpus = args.cpus = 4
+        elif args.restart == "analise":
+            self.cpus = args.cpus = 1
+        else:
+            self.cpus = args.cpus
+        self.build_constant_paths()
+
 
     @classmethod
     def build_env(cls, args):
