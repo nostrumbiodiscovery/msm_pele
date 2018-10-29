@@ -23,7 +23,10 @@ try:
     basestring
 except NameError:
     basestring = str
-
+try:
+    import subprocess32
+except ImportError:
+    import subprocess
 
 class SimulationParameters:
     def __init__(self):
@@ -257,7 +260,7 @@ class PeleSimulation(SimulationRunner):
         PDBinitial.initialise(initialStruct, resname=resname)
         return repr(PDBinitial.getCOM())
 
-    def runSimulation(self, runningControlFile=""):
+    def runSimulation(self, runningControlFile="", limitTime=None):
         """
             Run a short PELE simulation
 
@@ -273,11 +276,20 @@ class PeleSimulation(SimulationRunner):
         toRun = " ".join(toRun)
         print(toRun)
         startTime = time.time()
-        proc = subprocess.Popen(toRun, stdout=subprocess.PIPE, shell=True, universal_newlines=True)
-        (out, err) = proc.communicate()
-        print(out)
-        if err:
-            print(err)
+	if limitTime:
+		try:
+			print("AA {}".format(limitTime))
+        		proc = subprocess32.Popen(toRun, stdout=subprocess.PIPE,  shell=True,  universal_newlines=True)
+        		(out, err) = proc.communicate(timeout=limitTime)
+		except subprocess32.TimeoutExpired:
+			print("killing")
+			proc.kill()
+	else:		
+        	proc = subprocess.Popen(toRun, stdout=subprocess.PIPE, shell=True, universal_newlines=True)
+        	(out, err) = proc.communicate()
+        	print(out)
+        	if err:
+            		print(err)
 
         endTime = time.time()
         print("PELE took %.2f sec" % (endTime - startTime))
@@ -476,7 +488,7 @@ class PeleSimulation(SimulationRunner):
         data = data[:nPoints]
         n_clusters = min(self.parameters.numberEquilibrationStructures, data.shape[0])
         kmeans = KMeans(n_clusters=n_clusters).fit(data[:, 3:])
-        print("Clustered equilibration output into %d clusters!" % self.parameters.numberEquilibrationStructures)
+        print("Clustered equilibration output into %d clusters!" % n_clusters)
         clustersInfo = {x: {"structure": None, "minDist": 1e6} for x in range(self.parameters.numberEquilibrationStructures)}
         for conf, cluster in zip(data, kmeans.labels_):
             dist = np.linalg.norm(kmeans.cluster_centers_[cluster]-conf[3:])

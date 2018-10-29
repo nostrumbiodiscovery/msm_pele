@@ -31,7 +31,7 @@ elif "mn.bsc" in machine:
 elif "bsccv" in machine:
     SCHRODINGER = "/data2/bsc72/SCHRODINGER_ACADEMIC"
     PELE = "/data/EAPM/PELE/PELE++/life/rev12489"
-    PELE_BIN = "/data/EAPM/PELE/PELE++/life/rev1248/bin/PELE-1.5_mpi"
+    PELE_BIN = "/data/EAPM/PELE/PELE++/life/rev12489/bin/PELE-1.5_mpi"
     MPIRUN = "/data2/apps/OPENMPI/1.6.1/bin"
     #LICENSE = "/gpfs/projects/bsc72/PELE++/license"
     MMSHARE = None
@@ -45,14 +45,12 @@ else:
     SCHRODINGER = "/sNow/easybuild/centos/7.4.1708/Skylake/software/schrodinger2017-4/"
     PELE = "/sNow/easybuild/centos/7.4.1708/Skylake/software/PELE/1.5.0.2524/"
     PELE_BIN = "/home/dsoler/cleanPELE_rev/build_gnu/Pele_mpi"
-    #MPIRUN = "/sNow/easybuild/centos/7.4.1708/Skylake/software/OpenMPI/1.8.4-GCC-4.9.2/bin"
-    MPIRUN = "/sNow/easybuild/centos/7.4.1708/Skylake/software/OpenMPI/2.1.2-GCC-6.4.0-2.28/bin"
+    MPIRUN = "/sNow/easybuild/centos/7.4.1708/Skylake/software/OpenMPI/2.1.2-GCC-6.4.0-2.28/bin/"
     LICENSE = "/sNow/easybuild/centos/7.4.1708/Skylake/software/PELE/licenses/"
     MMSHARE = None
     # Provisional workaround until best_struct.py is fixed
     ACCEPTED_STEPS_NAME = "numberOfAcceptedPeleSteps"
     CRITERIA = "sasaLig"
-
 
 
 ############################
@@ -74,10 +72,10 @@ EQ_STEPS = 50
 GRIDRES = '10.0'
 
 # TEMPLATE KEYWORDS
-ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "SEED"]
+ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "SEED", "STEPS"]
 EX_ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "EQ_STEPS", "SEED"]
-EX_PELE_KEYWORDS = ["NATIVE", "FORCEFIELD", "CHAIN", "CONSTRAINTS", "CPUS", "LICENSES"]
-PELE_KEYWORDS = ["BOX_CENTER", "BOX_RADIUS", "SASA_min", "SASA_max"]
+EX_PELE_KEYWORDS = ["NATIVE", "FORCEFIELD", "CHAIN", "CONSTRAINTS", "CPUS", "LICENSES", "LOGFILE"]
+PELE_KEYWORDS = ["BOX_CENTER", "BOX_RADIUS", "SASA_min", "SASA_max", "LOGFILE"]
 NATIVE = '''
                         {{
 
@@ -123,6 +121,14 @@ FILES_SP = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates
 
 FILES_XP = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_XP.conf"),
                  os.path.join(DIR, "Templates/adaptive_exit.conf"), os.path.join(DIR, "Templates/adaptive_long.conf"),
+                 os.path.join(DIR, "Templates/pele_exit.conf")]
+
+FILES_XP2 = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_XP2.conf"),
+                 os.path.join(DIR, "Templates/adaptive_exit.conf"), os.path.join(DIR, "Templates/adaptive_long.conf"),
+                os.path.join(DIR, "Templates/pele_exit.conf")]
+
+FILES_TEST_XP2 = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_XP2.conf"),
+                 os.path.join(DIR, "Templates/adaptive_exit_test.conf"), os.path.join(DIR, "Templates/adaptive_long_test.conf"),
                  os.path.join(DIR, "Templates/pele_exit.conf")]
 
 FILES_TEST = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_SP.conf"),

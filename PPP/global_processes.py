@@ -198,7 +198,8 @@ def FindInitialAndFinalResidues(structure):
 
 
 def PDBwriter(output_file_name, structure, make_unique, residues2remove, no_ter_mkar_for_gaps, no_proteic_ligand=None,
-              gaps={}, no_gaps={}):
+              gaps={}, no_gaps={}, mid_chain_nonstd_residue=[]):
+    supported_aminoacids.extend(mid_chain_nonstd_residue)
     if '.pdb' not in output_file_name:
         output_file_name += '.pdb'
     outfile = open(output_file_name, 'w')
@@ -305,6 +306,7 @@ def PDBwriter(output_file_name, structure, make_unique, residues2remove, no_ter_
                                              resname, chain_id, resnum, insertion_code, x, y,
                                              z, occupancy, b_factor, segment,
                                              element, charge)
+                print(pdbstring)
                 outfile.write(pdbstring)
                 serial += 1
             if ter:

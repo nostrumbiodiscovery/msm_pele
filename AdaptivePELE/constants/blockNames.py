@@ -115,6 +115,7 @@ class SimulationParams:
     destination = "destination"
     origin = "origin"
     seed = "seed"
+    time = "time"
     peleSteps = "peleSteps"
     iterations = "iterations"
     exitCondition = "exitCondition"

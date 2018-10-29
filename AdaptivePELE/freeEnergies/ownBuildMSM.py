@@ -41,12 +41,7 @@ def main(control_file):
 
     # parameters
     trajectoryFolder, trajectoryBasename, numClusters, stride, lagtimes, _, _, numberOfITS, _, _, lagtime, clusterCountsThreshold = readParams(control_file)
-
     # program
-
-    print(numClusters, trajectoryFolder, trajectoryBasename)
-    trajectoryBasename = os.path.join("rawData", trajectoryBasename)
-    print(trajectoryBasename)
     clusteringObject = cluster.Cluster(numClusters, trajectoryFolder, trajectoryBasename, alwaysCluster=False, stride=stride)
     clusteringObject.clusterTrajectories()
     clusteringObject.eliminateLowPopulatedClusters(clusterCountsThreshold)

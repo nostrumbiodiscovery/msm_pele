@@ -19,23 +19,40 @@ class EnviroBuilder(object):
         self.forcefield = args.forcefield
         self.residue = args.residue
         self.templates = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), "PeleTemplates"))
-        self.cpus = args.cpus = args.cpus if not args.test else 4 
         self.restart = args.restart
         self.native = args.native
         self.chain = args.chain
-        self.mae_lig = args.mae_lig
+        self.mae_lig = os.path.abspath(args.mae_lig) if args.mae_lig else None
         self.clusters = args.clust = args.clust if not args.test else 2
         self.test = args.test
         self.folder = args.folder
         self.pdb = args.pdb
+	self.nonstandard = args.nonstandard
+        self.lagtime = 1 if args.test else args.lagtime
+	self.lagtimes = None if args.test else [50, 100, 200, 500]
+        self.steps = args.steps if not self.test else 1
+        self.msm_clust = 2 if args.test else args.msm_clust
+	self.log = '"simulationLogPath" : "$OUTPUT_PATH/logFile.txt",' if args.log else ""
+	self.renumber = args.nonrenum
+        if args.test:
+            self.cpus = args.cpus = 4
+        elif args.restart == "analise":
+            self.cpus = args.cpus = 1
+        else:
+            self.cpus = args.cpus
         self.build_constant_paths()
+
 
     @classmethod
     def build_env(cls, args):
-        if args.test:
+        if args.test and not args.precision2:
             env = cls(cs.FOLDERS, cs.FILES_TEST, args)
+	elif args.test and args.precision2:
+            env = cls(cs.FOLDERS, cs.FILES_TEST_XP2, args)
         elif args.precision:
             env = cls(cs.FOLDERS, cs.FILES_XP, args)
+        elif args.precision2:
+            env = cls(cs.FOLDERS, cs.FILES_XP2, args)
         else:
             env = cls(cs.FOLDERS, cs.FILES_SP, args)
         env.create()
@@ -61,9 +78,9 @@ class EnviroBuilder(object):
             self.pele_dir = os.path.abspath(self.folder)
 
         if self.mae_lig:
-            self.system_fix = os.path.join(self.pele_dir, "{}_complex_processed.pdb".format(os.path.abspath(os.path.splitext(self.system)[0])))
+            self.system_fix = os.path.join(self.pele_dir, "{}_complex_processed.pdb".format(os.path.splitext(os.path.basename(self.system))[0]))
         else:
-            self.system_fix = os.path.join(self.pele_dir, "{}_processed.pdb".format(os.path.abspath(os.path.splitext(self.system)[0])))
+            self.system_fix = os.path.join(self.pele_dir, "{}_processed.pdb".format(os.path.splitext(os.path.basename(self.system))[0]))
 
         self.adap_ex_input = os.path.join(self.pele_dir, os.path.basename(self.system_fix))
         self.adap_ex_output = os.path.join(self.pele_dir, "output_adaptive_exit")
