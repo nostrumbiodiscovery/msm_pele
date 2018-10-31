@@ -56,7 +56,8 @@ def split_by_sasa(centers_info, topology=None):
         sasas[cluster_num] = sasa
     sasa_max, sasa_int, sasa_min = sasa_classifier(sasas)
     print("Sasa magnitude has been classified in the next clusters: Min: {}, Int: {}, Max: {}".format(sasa_max, sasa_int, sasa_min))
-    return update_cluster(centers_info, sasa_max, sasa_int, sasa_min)
+    clusters = update_cluster(centers_info, sasa_max, sasa_int, sasa_min)
+    return {i: value for i, (key, value) in enumerate(clusters.iteritems())}
 
 def get_sasa(epoch_num, traj_num, snap_num):
     report = os.path.join(str(epoch_num), "report_{}".format(traj_num))
@@ -84,27 +85,40 @@ def sasa_classifier(sasas):
     
 def update_cluster(centers_info, sasa_max,sasa_int, sasa_min):
     total_of_clusters = len(centers_info) / 2
+    extra_clust = len(centers_info)
     number_sasa_min_clust = round(total_of_clusters * 0.60)
     number_sasa_int_clust = round(total_of_clusters * 0.30)
-    numer_sasa_max_clust = total_of_clusters - number_sasa_min_clust - number_sasa_int_clust
+    number_sasa_max_clust = total_of_clusters - number_sasa_min_clust - number_sasa_int_clust
 
     chosen_clusters = {}
-    sasa_max = take(numer_sasa_max_clust, sasa_max.iteritems())
+    sasa_max = take(number_sasa_max_clust, sasa_max.iteritems())
     sasa_int = take(number_sasa_int_clust, sasa_int.iteritems())
     sasa_min = take(number_sasa_min_clust, sasa_min.iteritems())
 
     chosen_clusters.update(sasa_max)
+    if len(chosen_clusters) != number_sasa_max_clust:
+        chosen_clusters, centers_info, extra_clust = repite_clusters(centers_info, chosen_clusters, sasa_min, number_sasa_max_clust-len(chosen_clusters), extra_clust)
+
     chosen_clusters.update(sasa_int)
+    if len(chosen_clusters) != (number_sasa_max_clust+number_sasa_int_clust):
+        chosen_clusters, centers_info, extra_clust = repite_clusters(centers_info, chosen_clusters, sasa_min, (number_sasa_max_clust+number_sasa_int_clust)-len(chosen_clusters), extra_clust)
+
     chosen_clusters.update(sasa_min)
-    print(chosen_clusters.keys())
-    print(centers_info)
+    if len(chosen_clusters) != (total_of_clusters):
+        chosen_clusters, centers_info, extra_clust = repite_clusters(centers_info, chosen_clusters, sasa_min, total_of_clusters-len(chosen_clusters), extra_clust)
+
     for cluster_num in centers_info.copy():
         for chosen_cluster_number in chosen_clusters.iteritems():
             if cluster_num not in list(chosen_clusters.keys()):
                 centers_info.pop(cluster_num, None)
-    print(total_of_clusters)
-    print(centers_info)
     return centers_info
+
+def repite_clusters(centers_info, chosen_clusters, sasa_min, limit_clusters, extra_clust):
+    for i in range(limit_clusters):
+        chosen_clusters[extra_clust] = sorted(sasa_min, key=lambda x: x[1])[i][1]
+        centers_info[extra_clust] = centers_info[sorted(sasa_min, key=lambda x: x[1])[i][0]]
+        extra_clust +=1
+    return chosen_clusters, centers_info, extra_clust
 
 def take(n, iterable):
     "Return first n items of the iterable as a list"
@@ -132,13 +146,14 @@ def get_centers_info(trajectoryFolder, trajectoryBasename, num_clusters, cluster
 
 
 def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=None):
-    extractCoords.main(lig_resname=ligand_resname, non_Repeat=True, atom_Ids=atom_ids, nProcessors=cpus, parallelize=False, topology=topology)
+    #extractCoords.main(lig_resname=ligand_resname, non_Repeat=True, atom_Ids=atom_ids, nProcessors=cpus, parallelize=False, topology=topology)
     trajectoryFolder = "allTrajs"
     trajectoryBasename = "traj*"
     stride = 1
     clusterCountsThreshold = 0
     folders = utilities.get_epoch_folders(".")
     folders.sort(key=int)
+    original_clust = num_clusters
     num_clusters *= 2
     clusteringObject = cluster.Cluster(num_clusters, trajectoryFolder,
                                        trajectoryBasename, alwaysCluster=False,
@@ -155,7 +170,7 @@ def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=N
             os.makedirs(outputFolder)
     else:
         outputFolder = ""
-    writePDB(COMArray, outputFolder+"clusters_%d_KMeans_allSnapshots.pdb" % num_clusters)
+    writePDB(COMArray, outputFolder+"clusters_%d_KMeans_allSnapshots.pdb" % original_clust)
     writeInitialStructures(centersInfo, outputFolder+"initial_%d.pdb", topology=topology)
 
 if __name__ == "__main__":
