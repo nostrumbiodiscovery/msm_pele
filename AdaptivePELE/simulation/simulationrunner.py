@@ -24,7 +24,7 @@ try:
 except NameError:
     basestring = str
 try:
-    import subprocess32
+    import subprocess32 as subprocess
 except ImportError:
     import subprocess
 
@@ -278,8 +278,7 @@ class PeleSimulation(SimulationRunner):
         startTime = time.time()
 	if limitTime:
 		try:
-			print("AA {}".format(limitTime))
-        		proc = subprocess32.Popen(toRun, stdout=subprocess.PIPE,  shell=True,  universal_newlines=True)
+        		proc = subprocess.Popen(toRun, stdout=subprocess.PIPE,  shell=True,  universal_newlines=True)
         		(out, err) = proc.communicate(timeout=limitTime)
 		except subprocess32.TimeoutExpired:
 			print("killing")
@@ -289,7 +288,7 @@ class PeleSimulation(SimulationRunner):
         	(out, err) = proc.communicate()
         	print(out)
         	if err:
-            		print(err)
+            	    print(err)
 
         endTime = time.time()
         print("PELE took %.2f sec" % (endTime - startTime))
