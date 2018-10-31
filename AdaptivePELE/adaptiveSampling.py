@@ -566,8 +566,8 @@ def main(jsonParams, clusteringHook=None, limitTime=None):
 
     outputPathConstants = constants.OutputPathConstants(outputPath)
 
-    #if not debug:
-        #atexit.register(utilities.cleanup, outputPathConstants.tmpFolder)
+    if not debug:
+        atexit.register(utilities.cleanup, outputPathConstants.tmpFolder)
 
     utilities.makeFolder(outputPath)
     utilities.makeFolder(outputPathConstants.tmpFolder)
