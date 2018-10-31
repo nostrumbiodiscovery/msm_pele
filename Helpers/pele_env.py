@@ -34,6 +34,7 @@ class EnviroBuilder(object):
         self.msm_clust = 2 if args.test else args.msm_clust
 	self.log = '"simulationLogPath" : "$OUTPUT_PATH/logFile.txt",' if args.log else ""
 	self.renumber = args.nonrenum
+        self.reject = '"savingRejectedSteps": "true",' if args.time else None
         if args.test:
             self.cpus = args.cpus = 4
         elif args.restart == "analise":
