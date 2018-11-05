@@ -126,7 +126,7 @@ if __name__ == "__main__":
     parser.add_argument("--pdb", action='store_true',  help="Use pdb files as output")
     parser.add_argument("--nonstandard", nargs="+",  help="Mid Chain non standard residues to be treated as ATOM not HETATOM", default = [])
     parser.add_argument("--lagtime", type=int,  help="MSM Lagtime to use", default=100)
-    parser.add_argument("--steps", type=int,  help="MSM Steps to use", default=10000)
+    parser.add_argument("--steps", type=int,  help="MSM Steps to use", default=1000)
     parser.add_argument("--msm_clust", type=int,  help="Number of clusters created to converge MSM", default=200)
     parser.add_argument("--time", type=int,  help="Limit of time to run pele exploration", default=None)
     parser.add_argument("--log", action='store_true',  help="Print LogFiles when running PELE")
