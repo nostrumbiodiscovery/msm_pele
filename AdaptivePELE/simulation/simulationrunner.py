@@ -278,8 +278,7 @@ class PeleSimulation(SimulationRunner):
         startTime = time.time()
 	if limitTime:
 		try:
-			print("AA {}".format(limitTime))
-        		proc = subprocess32.Popen(toRun, stdout=subprocess.PIPE,  shell=True,  universal_newlines=True)
+        		proc = subprocess.Popen(toRun, stdout=subprocess.PIPE,  shell=True,  universal_newlines=True)
         		(out, err) = proc.communicate(timeout=limitTime)
 		except subprocess32.TimeoutExpired:
 			print("killing")
