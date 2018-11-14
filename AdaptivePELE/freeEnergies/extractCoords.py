@@ -419,7 +419,7 @@ def main(folder_name=".", atom_Ids="", lig_resname="", numtotalSteps=0, enforceS
         ligand_trajs_folder = os.path.join(pathFolder, constants.ligandTrajectoryFolder)
         if writeLigandTrajectory and not os.path.exists(ligand_trajs_folder):
             os.makedirs(ligand_trajs_folder)
-	if not glob.glob(constants.extractedTrajectoryFolder % pathFolder):
+        if not glob.glob(constants.extractedTrajectoryFolder % pathFolder):
             print("Extracting coords from folder %s" % folder_it)
             writeFilenamesExtractedCoordinates(pathFolder, lig_resname, atom_Ids, writeLigandTrajectory, constants, protein_CA, sidechains, pool=pool, topology=topology)
         if not non_Repeat and not glob.glob(constants.outputTrajectoryFolder % pathFolder):

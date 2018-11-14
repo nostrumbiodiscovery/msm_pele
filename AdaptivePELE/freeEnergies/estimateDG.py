@@ -120,10 +120,10 @@ def copyWorkingTrajectories(fileWildcard, length=None, ntrajs=None, bootstrap=Tr
         writenFiles.append(dst)
         traj = np.loadtxt(trajFile)
         if length is None:
-	    traj_len = len(traj)
+            traj_len = len(traj)
             #traj_len = length =len(traj)  # so that later eveything is copied
-	else:
-	    traj_len = length
+        else:
+            traj_len = length
         try:
             trimmedTraj = traj[skipFirstSteps:traj_len+1, :]
             if len(trimmedTraj) > 0:

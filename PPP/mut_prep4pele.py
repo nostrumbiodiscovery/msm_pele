@@ -34,39 +34,39 @@ def main(input_pdb, pele_dir, output_pdb=["",], no_gaps_ter=False, charge_termin
     try:
         initial_structure = parsePDB(input_pdb)
     except IOError:
-        print "The file '{}' isn't a valid file\nCheck that it does exist and try again.".format(input_pdb)
+        print("The file '{}' isn't a valid file\nCheck that it does exist and try again.".format(input_pdb))
         sys.exit()
     initial_residue, final_residue = FindInitialAndFinalResidues(initial_structure)
     # ff_parameters = ReadForceFieldParameters(force_field)
 
-    print "* Checking for gaps."
+    print("* Checking for gaps.")
     gaps, not_gaps = CheckforGaps(initial_structure)
     if gaps is None and not_gaps is None:
-        print "WARNING: Problems when checking for gaps, so don't trust the existence of gaps."
+        print("WARNING: Problems when checking for gaps, so don't trust the existence of gaps.")
         gaps, not_gaps = {}, {}
-    print "* Checking for insertion codes."
+    print("* Checking for insertion codes.")
     insertion_codes = [icode for icode in initial_structure.getIcodes() if icode]
     if insertion_codes and renumber:
-        print " *The structure will be renumbered starting from 1 for each chain."
+        print(" *The structure will be renumbered starting from 1 for each chain.")
         structure2use = RenumberStructure(initial_structure, gaps, not_gaps)
     else:
         structure2use = initial_structure
-    print "* Checking and Fixing the Residues Names:"
+    print("* Checking and Fixing the Residues Names:")
     structure2use = FixStructureResnames(structure2use, make_unique)
-    print "* Checking and fixing the Atoms Names:"
+    print("* Checking and fixing the Atoms Names:")
     structure2use = FixAtomNames(structure2use, gaps, not_gaps)
-    print "* Checking the structure for missing atoms:"
+    print("* Checking the structure for missing atoms:")
     residues2fix, residues2remove, metals2coordinate, residues_without_template = CheckStructure(structure2use, gaps,
                                                                                                  not_gaps,
                                                                                                  charge_terminals,
                                                                                                  remove_terminal_missing)
     if residues2fix:
-        print '* Placing the missing atoms and removing the extra atoms:'
+        print('* Placing the missing atoms and removing the extra atoms:')
         structure2use = FixStructure(structure2use, residues2fix, gaps, charge_terminals)
-    print mutation
+    print(mutation)
 
     if not mutation:
-        print 'Writing the structure to {}'.format(output_pdb[0])
+        print('Writing the structure to {}'.format(output_pdb[0]))
         if make_unique:
             ligand_chain = structure2use.select("chain {}".format(make_unique))
             if ligand_chain:
@@ -97,8 +97,8 @@ def main(input_pdb, pele_dir, output_pdb=["",], no_gaps_ter=False, charge_termin
         clashes = []
         mutated_structure = None
         for mutation, output_file in zip(mutation, output_pdb):
-            print '* Checking the mutation:'
-            print " Mutation: {0[ini_resname]} {0[chain]} {0[resnum]} {0[fin_resname]}".format(mutation)
+            print('* Checking the mutation:')
+            print(" Mutation: {0[ini_resname]} {0[chain]} {0[resnum]} {0[fin_resname]}".format(mutation))
             correct_mutation = CheckMutation(structure2use, mutation)
             if not correct_mutation:
                 exit_message = "The mutation was incorrect, check your parameters.\n" \
@@ -106,13 +106,13 @@ def main(input_pdb, pele_dir, output_pdb=["",], no_gaps_ter=False, charge_termin
                 PDBwriter(output_file, WritingAtomNames(structure2use), make_unique, gaps, no_gaps_ter, not_gaps)
                 continue
             else:
-                print "Output_file name: {0}".format(output_file)
+                print("Output_file name: {0}".format(output_file))
                 mutated_structure, zmatrix = Mutate(structure2use, mutation)
                 if not mutant_multiple:
                     if mutation[0]['fin_resname'] in ["ALA", "GLY"]:
-                        print "The ALA and the GLY don't have any rotamer to try."
+                        print("The ALA and the GLY don't have any rotamer to try.")
                     else:
-                        print "Checking Clashes:"
+                        print("Checking Clashes:")
                         try:
                             clashes = CheckClashes(mutated_structure, mutation, zmatrix,
                                                    initial_residue, final_residue)
@@ -120,7 +120,7 @@ def main(input_pdb, pele_dir, output_pdb=["",], no_gaps_ter=False, charge_termin
                             pass
                         else:
                             if not clashes:
-                                print "Structure without clashes."
+                                print("Structure without clashes.")
                             else:
                                 mutated_structure = SolveClashes(mutated_structure, clashes,
                                                                  mutation, zmatrix,
@@ -129,7 +129,7 @@ def main(input_pdb, pele_dir, output_pdb=["",], no_gaps_ter=False, charge_termin
                     PDBwriter(output_file, WritingAtomNames(mutated_structure), make_unique, gaps, no_gaps_ter,
                               not_gaps)
                 else:
-                    print "Multiple mutations at the same time are still under development."
+                    print("Multiple mutations at the same time are still under development.")
                     structure2use = mutated_structure
         if mutant_multiple and mutated_structure is not None:
             PDBwriter(output_pdb, WritingAtomNames(mutated_structure), gaps, not_gaps, no_gaps_ter)

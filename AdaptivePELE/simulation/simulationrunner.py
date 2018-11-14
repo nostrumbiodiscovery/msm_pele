@@ -276,19 +276,19 @@ class PeleSimulation(SimulationRunner):
         toRun = " ".join(toRun)
         print(toRun)
         startTime = time.time()
-	if limitTime:
-		try:
-        		proc = subprocess.Popen(toRun, stdout=subprocess.PIPE,  shell=True,  universal_newlines=True)
-        		(out, err) = proc.communicate(timeout=limitTime)
-		except subprocess32.TimeoutExpired:
-			print("killing")
-			proc.kill()
-	else:		
-        	proc = subprocess.Popen(toRun, stdout=subprocess.PIPE, shell=True, universal_newlines=True)
-        	(out, err) = proc.communicate()
-        	print(out)
-        	if err:
-            	    print(err)
+        if limitTime:
+            try:
+                proc = subprocess.Popen(toRun, stdout=subprocess.PIPE,  shell=True,  universal_newlines=True)
+                (out, err) = proc.communicate(timeout=limitTime)
+            except subprocess32.TimeoutExpired:
+                print("killing")
+                proc.kill()
+        else:		
+            proc = subprocess.Popen(toRun, stdout=subprocess.PIPE, shell=True, universal_newlines=True)
+            (out, err) = proc.communicate()
+            print(out)
+            if err:
+                print(err)
 
         endTime = time.time()
         print("PELE took %.2f sec" % (endTime - startTime))

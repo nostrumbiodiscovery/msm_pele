@@ -22,11 +22,11 @@ class SimulationBuilder(template_builder.TemplateBuilder):
     def run(self, hook=False, limitTime=False):
         with helpers.cd(os.path.dirname(self.file)):
             if hook:
-		ad.main(self.file, clusteringHook=self.interactive_clustering)
-	    elif limitTime:
-		ad.main(self.file, limitTime=limitTime)
+                ad.main(self.file, clusteringHook=self.interactive_clustering)
+            elif limitTime:
+                ad.main(self.file, limitTime=limitTime)
             else:
-		ad.main(self.file)
+                ad.main(self.file)
 
     def interactive_clustering(self, cluster_object, paths, simulationRunner, epoch_number):
         initial_rmsd_cluster_values = cluster_object.thresholdCalculator.values
