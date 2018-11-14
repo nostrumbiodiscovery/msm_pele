@@ -2,7 +2,7 @@ import matplotlib
 matplotlib.use('Agg')
 import os
 import MSM_PELE.Helpers.check_env_var as env
-env.check_dependencies()
+#env.check_dependencies()
 import shutil
 import argparse
 import MSM_PELE.constants as cs
@@ -37,7 +37,7 @@ def run(args):
 
         # Parametrize Ligand
         env.logger.info("Creating template for residue {}".format(args.residue))
-	with hp.cd(env.pele_dir):
+        with hp.cd(env.pele_dir):
         	plop.parametrize_miss_residues(args, env, syst)
         env.logger.info("Template {}z created".format(args.residue.lower()))
 
@@ -45,7 +45,7 @@ def run(args):
         for res, __, _ in missing_residues:
             if res != args.residue:
                 env.logger.info("Creating template for residue {}".format(res))
-		with hp.cd(env.pele_dir):
+                with hp.cd(env.pele_dir):
                 	mr.create_template(args, env)
                 env.logger.info("Template {}z created".format(res))
 

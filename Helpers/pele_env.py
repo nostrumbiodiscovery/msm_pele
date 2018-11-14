@@ -27,13 +27,13 @@ class EnviroBuilder(object):
         self.test = args.test
         self.folder = args.folder
         self.pdb = args.pdb
-	self.nonstandard = args.nonstandard
+        self.nonstandard = args.nonstandard
         self.lagtime = 1 if args.test else args.lagtime
-	self.lagtimes = None if args.test else [50, 100, 200, 500]
+        self.lagtimes = None if args.test else [50, 100, 200, 500]
         self.steps = args.steps if not self.test else 1
         self.msm_clust = 2 if args.test else args.msm_clust
-	self.log = '"simulationLogPath" : "$OUTPUT_PATH/logFile.txt",' if args.log else ""
-	self.renumber = args.nonrenum
+        self.log = '"simulationLogPath" : "$OUTPUT_PATH/logFile.txt",' if args.log else ""
+        self.renumber = args.nonrenum
         if args.test:
             self.cpus = args.cpus = 4
         elif args.restart == "analise":
@@ -47,7 +47,7 @@ class EnviroBuilder(object):
     def build_env(cls, args):
         if args.test and not args.precision2:
             env = cls(cs.FOLDERS, cs.FILES_TEST, args)
-	elif args.test and args.precision2:
+        elif args.test and args.precision2:
             env = cls(cs.FOLDERS, cs.FILES_TEST_XP2, args)
         elif args.precision:
             env = cls(cs.FOLDERS, cs.FILES_XP, args)
@@ -157,9 +157,9 @@ class EnviroBuilder(object):
         self.logger.setLevel(logging.INFO)
         formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(message)s")
         if self.restart == "all":
-			file_handler = logging.FileHandler(log_name, mode='w')
+            file_handler = logging.FileHandler(log_name, mode='w')
         else:
-			file_handler = logging.FileHandler(log_name, mode='a')
+            file_handler = logging.FileHandler(log_name, mode='a')
         file_handler.setFormatter(formatter)
         self.logger.addHandler(file_handler)
 
@@ -183,37 +183,37 @@ def is_repited(pele_dir):
     else:
         i = 1
     if os.path.isdir(pele_dir):
-		new_pele_dir = "{}_Pele_{}".format(original_dir, i)
-		new_pele_dir = is_repited(new_pele_dir)
-		return new_pele_dir
+        new_pele_dir = "{}_Pele_{}".format(original_dir, i)
+        new_pele_dir = is_repited(new_pele_dir)
+        return new_pele_dir
     else:
-		return pele_dir
+        return pele_dir
 
 def is_last(pele_dir):
 
     original_dir = None
     split_dir = pele_dir.split("_")
     for chunk in split_dir:
-		if chunk != "Pele":
-			if original_dir:
- 				original_dir = "{}_{}".format(original_dir, chunk)
-			else:
-				original_dir = chunk
-		else:
-			break
+        if chunk != "Pele":
+            if original_dir:
+                original_dir = "{}_{}".format(original_dir, chunk)
+            else:
+                original_dir = chunk
+        else:
+            break
     if split_dir[-1].isdigit():
         i = split_dir[-1]
         i = int(i) + 1 
     else:
-		i = 1 
+        i = 1 
 
     if os.path.isdir(pele_dir):
-            new_pele_dir = "{}_Pele_{}".format(original_dir, i)
-            if not os.path.isdir(new_pele_dir):
-                return pele_dir
-            else:
-			    new_pele_dir = is_last(new_pele_dir)
-			    return new_pele_dir
+        new_pele_dir = "{}_Pele_{}".format(original_dir, i)
+        if not os.path.isdir(new_pele_dir):
+            return pele_dir
+        else:
+            new_pele_dir = is_last(new_pele_dir)
+            return new_pele_dir
     else:
         return pele_dir
 

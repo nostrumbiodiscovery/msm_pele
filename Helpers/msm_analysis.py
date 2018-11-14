@@ -5,6 +5,7 @@ from MSM_PELE.AdaptivePELE.freeEnergies import getRepresentativeStructures as ge
 import MSM_PELE.Helpers.tica as td
 import MSM_PELE.Helpers.helpers as hp
 import MSM_PELE.Helpers.plotMSMAdvancedInfo as pt
+import MSM_PELE.Helpers.MSM_report as rp
 import shutil
 import numpy as np
 
@@ -27,8 +28,10 @@ def analyse_results(env, args, runTica=True):
     	run_msm(env, args, runTica)
     if args.restart in ["all", "adaptive", "pele", "msm", "analyse"]:
         # In case of more than one simulation, i.e. MSM_0, MSM_1, etc
-        for i, folder in enumerate(glob.glob(os.path.join(env.adap_l_output, "MSM_*"))):
-	    analyse_msm(i, env, folder)
+        #for i, folder in enumerate(glob.glob(os.path.join(env.adap_l_output, "MSM_*"))):
+            #analyse_msm(i, env, folder)
+        rp.report_MSM(env, os.path.join(env.adap_l_output, "MSM_{}".format(len(glob.glob(os.path.join(env.adap_l_output, "MSM_*")))-1)))
+
 
 def run_msm(env, args, runTica=True):
     with hp.cd(env.adap_l_output):
@@ -50,6 +53,7 @@ def analyse_msm(iteration, env, folder):
         except IndexError:
             pass
         pt.main(4, 1, 5, folder, True, True, True, None, None, env.system_fix, True, False, None, folder, env.residue)
+        
 
 def summerize(pele_path):
     results_file = os.path.join(pele_path, "results.txt")
