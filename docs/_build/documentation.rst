@@ -6,14 +6,14 @@ Documentation
    :maxdepth: 2
 
 
-Pipeline
----------
+Pipeline Arguments
+-------------------
 
 
 
   - **Protein Preparation for Pele**:
 
-    The input complex will be processed by PPP module checking  next features:
+    The input complex will be processed by the software checking  next features:
 
     - HIS/HIP/HID will be transform into PELE language.
 
@@ -23,7 +23,7 @@ Pipeline
 
     - Constraints will be applied on all metals and its coordinates.
 
-    - Missing sidechains will be added
+    - Partial missing sidechains will be added
 
     - Template residues and non standard aminoacids will be checked
 
@@ -33,7 +33,7 @@ Pipeline
 
   - **Adaptive Exit**:
 
-    An adaptive PELE exit simulation will be performed over the docked complex, until 5 trajectories has reached a SASA value bigger than 0.95. Then, the exit path will be clusterize using KMeans algorithm and this will serve as input on the next PELE explortion simulation.
+    An adaptive PELE exit simulation will be performed over the docked complex until 5 trajectories reach a SASA bigger than 0.95. Then, the exit path will be clusterize using KMeans algorithm and this will serve as input on the next PELE explortion simulation.
   
   .. figure:: adaptive_out.png
     :scale: 80%
@@ -61,93 +61,100 @@ Pipeline
 
   - **MSM Analysis**:
   
-  Finally, transition matrix will be computed and diagonilize for several
+  Finally, the transition matrix will be computed and diagonilize for several
   subsets of the previous data. Using thermodinamic stadistic on the subset's
   eigenvectors, absolute free energies and its standard deviation can be
   stimated as well as system's markovianity.
 
 
-Arguments
-----------
 
-**Overall Arguments**:
+Restart
+--------
 
-  - **--restart** restart the simulation from [adaptive, pele, msm]:
 
-    + **adaptive**  flag will not performed PPP and lunch adaptive exit simulation with the already processed input pdb. 
-    + **pele** flag will create adaptive clusters if not done and start pele simulation.
-    + **msm** flag will cluster pele exploration simulation and performed MSM analysis.
+  - **- - restart** restart the simulation from [adaptive, pele, msm]:
+
+    + **adaptive**  flag will luch the exit simulation with the already processed input pdb. 
+    + **pele** flag will lunch a Monte Carlo simulation that will be later analyse via MSM.
+    + **msm** flag will  perform MSM analysis over the previous monte carlo simulation.
+    + **analyse** flag will perform the analysis of the MSM extracting representative structures
+        and PMF and probability plots.
   
-i.e.1. python -m MSM_PELE.main complex.pbd resname chain --restart adaptive
+i.e.0 python -m MSM_PELE.main complex.pbd resname chain --restart [adaptive, pele, msm, analyse]
 
-i.e.2 python -m MSM_PELE.main complex.pbd resname chain --restart pele
+i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --restart adaptive
 
-i.e.3 python -m MSM_PELE.main complex.pbd resname chain --restart msm
+i.e.2 python -m MSM_PELE.main complex.pbd LIG Z --restart pele
+
+i.e.3 python -m MSM_PELE.main complex.pbd LIG Z --restart msm
 
 
-**PPP**:
+Input Preparation
+-----------------
 
 - **--charge_ter** to charge all terminal resiues of the receptor.
- i.e. python -m MSM_PELE.main complex.pbd resname chain --charge_ter
+ i.e.0 python -m MSM_PELE.main complex.pbd resname chain --charge_ter
+ i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --charge_ter
 
 - **--gaps_ter** cap gaps or leave them as connected atoms.
-  i.e. python -m MSM_PELE.main complex.pbd resname chain --gaps_ter
+  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --gaps_ter
+  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --gaps_ter
 
 - **--forcefield** forcefield to use to describe the protein. Options:
-  [OPLS2005, Amber99sb]
-  i.e. python -m MSM_PELE.main complex.pbd resname chain --forcefield Amber99sb
+  i.e. python -m MSM_PELE.main complex.pbd resname chain --forcefield [OPLS2005 (default), Amber99sb]
+  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --forcefield OPLS2005
 
-**PlopRotTemp** :
+- **--core** Specify an atom from the ligand that will be use as center of a 
+  rigid core to identify flexible sidechains and rotamers
+  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --core atomnumber
+  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --core 1456
 
-- **--core** Specify an atom that will be used as a core for sidechain
-  identification
-  i.e. python -m MSM_PELE.main complex.pbd resname chain --core 2
+- **--mtor** Maximum number of rotamers per sidechain [defaut=4]
+  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --mtor number
+  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --mtor 3
 
-- **--mtor** Maximum number of rotamers per sidechain
-  i.e. python -m MSM_PELE.main complex.pbd resname chain --mtor 2
-
-- **--n** Maximum number of sidechains
-  i.e. python -m MSM_PELE.main complex.pbd resname chain --n 10
+- **--n** Maximum number of sidechains [default=None]
+  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --n number
+  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --n 10
 
 - **--gridres** Rotamers resolution. Every how many degrees the rotamers will
-  be moved in simulation.
-  i.e. python -m MSM_PELE.main complex.pbd resname chain --gridres 40
+  be moved in simulation. As bigger the faste the sofware while loosing exploration.
+  [default=10]
+  i.e. python -m MSM_PELE.main complex.pbd resname chain --gridres (degrees of rotation)
+  i.e. python -m MSM_PELE.main complex.pbd LIG Z --gridres 30
 
-**Adaptive Exit simulation**:
+Adaptive Exit simulation
+-------------------------
 
 - **--clust** number of clusters after adaptive exit simulation. It must always
-  be smaller than the number of cpu power.
-  i.e. python -m MSM_PELE.main complex.pbd resname chain --clust 70
+  be smaller than the number of cpu power. [default=40]
+  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --clust number_of_clusters
+  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --clust 60
 
-- **--cpus** number of cpus to use
-  i.e. python -m MSM_PELE.main complex.pbd resname chain --cpus 200
+- **--cpus** number of cpus to use [default=50]
+  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --cpus number_of_cpus
+  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z--cpus 128
 
-**PELE simulation**:
+Exploration
+-----------
 
-- **--confile** Use your one pele exploration configuration file
-  i.e. python -m MSM_PELE.main complex.pbd resname chain --confile
+- **--confile** Use your own pele exploration configuration file
+  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --confile
   /path/to/myconfile.conf
+  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --confile pele.conf
 
-- **--native** Use pdb snapshot to create an rmsd metric along pele simulation
-  i.e. python -m MSM_PELE.main complex.pbd resname chain --native
-  crystal_struct.pdb
-                                                parser.add_argument("--precision",
-                                                action='store_true', help="Use
-                                                a more agressive control file
-                                                to achieve better convergence")
-                                                115
-                                                parser.add_argument("--test",
-                                                action='store_true', help="Run
-                                                a fast MSM_PELE test")
-                                                116
-                                                parser.add_argument("--user_center",
-                                                "-c", nargs='+', type=float,
-                                                help='center of the box',
-                                                default=None)
-                                                117
-                                                parser.add_argument("--user_radius",
-                                                "-r", type=float,  help="Radius
-                                                of the box", default=None)
+- **precision** Use a more aggresive control file. Useful when dealing
+  with higly charged and exposed ligands. 
+  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --precision
 
-Code
-------
+- **test** Run short test after. Usefull after instalation.
+  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --test
+  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --test
+
+- **user_center** Define the center of the exploration box. Must be use together with 
+   user_radius.
+
+- **user_radius** Define the radiues of the box
+  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --user_center center_coords (A) --user_radius radius (A)
+  i.e.0 python -m MSM_PELE.main complex.pbd LIG Z --user_center 22.5 -46.67 2.1 --user_radius 20
+
