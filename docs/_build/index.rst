@@ -48,6 +48,11 @@ Documentation
 .. toctree::
    documentation
   
+Benchmark
+==========
+.. toctree::
+   benchmark
+
 Tutorial
 ========
 .. toctree::

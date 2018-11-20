@@ -27,6 +27,16 @@ Technical Features:
 - Schrodinger (2016/17/18) is needed.
 
 
+
+.. figure:: MSM.jpg
+    :scale: 80%
+    :align: center
+    :alt: Install need it plugin to visualize the Adaptive exit simulation
+
+    MSM analysis over a potential energy surface of a ligand-protein complex
+
+
+
 Installation
 ============
 .. toctree::
@@ -38,6 +48,11 @@ Documentation
 .. toctree::
    documentation
   
+Benchmark
+==========
+.. toctree::
+   benchmark
+
 Tutorial
 ========
 .. toctree::
