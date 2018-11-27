@@ -48,14 +48,14 @@ def writeInitialStructures(centers_info, filename_template, topology=None):
         else:
             splitTrajectory.main("", [trajectory, ], topology, [snap_num+1,],template=filename_template % cluster_num)
 
-def split_by_sasa(centers_info, topology=None):
+def split_by_sasa(centers_info, value1, value2, topology=None):
     sasas = {}
     for cluster_num in centers_info:
         epoch_num, traj_num, snap_num = map(int, centers_info[cluster_num]['structure'])
         sasa = get_sasa(epoch_num, traj_num, snap_num)
         sasas[cluster_num] = sasa
-    sasa_max, sasa_int, sasa_min = sasa_classifier(sasas)
-    print("Sasa magnitude has been classified in the next clusters: Min: {}, Int: {}, Max: {}".format(sasa_max, sasa_int, sasa_min))
+    sasa_max, sasa_int, sasa_min = sasa_classifier(sasas, value1, value2)
+    print("Sasa magnitude has been classified in the next clusters: Max: {}, Int: {}, Min: {}".format(sasa_max, sasa_int, sasa_min))
     clusters = update_cluster(centers_info, sasa_max, sasa_int, sasa_min)
     return {i: value for i, (key, value) in enumerate(clusters.iteritems())}
 
@@ -64,7 +64,7 @@ def get_sasa(epoch_num, traj_num, snap_num):
     report_data = pd.read_csv(report, sep='    ', engine='python')
     return report_data[cs.CRITERIA].values.tolist()[snap_num]
 
-def sasa_classifier(sasas):
+def sasa_classifier(sasas, value1, value2):
     sasas_max = {}
     sasas_int = {}
     sasas_min = {}
@@ -72,8 +72,16 @@ def sasa_classifier(sasas):
     sasa_values = [ value for key, value in sasas.iteritems() ]
     sasa_max = max(sasa_values)
     sasa_min = min(sasa_values)
-    sasa_threshold_min = (sasa_max - sasa_min) * 0.3 + sasa_min
-    sasa_threshold_max = (sasa_max - sasa_min) * 0.6 + sasa_min
+    print(value1, value2)
+    if value1:
+        sasa_threshold_min = value1
+    else:
+        sasa_threshold_min = (sasa_min + (sasa_max-sasa_min)*0.3)
+    if value2:
+        sasa_threshold_max = value2
+    else:
+        sasa_threshold_max = (sasa_min + (sasa_max -sasa_min)*0.6)
+
     for cluster_num, sasa in sasas.iteritems():
         if sasa > sasa_threshold_max:
             sasas_max[cluster_num] = sasa
@@ -86,9 +94,9 @@ def sasa_classifier(sasas):
 def update_cluster(centers_info, sasa_max,sasa_int, sasa_min):
     total_of_clusters = len(centers_info) / 2
     extra_clust = len(centers_info)
-    number_sasa_min_clust = round(total_of_clusters * 0.60)
-    number_sasa_int_clust = round(total_of_clusters * 0.30)
-    number_sasa_max_clust = total_of_clusters - number_sasa_min_clust - number_sasa_int_clust
+    number_sasa_min_clust = 10
+    number_sasa_int_clust = 20
+    number_sasa_max_clust = 10
 
     chosen_clusters = {}
     sasa_max = take(number_sasa_max_clust, sasa_max.iteritems())
@@ -97,11 +105,11 @@ def update_cluster(centers_info, sasa_max,sasa_int, sasa_min):
 
     chosen_clusters.update(sasa_max)
     if len(chosen_clusters) != number_sasa_max_clust:
-        chosen_clusters, centers_info, extra_clust = repite_clusters(centers_info, chosen_clusters, sasa_min, number_sasa_max_clust-len(chosen_clusters), extra_clust)
+        chosen_clusters, centers_info, extra_clust = repite_clusters(centers_info, chosen_clusters, sasa_max, number_sasa_max_clust-len(chosen_clusters), extra_clust)
 
     chosen_clusters.update(sasa_int)
     if len(chosen_clusters) != (number_sasa_max_clust+number_sasa_int_clust):
-        chosen_clusters, centers_info, extra_clust = repite_clusters(centers_info, chosen_clusters, sasa_min, (number_sasa_max_clust+number_sasa_int_clust)-len(chosen_clusters), extra_clust)
+        chosen_clusters, centers_info, extra_clust = repite_clusters(centers_info, chosen_clusters, sasa_int, (number_sasa_max_clust+number_sasa_int_clust)-len(chosen_clusters), extra_clust)
 
     chosen_clusters.update(sasa_min)
     if len(chosen_clusters) != (total_of_clusters):
@@ -115,8 +123,8 @@ def update_cluster(centers_info, sasa_max,sasa_int, sasa_min):
 
 def repite_clusters(centers_info, chosen_clusters, sasa_min, limit_clusters, extra_clust):
     for i in range(limit_clusters):
-        chosen_clusters[extra_clust] = sorted(sasa_min, key=lambda x: x[1])[i][1]
-        centers_info[extra_clust] = centers_info[sorted(sasa_min, key=lambda x: x[1])[i][0]]
+        chosen_clusters[extra_clust] = sorted(sasa_min, key=lambda x: x[1])[i%len(sasa_min)][1]
+        centers_info[extra_clust] = centers_info[sorted(sasa_min, key=lambda x: x[1])[i%len(sasa_min)][0]]
         extra_clust +=1
     return chosen_clusters, centers_info, extra_clust
 
@@ -145,9 +153,9 @@ def get_centers_info(trajectoryFolder, trajectoryBasename, num_clusters, cluster
     return centersInfo
 
 
-def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=None):
-    if not glob.glob("*/extractedCoordinates/coord_*"):
-        extractCoords.main(lig_resname=ligand_resname, non_Repeat=True, atom_Ids=atom_ids, nProcessors=cpus, parallelize=False, topology=topology)
+def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=None, value1=None, value2=None, sasa=True):
+
+    #Initialize contant variables
     trajectoryFolder = "allTrajs"
     trajectoryBasename = "traj*"
     stride = 1
@@ -155,7 +163,23 @@ def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=N
     folders = utilities.get_epoch_folders(".")
     folders.sort(key=int)
     original_clust = num_clusters
-    num_clusters *= 2
+    #Clusterize doble if we want to filter
+    #by SASA later
+    if sasa:
+        num_clusters *= 2
+
+    if output_folder is not None:
+        outputFolder = os.path.join(output_folder, "")
+        if not os.path.exists(outputFolder):
+            os.makedirs(outputFolder)
+    else:
+        outputFolder = ""
+
+    #Extract COM Coordinates from simulation
+    if not glob.glob("*/extractedCoordinates/coord_*"):
+        extractCoords.main(lig_resname=ligand_resname, non_Repeat=True, atom_Ids=atom_ids, nProcessors=cpus, parallelize=False, topology=topology)
+
+    #Cluster
     clusteringObject = cluster.Cluster(num_clusters, trajectoryFolder,
                                        trajectoryBasename, alwaysCluster=False,
                                        stride=stride)
@@ -163,16 +187,21 @@ def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=N
     clusteringObject.eliminateLowPopulatedClusters(clusterCountsThreshold)
     clusterCenters = clusteringObject.clusterCenters
     centersInfo = get_centers_info(trajectoryFolder, trajectoryBasename, num_clusters, clusterCenters)
-    centersInfo = split_by_sasa(centersInfo,  topology=topology)
+
+    #Get checkpoint file for restarts
     COMArray = [centersInfo[i]['center'] for i in centersInfo]
-    if output_folder is not None:
-        outputFolder = os.path.join(output_folder, "")
-        if not os.path.exists(outputFolder):
-            os.makedirs(outputFolder)
-    else:
-        outputFolder = ""
+    writePDB(COMArray, outputFolder+"exit_path.pdb")
+
+    #Split clusters by sasa
+    if sasa:
+        centersInfo = split_by_sasa(centersInfo,  value1, value2, topology=topology)
+        COMArray = [centersInfo[i]['center'] for i in centersInfo]
+
+    #Output results
     writePDB(COMArray, outputFolder+"clusters_%d_KMeans_allSnapshots.pdb" % original_clust)
     writeInitialStructures(centersInfo, outputFolder+"initial_%d.pdb", topology=topology)
+
+    return clusterCenters
 
 if __name__ == "__main__":
     n_clusters, lig_name, atom_id, output = parseArgs()
