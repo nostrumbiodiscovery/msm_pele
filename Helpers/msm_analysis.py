@@ -28,8 +28,8 @@ def analyse_results(env, args, runTica=True):
     	run_msm(env, args, runTica)
     if args.restart in ["all", "adaptive", "pele", "msm", "analyse"]:
         # In case of more than one simulation, i.e. MSM_0, MSM_1, etc
-        #for i, folder in enumerate(glob.glob(os.path.join(env.adap_l_output, "MSM_*"))):
-            #analyse_msm(i, env, folder)
+        for i, folder in enumerate(glob.glob(os.path.join(env.adap_l_output, "MSM_*"))):
+            analyse_msm(i, env, folder)
         rp.report_MSM(env, os.path.join(env.adap_l_output, "MSM_{}".format(len(glob.glob(os.path.join(env.adap_l_output, "MSM_*")))-1)))
 
 
