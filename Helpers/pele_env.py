@@ -14,6 +14,7 @@ class EnviroBuilder(object):
 
     def __init__(self, folders, files, args):
         self.folders = folders
+        self.ext_temp = args.ext_temp
         self.files = files
         self.system = args.system
         self.forcefield = args.forcefield
@@ -27,13 +28,16 @@ class EnviroBuilder(object):
         self.test = args.test
         self.folder = args.folder
         self.pdb = args.pdb
-        self.nonstandard = args.nonstandard
+        self.sasamin = args.sasa[0] if args.sasa else None
+        self.sasamax = args.sasa[1] if args.sasa else None
+	self.nonstandard = args.nonstandard
         self.lagtime = 1 if args.test else args.lagtime
-        self.lagtimes = None if args.test else [50, 100, 200, 500]
+	self.lagtimes = None if args.test else [50, 100, 200, 500]
         self.steps = args.steps if not self.test else 1
         self.msm_clust = 2 if args.test else args.msm_clust
-        self.log = '"simulationLogPath" : "$OUTPUT_PATH/logFile.txt",' if args.log else ""
-        self.renumber = args.nonrenum
+	self.log = '"simulationLogPath" : "$OUTPUT_PATH/logFile.txt",' if args.log else ""
+	self.renumber = args.nonrenum
+        self.sasa = True if args.sasa and not args.test else False
         if args.test:
             self.cpus = args.cpus = 4
         elif args.restart == "analise":
@@ -47,7 +51,7 @@ class EnviroBuilder(object):
     def build_env(cls, args):
         if args.test and not args.precision2:
             env = cls(cs.FOLDERS, cs.FILES_TEST, args)
-        elif args.test and args.precision2:
+	elif args.test and args.precision2:
             env = cls(cs.FOLDERS, cs.FILES_TEST_XP2, args)
         elif args.precision:
             env = cls(cs.FOLDERS, cs.FILES_XP, args)
@@ -82,8 +86,13 @@ class EnviroBuilder(object):
         else:
             self.system_fix = os.path.join(self.pele_dir, "{}_processed.pdb".format(os.path.splitext(os.path.basename(self.system))[0]))
 
+        for f in self.ext_temp:
+            cs.FILES_NAME.append(os.path.join("DataLocal/Templates/{}/HeteroAtoms/".format(self.forcefield), os.path.basename(f)))
+            self.files.append(os.path.basename(f))
+            
         self.adap_ex_input = os.path.join(self.pele_dir, os.path.basename(self.system_fix))
         self.adap_ex_output = os.path.join(self.pele_dir, "output_adaptive_exit")
+        self.exit_path = os.path.join(self.adap_ex_output, "exit_path")
         self.cluster_output = os.path.join(self.pele_dir, "output_clustering")
         self.adap_l_input = "{}/initial_*"
         self.adap_l_output = os.path.join(self.pele_dir, "output_pele")
@@ -157,9 +166,9 @@ class EnviroBuilder(object):
         self.logger.setLevel(logging.INFO)
         formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(message)s")
         if self.restart == "all":
-            file_handler = logging.FileHandler(log_name, mode='w')
+			file_handler = logging.FileHandler(log_name, mode='w')
         else:
-            file_handler = logging.FileHandler(log_name, mode='a')
+			file_handler = logging.FileHandler(log_name, mode='a')
         file_handler.setFormatter(formatter)
         self.logger.addHandler(file_handler)
 
@@ -183,37 +192,37 @@ def is_repited(pele_dir):
     else:
         i = 1
     if os.path.isdir(pele_dir):
-        new_pele_dir = "{}_Pele_{}".format(original_dir, i)
-        new_pele_dir = is_repited(new_pele_dir)
-        return new_pele_dir
+		new_pele_dir = "{}_Pele_{}".format(original_dir, i)
+		new_pele_dir = is_repited(new_pele_dir)
+		return new_pele_dir
     else:
-        return pele_dir
+		return pele_dir
 
 def is_last(pele_dir):
 
     original_dir = None
     split_dir = pele_dir.split("_")
     for chunk in split_dir:
-        if chunk != "Pele":
-            if original_dir:
-                original_dir = "{}_{}".format(original_dir, chunk)
-            else:
-                original_dir = chunk
-        else:
-            break
+		if chunk != "Pele":
+			if original_dir:
+ 				original_dir = "{}_{}".format(original_dir, chunk)
+			else:
+				original_dir = chunk
+		else:
+			break
     if split_dir[-1].isdigit():
         i = split_dir[-1]
         i = int(i) + 1 
     else:
-        i = 1 
+		i = 1 
 
     if os.path.isdir(pele_dir):
-        new_pele_dir = "{}_Pele_{}".format(original_dir, i)
-        if not os.path.isdir(new_pele_dir):
-            return pele_dir
-        else:
-            new_pele_dir = is_last(new_pele_dir)
-            return new_pele_dir
+            new_pele_dir = "{}_Pele_{}".format(original_dir, i)
+            if not os.path.isdir(new_pele_dir):
+                return pele_dir
+            else:
+			    new_pele_dir = is_last(new_pele_dir)
+			    return new_pele_dir
     else:
         return pele_dir
 

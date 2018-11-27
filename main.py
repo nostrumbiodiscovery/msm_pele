@@ -2,7 +2,7 @@ import matplotlib
 matplotlib.use('Agg')
 import os
 import MSM_PELE.Helpers.check_env_var as env
-#env.check_dependencies()
+env.check_dependencies()
 import shutil
 import argparse
 import MSM_PELE.constants as cs
@@ -37,7 +37,7 @@ def run(args):
 
         # Parametrize Ligand
         env.logger.info("Creating template for residue {}".format(args.residue))
-        with hp.cd(env.pele_dir):
+	with hp.cd(env.pele_dir):
         	plop.parametrize_miss_residues(args, env, syst)
         env.logger.info("Template {}z created".format(args.residue.lower()))
 
@@ -45,7 +45,7 @@ def run(args):
         for res, __, _ in missing_residues:
             if res != args.residue:
                 env.logger.info("Creating template for residue {}".format(res))
-                with hp.cd(env.pele_dir):
+		with hp.cd(env.pele_dir):
                 	mr.create_template(args, env)
                 env.logger.info("Template {}z created".format(res))
 
@@ -65,22 +65,23 @@ def run(args):
     if args.restart in ["all", "adaptive", "pele"]:
 
         #KMeans Clustering
-        if not os.path.isfile(env.clusters_output):
+        if not os.path.isfile(env.clusters_output) or not os.path.isfile(env.exit_path):
             env.logger.info("Running MSM Clustering")
             with hp.cd(env.adap_ex_output):
-                cl.main(env.clusters, env.cluster_output, args.residue, "", env.cpus, env.topology)
+                cluster_centers = cl.main(env.clusters, env.cluster_output, args.residue, "", env.cpus, env.topology, env.sasamin, env.sasamax, env.sasa)
             env.logger.info("MSM Clustering run successfully")
         else:
-            pass
+            #cluster_center = get_cluster_centers_from_file(env.exit_path_clusters)
+            pass		
 
         # Create Box
         env.logger.info("Creating box")
-        center, radius, BS_sasa_min, BS_sasa_max = bx.create_box(args, env)
-        env.logger.info("Box with center {} radius {} was created".format(center, radius))
+        box, BS_sasa_min, BS_sasa_max = bx.create_box(cluster_centers, args, env)
+        env.logger.info("Box created successfully ")
 
         # Pele Exploration
         env.logger.info("Running standard Pele")
-        ad.SimulationBuilder(env.pele_temp,  env.topology, cs.PELE_KEYWORDS, center, radius, BS_sasa_min, BS_sasa_max)
+        ad.SimulationBuilder(env.pele_temp,  env.topology, cs.PELE_KEYWORDS, box, BS_sasa_min, BS_sasa_max)
         adaptive_long = ad.SimulationBuilder(env.ad_l_temp,  env.topology, cs.ADAPTIVE_KEYWORDS,
             cs.RESTART, env.adap_l_output, env.adap_l_input, args.cpus, env.pele_temp, args.residue, env.random_num, env.steps)
         adaptive_long.run(limitTime=args.time)
@@ -131,6 +132,10 @@ if __name__ == "__main__":
     parser.add_argument("--time", type=int,  help="Limit of time to run pele exploration", default=None)
     parser.add_argument("--log", action='store_true',  help="Print LogFiles when running PELE")
     parser.add_argument("--nonrenum", action='store_false',  help="Don't renumber structure")
+    parser.add_argument("--sasa", nargs="+",  type=float, help="Interval of sasa used for adaptive exit clusterization", default=[])
+    parser.add_argument("--box_type",  type=str, help="Type of box to use. [multiple (default), fixed]", default="multiple")
+    parser.add_argument("--ext_temp",  nargs="+", type=str, help="Use external template to parametrize the ligand i.e. /path/mgz", default=[])
+    parser.add_argument("--nosasa",  action='store_true', help="Do not filter clusters by sasa i.e. --nosasa")
 
     
     args = parser.parse_args()
