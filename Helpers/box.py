@@ -9,6 +9,7 @@ import MSM_PELE.Helpers.best_structs as best_structs
 import MSM_PELE.Helpers.template_builder as tb
 import MSM_PELE.Helpers.helpers as hp
 import MSM_PELE.Helpers.center_of_mass as cm
+import MSM_PELE.Helpers.plotMSMAdvancedInfo as pm
 
 __author__ = "Daniel Soler Viladrich"
 __email__ = "daniel.soler@nostrumbiodiscovery.com"
@@ -27,19 +28,22 @@ def parseargs():
     return args.bs, args.points
 
 
-def create_box(args, env):
+def create_box(cluster_centers, args, env):
     BS_sasa_min, BS_sasa_max = is_exit_finish(env.adap_ex_output, args.test)
     if args.box:
         center, radius = retrieve_box_info(args.box, env.clusters_output)
         shutil.copy(args.box, os.path.join(env.pele_dir, "box.pdb"))
-    else:
+    elif args.box_type == "fixed":
         center_mass = cm.center_of_mass(env.ligand_ref)
         center, radius = build_box(env.adap_ex_input, env.clusters_output, center_mass)
         if args.user_center and args.user_radius:
             center = args.user_center
             radius = args.user_radius
         box_to_pdb(center, radius, env.box_temp)
-    return center, radius, BS_sasa_min, BS_sasa_max
+    elif args.box_type == "multiple":
+        center, radius = create_multiple_centers(cluster_centers, args,env)
+    box_string = string_builder(center, radius, args.box_type)
+    return box_string, BS_sasa_min, BS_sasa_max
 
 
 def build_box(system, clusters, bs):
@@ -184,6 +188,91 @@ def box_to_pdb(center, radius, file):
 
     tb.TemplateBuilder(file, replace)
 
+
+def create_multiple_centers(cluster_centers, args, env):
+    #Calculate binding site point
+    BS_location = get_binding_site_position(cluster_centers, args, env)
+    #Calculate centroid
+    centroid = find_centroid(cluster_centers)
+
+    #Get center and radius along the exit path
+    centers, radius = get_multiple_box_centers(BS_location, centroid)
+
+    return centers, [radius]*len(centers)
+
+
+def get_binding_site_position(cluster_centers, args, env):
+    minpos = pm.get_min_Pos(env.system_fix, env.residue)
+    distances = np.linalg.norm(cluster_centers-minpos, axis=1)
+    min_distance = np.argmin(distances)
+    BS_location = cluster_centers[min_distance]
+    return BS_location
+
+
+def get_multiple_box_centers(BS_location, centroid, radius=5):
+    #Equation to get the radius of one sphere if we want
+    #to fit n spheres in a segment of distance d 
+    #radius=d/(2n-2)
+    alpha = 0
+    current_point = BS_location
+    final_point = BS_location +  2*(centroid-BS_location)
+    distance = np.linalg.norm(final_point-current_point)
+    distance_centroid =  np.linalg.norm(final_point-centroid)
+    number_spheres = int(distance/(2*radius)+1)
+    radius = distance/(2*number_spheres-2)
+    chosen_clusters = []
+    exit_func = lambda x : BS_location + x * (centroid-BS_location)/np.linalg.norm(centroid-BS_location)
+    radius = radius if 100  > radius > 4 else 5
+    #Check the distance to the centroid because we want to pass the centroid
+    #and go two times that distance.
+    while np.linalg.norm(centroid-current_point) <= 2*distance_centroid:
+        current_point = exit_func(alpha)
+        chosen_clusters.append(current_point)
+        alpha += 2*radius
+        print("Point {}".format(current_point))
+        print("Next distance {}".format(np.linalg.norm(centroid-current_point)))
+    return chosen_clusters, radius+3
+
+
+
+
+def ensure_connectivity_clusters(spheres, radius):
+    connected = False
+    while not connected:
+        connected = check_connectivity(spheres, radius) 
+        radius += 1
+    return radius
+
+def check_connectivity(spheres, radius):
+    overlap = []
+    for sphere in spheres:
+        for other_sphere in spheres:
+            if not np.array_equal(sphere, other_sphere):
+                overlap = is_overlap(sphere, other_sphere, radius, radius)
+                if overlap:
+                    return True
+    
+
+def is_overlap(center1, center2, radius1, radius2): 
+    distance = np.linalg.norm(center2-center1)
+    radius_sum = radius1 + radius2
+    if (distance >= radius_sum): 
+        return False
+    else: 
+        return True
+
+def string_builder(centers, radiuses, type_box):
+    string = []
+    print(centers, radiuses)
+    if type_box == "fixed":
+        string.append('"type": "sphericalBox",\n"radius": {},\n"fixedCenter":{}'.format(radiuses, centers, type_box))
+    elif type_box == "multiple":
+        string.append('"type": "multiSphericalBox",\n"listOfSpheres":[')
+        for center, radius in zip(centers, radiuses):
+            string.append('{{\n"radius": {},\n"fixedCenter":[{}]\n}},'.format(radius, ",".join([str(coord) for coord in center])))
+        string[-1] = string[-1].strip(",")
+        string.append(']')
+    return "\n".join(string)
 
 def is_exit_finish(path, test):
     return best_structs.main(path, test=test)
