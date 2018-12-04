@@ -4,12 +4,14 @@ import socket
 import MSM_PELE.constants as cs
 
 machine = socket.getfqdn()
-
+print("MACHINE", machine)
 PELE_EXECUTABLE = os.path.abspath(cs.PELE_BIN)
 DATA_FOLDER = os.path.join(cs.PELE, "Data")
 DOCUMENTS_FOLDER = os.path.join(cs.PELE, "Documents")
-PYTHON = cs.PYTHON
-
+try:
+    PYTHON = cs.PYTHON
+except AttributeError:
+    pass
 inputFileTemplate = "{ \"files\" : [ { \"path\" : \"%s\" } ] }"
 trajectoryBasename = "*traj*"
 
