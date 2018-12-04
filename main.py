@@ -68,7 +68,7 @@ def run(args):
         if not os.path.isfile(env.clusters_output) or not os.path.isfile(env.exit_path):
             env.logger.info("Running MSM Clustering")
             with hp.cd(env.adap_ex_output):
-                cluster_centers = cl.main(env.clusters, env.cluster_output, args.residue, "", env.cpus, env.topology, env.sasamin, env.sasamax, env.sasa)
+                cluster_centers = cl.main(env.clusters, env.cluster_output, args.residue, "", env.cpus, env.topology, env.sasamin, env.sasamax, env.sasa, env.perc_sasa_min, env.perc_sasa_int)
             env.logger.info("MSM Clustering run successfully")
         else:
             #cluster_center = get_cluster_centers_from_file(env.exit_path_clusters)
@@ -122,7 +122,7 @@ if __name__ == "__main__":
     parser.add_argument("--precision2", action='store_true', help="Use an intermediate control file to achieve better convergence")
     parser.add_argument("--test", action='store_true', help="Run a fast MSM_PELE test")
     parser.add_argument("--user_center", "-c", nargs='+', type=float, help='center of the box', default=None)
-    parser.add_argument("--user_radius", "-r", type=float,  help="Radius of the box", default=None)
+    parser.add_argument("--user_radius", "-r", nargs='+', type=float,  help="Radius of the box", default=None)
     parser.add_argument("--folder", "-wf", type=str,  help="Folder to apply the restart to", default=None)
     parser.add_argument("--pdb", action='store_true',  help="Use pdb files as output")
     parser.add_argument("--nonstandard", nargs="+",  help="Mid Chain non standard residues to be treated as ATOM not HETATOM", default = [])
@@ -136,6 +136,7 @@ if __name__ == "__main__":
     parser.add_argument("--box_type",  type=str, help="Type of box to use. [multiple (default), fixed]", default="multiple")
     parser.add_argument("--ext_temp",  nargs="+", type=str, help="Use external template to parametrize the ligand i.e. /path/mgz", default=[])
     parser.add_argument("--nosasa",  action='store_true', help="Do not filter clusters by sasa i.e. --nosasa")
+    parser.add_argument("--perc_sasa",  nargs="+", type=float, help="Distribution of clusters at the adaptive exit. default [0.25, 0.5, 0.25] i.e. 0.1 0.7 0.1", default = [0.25, 0.5, 0.25])
 
     
     args = parser.parse_args()

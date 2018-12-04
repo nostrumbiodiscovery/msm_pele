@@ -13,6 +13,10 @@ class EnviroBuilder(object):
     """
 
     def __init__(self, folders, files, args):
+        """
+        Base class that encodes as attributes
+        the software parameters for each stage
+        """
         self.folders = folders
         self.ext_temp = args.ext_temp
         self.files = files
@@ -28,23 +32,26 @@ class EnviroBuilder(object):
         self.test = args.test
         self.folder = args.folder
         self.pdb = args.pdb
-        self.sasamin = args.sasa[0] if args.sasa else None
-        self.sasamax = args.sasa[1] if args.sasa else None
+        self.steps = args.steps
 	self.nonstandard = args.nonstandard
-        self.lagtime = 1 if args.test else args.lagtime
-	self.lagtimes = None if args.test else [50, 100, 200, 500]
-        self.steps = args.steps if not self.test else 1
-        self.msm_clust = 2 if args.test else args.msm_clust
+        self.lagtime = args.lagtime
+        self.msm_clust = args.msm_clust
 	self.log = '"simulationLogPath" : "$OUTPUT_PATH/logFile.txt",' if args.log else ""
 	self.renumber = args.nonrenum
-        self.sasa = True if args.sasa and not args.test else False
+        self.nosasa = args.nosasa
+        self.sasa = args.sasa
+        self.perc_sasa = args.perc_sasa
+        #Choose CPUS
         if args.test:
             self.cpus = args.cpus = 4
         elif args.restart == "analise":
             self.cpus = args.cpus = 1
         else:
             self.cpus = args.cpus
-        self.build_constant_paths()
+        #Build constants for each module
+        self.build_sasa_constants()
+        self.build_msm_constants()
+        self.build_path_constants()
 
 
     @classmethod
@@ -62,7 +69,29 @@ class EnviroBuilder(object):
         env.create()
         return env
 
-    def build_constant_paths(self):
+
+    def build_msm_constants(self):
+        """
+        Build sasa related constants for later
+        classifing the exit simulation clusters
+        """
+        self.steps = self.steps if not self.test else 1
+        self.lagtime = 1 if self.test else self.lagtime
+	self.lagtimes = None if self.test else [50, 100, 200, 500]
+        self.msm_clust = 2 if self.test else self.msm_clust
+
+
+    def build_sasa_constants(self):
+        """
+        Build sasa related constants for later
+        classifing the exit simulation clusters
+        """
+        self.perc_sasa_min, self.perc_sasa_int, self.perc_sasa_max = self.perc_sasa
+        self.sasamin, self.sasamax = self.sasa if self.sasa else [None, None]
+        self.sasa = True if not self.nosasa and not self.test else False
+            
+
+    def build_path_constants(self):
 
         self.template = None
         self.rotamers_file = None
