@@ -48,7 +48,7 @@ def writeInitialStructures(centers_info, filename_template, topology=None):
         else:
             splitTrajectory.main("", [trajectory, ], topology, [snap_num+1,],template=filename_template % cluster_num)
 
-def split_by_sasa(centers_info, value1, value2, topology=None):
+def split_by_sasa(centers_info, value1, value2, topology=None, perc_sasa_min=0.25, perc_sasa_int=0.5):
     sasas = {}
     for cluster_num in centers_info:
         epoch_num, traj_num, snap_num = map(int, centers_info[cluster_num]['structure'])
@@ -56,7 +56,7 @@ def split_by_sasa(centers_info, value1, value2, topology=None):
         sasas[cluster_num] = sasa
     sasa_max, sasa_int, sasa_min = sasa_classifier(sasas, value1, value2)
     print("Sasa magnitude has been classified in the next clusters: Max: {}, Int: {}, Min: {}".format(sasa_max, sasa_int, sasa_min))
-    clusters = update_cluster(centers_info, sasa_max, sasa_int, sasa_min)
+    clusters = update_cluster(centers_info, sasa_max, sasa_int, sasa_min, perc_sasa_min, perc_sasa_int)
     return {i: value for i, (key, value) in enumerate(clusters.iteritems())}
 
 def get_sasa(epoch_num, traj_num, snap_num):
@@ -72,7 +72,6 @@ def sasa_classifier(sasas, value1, value2):
     sasa_values = [ value for key, value in sasas.iteritems() ]
     sasa_max = max(sasa_values)
     sasa_min = min(sasa_values)
-    print(value1, value2)
     if value1:
         sasa_threshold_min = value1
     else:
@@ -91,13 +90,13 @@ def sasa_classifier(sasas, value1, value2):
             sasas_min[cluster_num] = sasa
     return sasas_max, sasas_int, sasas_min 
     
-def update_cluster(centers_info, sasa_max,sasa_int, sasa_min):
+def update_cluster(centers_info, sasa_max,sasa_int, sasa_min, perc_sasa_min=0.25, perc_sasa_int=0.5):
     total_of_clusters = len(centers_info) / 2
     extra_clust = len(centers_info)
-    number_sasa_min_clust = 10
-    number_sasa_int_clust = 20
-    number_sasa_max_clust = 10
-
+    number_sasa_min_clust = int(total_of_clusters*perc_sasa_min)
+    number_sasa_int_clust = int(total_of_clusters*perc_sasa_int)
+    number_sasa_max_clust = total_of_clusters - number_sasa_min_clust - number_sasa_int_clust
+    print(sasa_max,sasa_int, sasa_min, number_sasa_min_clust, number_sasa_int_clust, number_sasa_max_clust)
     chosen_clusters = {}
     sasa_max = take(number_sasa_max_clust, sasa_max.iteritems())
     sasa_int = take(number_sasa_int_clust, sasa_int.iteritems())
@@ -153,7 +152,7 @@ def get_centers_info(trajectoryFolder, trajectoryBasename, num_clusters, cluster
     return centersInfo
 
 
-def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=None, value1=None, value2=None, sasa=True):
+def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=None, value1=None, value2=None, sasa=True, perc_sasa_min=0.25, perc_sasa_int=0.5):
 
     #Initialize contant variables
     trajectoryFolder = "allTrajs"
@@ -181,20 +180,20 @@ def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=N
 
     #Cluster
     clusteringObject = cluster.Cluster(num_clusters, trajectoryFolder,
-                                       trajectoryBasename, alwaysCluster=False,
+                                       trajectoryBasename, alwaysCluster=True,
                                        stride=stride)
     clusteringObject.clusterTrajectories()
     clusteringObject.eliminateLowPopulatedClusters(clusterCountsThreshold)
     clusterCenters = clusteringObject.clusterCenters
     centersInfo = get_centers_info(trajectoryFolder, trajectoryBasename, num_clusters, clusterCenters)
 
-    #Get checkpoint file for restarts
+    #Get Output path
     COMArray = [centersInfo[i]['center'] for i in centersInfo]
     writePDB(COMArray, outputFolder+"exit_path.pdb")
 
     #Split clusters by sasa
     if sasa:
-        centersInfo = split_by_sasa(centersInfo,  value1, value2, topology=topology)
+        centersInfo = split_by_sasa(centersInfo,  value1, value2, topology, perc_sasa_min, perc_sasa_int)
         COMArray = [centersInfo[i]['center'] for i in centersInfo]
 
     #Output results
