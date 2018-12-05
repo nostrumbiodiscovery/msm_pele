@@ -18,7 +18,7 @@ import MSM_PELE.PPP.mut_prep4pele as ppp
 import MSM_PELE.Helpers.msm_analysis as msm
 import MSM_PELE.Helpers.missing_residues as mr
 
-__version__ = "1.0.3"
+__version__ = "2.0.0"
 
 def run(args):
     # Build folders and logging
