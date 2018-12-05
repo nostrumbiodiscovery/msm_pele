@@ -137,7 +137,8 @@ FOLDERS = ["",
            "DataLocal/LigandRotamerLibs",
            "output_pele",
            "output_adaptive_exit",
-           "output_clustering"
+           "output_clustering",
+           "results"
           ]
 
 FILES_SP = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_SP.conf"),

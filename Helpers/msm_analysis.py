@@ -42,9 +42,8 @@ def run_msm(env, args, runTica=True):
         else:
             extractCoords.main(lig_resname=args.residue, non_Repeat=False, atom_Ids="", nProcessors=args.cpus, parallelize=False, topology=env.topology)
             prepareMSMFolders.main()
-            estimateDGAdaptive.main(trajs_per_epoch, env.lagtime, env.msm_clust, lagtimes=env.lagtimes)
-            results_file = summerize(env.adap_l_output)
-            shutil.move(results_file, os.path.join(env.pele_dir, "results.txt"))
+            estimateDGAdaptive.main(trajs_per_epoch, env.lagtime, env.msm_clust, lagtimes=env.lagtimes, output=env.results)
+            results_file = summerize(env.results)
 
 def analyse_msm(iteration, env, folder):
     with hp.cd(env.adap_l_output):

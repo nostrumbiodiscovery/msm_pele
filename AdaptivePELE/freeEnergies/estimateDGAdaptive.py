@@ -5,12 +5,12 @@ from AdaptivePELE.freeEnergies import estimateDG
 import numpy as np
 
 
-def main(trajsPerEpoch, lagtime, nclusters, clusteringStride=1, nruns=10, lagtimes=[1, 10, 25, 50, 100, 250, 400, 500, 600, 1000]):
+def main(trajsPerEpoch, lagtime, nclusters, clusteringStride=1, nruns=10, lagtimes=[1, 10, 25, 50, 100, 250, 400, 500, 600, 1000], output=None):
     allFolders = np.array(glob.glob("MSM_*"))
     epochs = [int(folder[4:]) for folder in allFolders]
     args = np.argsort(epochs)
     sortedFolders = allFolders[args]
-    origDir = os.getcwd()
+    origDir = output if output else os.getcwd()
     resultsFile = os.path.join(origDir, "results.txt")
 
     with open(resultsFile, "a") as f:

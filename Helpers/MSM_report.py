@@ -24,14 +24,14 @@ class Plots():
         self.pmf = os.path.join(folder, "PMF_plots/pmf_run_0.png")
         self.probability = os.path.join(folder, "eigenvector_plots/eigenvector_1_alone_run_0.png")
         self.transitions = os.path.join(folder, "transitions/transitions.png")
-        self.transition_matrix = os.path.join(folder, "transitions/transition_matrix.png")
+        self.transition_hist = os.path.join(folder, "transitions/transition_hist.png")
         
 
 
 def report_MSM(env, folder):
 
 
-    OUTPUT = os.path.join(env.pele_dir,  'MSM_report.pdf')
+    OUTPUT = os.path.join(env.results,  'MSM_report.pdf')
     dG = get_dG_line(env)
     plots = Plots(folder)
 
@@ -57,12 +57,12 @@ def report_MSM(env, folder):
     # Transitions
     pdf.cell(-170)
     pdf.set_font('Arial', 'B', 11)
-    pdf.cell(10, 249, 'Transition Matrix' +62*"\t" + "Transitions")
+    pdf.cell(10, 249, 'Transition Hist' +62*"\t" + "Transitions")
     with hp.cd(env.adap_l_output): 
-    	plot(2, 7, ".", os.path.join(folder, "transitions/transitions.png"), "steps", "sasa")
+    	plot(2, 7, ".", os.path.join(folder, "transitions/transitions.png"), "steps", "sasa", zcol="", style="PRINT_RMSD_STEPS")
     pdf.cell(0)
     pdf.set_font('Arial', 'B', 11)
-    pdf.image(plots.transition_matrix, 10, 140, 83)
+    pdf.image(plots.transition_hist, 10, 140, 83)
     pdf.image(plots.transitions, 100, 140, 83)
 
     #Output report    
@@ -70,19 +70,21 @@ def report_MSM(env, folder):
 
 
 def get_dG_line(env):
-    with open(os.path.join(env.pele_dir, "results.txt"), "r") as f:
+    with open(os.path.join(env.results, "results.txt"), "r") as f:
         for line in f:
             if not line.startswith("#"):
                 _, dg, std, _, _, _ = line.strip("\n").split()
-                return dg + u" \u00B1 " + std 
+                return dg + " +- " + std 
 
     
-def plot(Xcol, Ycol, path, name, xcol_name, ycol_name, zcol=5):
-    plot_line = plotAdaptive.generatePrintString(1000, Xcol, Ycol, "report_", "PRINT_BE_RMSD", zcol, None).strip("\n")
+def plot(Xcol, Ycol, path, name, xcol_name, ycol_name, zcol=5, style="PRINT_BE_RMSD"):
+    plot_line = plotAdaptive.generatePrintString(1000, Xcol, Ycol, "report_", style, zcol, None).strip("\n")
+    if "$" in plot_line:
+        plot_line = plot_line.replace("$", "$ ")
     command = '''gnuplot -e "set terminal png; set output '{}'; set xlabel '{}'; set ylabel '{}'; {}"'''.format(
         name, xcol_name, ycol_name, plot_line)
     os.system(command)
-        
+
 
 if __name__ == "__main__":
     args = arg_parse()

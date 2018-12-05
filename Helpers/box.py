@@ -179,7 +179,6 @@ def retrieve_box_info(box, clusters):
             radius = [ float(line[2]) for line in lines if "RADIUS" in line ]
         except ValueError:
             raise ValueError("{} not valid. Check the file is not a template.")
-    print(center, radius)
     return center, radius
 
 def box_to_pdb(center, radius, file, model=1):
@@ -196,7 +195,6 @@ def box_to_pdb(center, radius, file, model=1):
     cx = CENTER.format(cx)
     cy = CENTER.format(cy)
     cz = CENTER.format(cz)
-
     values = [model, radius, cx, cy, cz, v1, v2, v3, v4, v5, v6, v7, v8]
 
     replace = {keyword: value for keyword, value in zip(KEYWORDS, values)}
@@ -238,7 +236,6 @@ def get_multiple_box_centers(BS_location, centroid, radius=5):
     #Equation to get the radius of one sphere if we want
     #to fit n spheres in a segment of distance d 
     #radius=d/(2n-2)
-    alpha = 0
     current_point = BS_location
     final_point = BS_location +  2*(centroid-BS_location)
     distance = np.linalg.norm(final_point-current_point)
@@ -248,15 +245,16 @@ def get_multiple_box_centers(BS_location, centroid, radius=5):
     chosen_clusters = []
     exit_func = lambda x : BS_location + x * (centroid-BS_location)/np.linalg.norm(centroid-BS_location)
     radius = radius if 100  > radius > 4 else 5
+    alpha = radius
     #Check the distance to the centroid because we want to pass the centroid
     #and go two times that distance.
     while np.linalg.norm(centroid-current_point) <= 2*distance_centroid:
         current_point = exit_func(alpha)
         chosen_clusters.append(current_point)
-        alpha += 2*radius
+        alpha += radius
         print("Point {}".format(current_point))
         print("Next distance {}".format(np.linalg.norm(centroid-current_point)))
-    return chosen_clusters, radius+3
+    return chosen_clusters, radius
 
 
 
@@ -288,7 +286,6 @@ def is_overlap(center1, center2, radius1, radius2):
 
 def string_builder(centers, radiuses, type_box):
     string = []
-    print(centers, radiuses)
     if type_box == "fixed":
         string.append('"type": "sphericalBox",\n')
     elif type_box == "multiple":

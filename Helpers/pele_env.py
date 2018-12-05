@@ -122,6 +122,7 @@ class EnviroBuilder(object):
         self.adap_ex_input = os.path.join(self.pele_dir, os.path.basename(self.system_fix))
         self.adap_ex_output = os.path.join(self.pele_dir, "output_adaptive_exit")
         self.exit_path = os.path.join(self.adap_ex_output, "exit_path")
+        self.results = os.path.join(self.pele_dir, "results")
         self.cluster_output = os.path.join(self.pele_dir, "output_clustering")
         self.adap_l_input = "{}/initial_*"
         self.adap_l_output = os.path.join(self.pele_dir, "output_pele")

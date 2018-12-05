@@ -3,6 +3,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from builtins import range
 import os
+import glob
+import pandas as pd
 import numpy as np
 import argparse
 import itertools
@@ -37,13 +39,14 @@ def parse_arguments():
     return args.nEigen, args.clusters, args.lagtimes, args.nRuns, args.minima, args.o, args.m, args.plotEigenvectors, args.plotGMRQ, args.plotPMF, args.savePlots, args.showPlots, args.filter, args.path, args.native, args.resname
 
 
-def main(nEigenvectors, nRuns, m, outputFolder, plotEigenvectors, plotGMRQ, plotPMF, clusters, lagtimes, native, save_plots, showPlots, filtered, destFolder, resname):
+def main(nEigenvectors, nRuns, m, outputFolder, plotEigenvectors, plotGMRQ, plotPMF, clusters, lagtimes, native, save_plots, showPlots, filtered, destFolder, resname, plotTransitions=True):
     minPos = get_min_Pos(native, resname)
     if save_plots and outputFolder is None:
         outputFolder = "plots_MSM"
     eigenPlots = os.path.join(outputFolder, "eigenvector_plots")
     GMRQPlots = os.path.join(outputFolder, "GMRQ_plots")
     PMFPlots = os.path.join(outputFolder, "PMF_plots")
+    TransitionPlots = os.path.join(outputFolder, "transitions")
     if save_plots and not os.path.exists(outputFolder):
         os.makedirs(outputFolder)
     if filtered is not None:
@@ -56,6 +59,8 @@ def main(nEigenvectors, nRuns, m, outputFolder, plotEigenvectors, plotGMRQ, plot
         os.makedirs(GMRQPlots)
     if plotPMF and save_plots and not os.path.exists(PMFPlots):
         os.makedirs(PMFPlots)
+    if plotTransitions and save_plots and not os.path.exists(TransitionPlots):
+        os.makedirs(TransitionPlots)
     minPos = np.array(minPos)
     GMRQValues = {}
     print("Running from " + destFolder)
@@ -122,19 +127,13 @@ def main(nEigenvectors, nRuns, m, outputFolder, plotEigenvectors, plotGMRQ, plot
             print("Clusters with less than 2 PMF:")
             print(" ".join(map(str, np.where(g < 2)[0])))
             print("")
-            f, axarr = plt.subplots(2, 2, figsize=(12, 12))
-            f.suptitle(titleVar)
-            axarr[1, 0].scatter(distance, g)
-            axarr[0, 1].scatter(distance, volume)
-            axarr[0, 0].scatter(g, volume)
-            axarr[1, 0].set_xlabel("Distance to minima")
-            axarr[1, 0].set_ylabel("PMF")
-            axarr[0, 1].set_xlabel("Distance to minima")
-            axarr[0, 1].set_ylabel("Volume")
-            axarr[0, 0].set_xlabel("PMF")
-            axarr[0, 0].set_ylabel("Volume")
+            plt.figure()
+            plt.title("%s" % (destFolder))
+            plt.scatter(distance, g)
+            plt.xlabel("Distance to minima")
+            plt.ylabel("PMF")
             if save_plots:
-                f.savefig(os.path.join(PMFPlots, "pmf_run_%d%s.png" % (i, filter_str)))
+                plt.savefig(os.path.join(PMFPlots, "pmf_run_%d%s.png" % (i, filter_str)))
     if plotGMRQ:
         for t in GMRQValues:
             plt.figure()
@@ -144,6 +143,18 @@ def main(nEigenvectors, nRuns, m, outputFolder, plotEigenvectors, plotGMRQ, plot
             plt.boxplot(GMRQValues)
             if save_plots:
                 plt.savefig(os.path.join(GMRQPlots, "GMRQ.png" % t))
+    if plotTransitions:
+        sasas = []
+        for file in glob.glob("0/repor*"):
+            sasas.extend(pd.read_csv(file, sep='    ', engine='python')["sasaLig"].values)
+        sasas = np.array(sasas)
+        plt.figure()
+        plt.title("%s" % (destFolder))
+        plt.xlabel("SASA")
+        plt.ylabel("Transition Counts")
+        plt.hist(sasas, 50, alpha=0.75)
+        if save_plots:
+            plt.savefig(os.path.join(TransitionPlots, "transition_hist.png"))
     if showPlots and (plotEigenvectors or plotGMRQ or plotPMF):
         plt.show()
 
