@@ -1,6 +1,7 @@
 import os
 import re
-import logging
+import MSM_PELE.Helpers.best_structs as bs
+
 
 def silentremove(*args, **kwargs):
     for files in args:
@@ -9,6 +10,10 @@ def silentremove(*args, **kwargs):
                 os.remove(filename)
             except OSError:
                 pass
+
+
+def is_exit_finish(path, test):
+    return bs.main(path, test=test)
 
 
 class cd:
@@ -30,5 +35,3 @@ def preproces_lines(lines):
         line = line.strip('\n').strip().split()
         lines[i] = line
     return lines
-
-

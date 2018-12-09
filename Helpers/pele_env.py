@@ -21,6 +21,10 @@ class EnviroBuilder(object):
         self.ext_temp = args.ext_temp
         self.files = files
         self.system = args.system
+        self.box = args.box
+        self.user_center = args.user_center
+        self.user_radius = args.user_radius
+        self.box_type = args.box_type
         self.forcefield = args.forcefield
         self.residue = args.residue
         self.templates = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), "PeleTemplates"))
@@ -33,11 +37,11 @@ class EnviroBuilder(object):
         self.folder = args.folder
         self.pdb = args.pdb
         self.steps = args.steps
-	self.nonstandard = args.nonstandard
+        self.nonstandard = args.nonstandard
         self.lagtime = args.lagtime
         self.msm_clust = args.msm_clust
-	self.log = '"simulationLogPath" : "$OUTPUT_PATH/logFile.txt",' if args.log else ""
-	self.renumber = args.nonrenum
+        self.log = '"simulationLogPath" : "$OUTPUT_PATH/logFile.txt",' if args.log else ""
+        self.renumber = args.nonrenum
         self.nosasa = args.nosasa
         self.sasa = args.sasa
         self.perc_sasa = args.perc_sasa
@@ -77,7 +81,7 @@ class EnviroBuilder(object):
         """
         self.steps = self.steps if not self.test else 1
         self.lagtime = 1 if self.test else self.lagtime
-	self.lagtimes = None if self.test else [50, 100, 200, 500]
+        self.lagtimes = None if self.test else [50, 100, 200, 500]
         self.msm_clust = 2 if self.test else self.msm_clust
 
 

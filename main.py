@@ -13,7 +13,7 @@ import MSM_PELE.Helpers.simulation as ad
 import MSM_PELE.Helpers.clusterAdaptiveRun as cl
 import MSM_PELE.Helpers.center_of_mass as cm
 import MSM_PELE.Helpers.system_prep as sp
-import MSM_PELE.Helpers.box as bx
+import MSM_PELE.Box.box as bx
 import MSM_PELE.PPP.mut_prep4pele as ppp
 import MSM_PELE.Helpers.msm_analysis as msm
 import MSM_PELE.Helpers.missing_residues as mr
@@ -65,18 +65,14 @@ def run(args):
     if args.restart in ["all", "adaptive", "pele"]:
 
         #KMeans Clustering
-        if not os.path.isfile(env.clusters_output) or not os.path.isfile(env.exit_path):
-            env.logger.info("Running MSM Clustering")
-            with hp.cd(env.adap_ex_output):
-                cluster_centers = cl.main(env.clusters, env.cluster_output, args.residue, "", env.cpus, env.topology, env.sasamin, env.sasamax, env.sasa, env.perc_sasa_min, env.perc_sasa_int)
-            env.logger.info("MSM Clustering run successfully")
-        else:
-            #cluster_center = get_cluster_centers_from_file(env.exit_path_clusters)
-            pass		
+        env.logger.info("Running MSM Clustering")
+        with hp.cd(env.adap_ex_output):
+            cluster_centers = cl.main(env.clusters, env.cluster_output, args.residue, "", env.cpus, env.topology, env.sasamin, env.sasamax, env.sasa, env.perc_sasa_min, env.perc_sasa_int)
+        env.logger.info("MSM Clustering run successfully")
 
         # Create Box
         env.logger.info("Creating box")
-        box, BS_sasa_min, BS_sasa_max = bx.create_box(cluster_centers, args, env)
+        box, BS_sasa_min, BS_sasa_max = bx.create_box(cluster_centers, env)
         env.logger.info("Box created successfully ")
 
         # Pele Exploration
@@ -97,7 +93,7 @@ def run(args):
         env.logger.info("{} System run successfully".format(args.residue))
 
 
-if __name__ == "__main__":
+def parse_args(args=[]):
 
     parser = argparse.ArgumentParser(description='Run Adaptive Pele Platform')
     parser.add_argument('system', type=str, help='complex to run pele on')
@@ -139,7 +135,11 @@ if __name__ == "__main__":
     parser.add_argument("--perc_sasa",  nargs="+", type=float, help="Distribution of clusters at the adaptive exit. default [0.25, 0.5, 0.25] i.e. 0.1 0.7 0.1", default = [0.25, 0.5, 0.25])
 
     
-    args = parser.parse_args()
+    args = parser.parse_args(args) if args else parser.parse_args()
+    return args
+
+if __name__ == "__main__":
+    args = parse_args()
     if(args.clust > args.cpus and args.restart != "msm" and not args.test ):
         raise ValueError(cs.CLUSTER_ERROR.format(args.cpus, args.clust))
     else:

@@ -8,7 +8,7 @@ import scipy
 
 
 class Cluster:
-    def __init__(self, numClusters, trajectoryFolder, trajectoryBasename, stride=1, alwaysCluster=True):
+    def __init__(self, numClusters, trajectoryFolder, trajectoryBasename, stride=1, alwaysCluster=True, seed=False):
         """
             alwaysCluster: clusterize regardless of whether discretized/clusterCenters.dat exists or not
         """
@@ -25,6 +25,7 @@ class Cluster:
         self.numClusters = numClusters
         self.trajectoryFolder = trajectoryFolder
         self.trajectoryBasename = trajectoryBasename
+        self.seed = seed
         self.x = []
 
     def cluster(self, trajectories):
@@ -32,7 +33,7 @@ class Cluster:
         algorithm.
         Returns a KmeansClusteringObject
         """
-        return coor.cluster_kmeans(data=trajectories, k=self.numClusters, max_iter=500, stride=self.stride)
+        return coor.cluster_kmeans(data=trajectories, k=self.numClusters, max_iter=500, stride=self.stride, fixed_seed=self.seed)
 
     def assignNewTrajectories(self, trajs):
         # wrap the clusterCentersFile argument in a str call to pass pyemma

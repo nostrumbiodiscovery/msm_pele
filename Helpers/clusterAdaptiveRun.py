@@ -95,8 +95,7 @@ def update_cluster(centers_info, sasa_max,sasa_int, sasa_min, perc_sasa_min=0.25
     extra_clust = len(centers_info)
     number_sasa_min_clust = int(total_of_clusters*perc_sasa_min)
     number_sasa_int_clust = int(total_of_clusters*perc_sasa_int)
-    number_sasa_max_clust = total_of_clusters - number_sasa_min_clust - number_sasa_int_clust
-    print(sasa_max,sasa_int, sasa_min, number_sasa_min_clust, number_sasa_int_clust, number_sasa_max_clust)
+    number_sasa_max_clust = int(total_of_clusters - number_sasa_min_clust - number_sasa_int_clust)
     chosen_clusters = {}
     sasa_max = take(number_sasa_max_clust, sasa_max.iteritems())
     sasa_int = take(number_sasa_int_clust, sasa_int.iteritems())
@@ -181,7 +180,7 @@ def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=N
     #Cluster
     clusteringObject = cluster.Cluster(num_clusters, trajectoryFolder,
                                        trajectoryBasename, alwaysCluster=True,
-                                       stride=stride)
+                                       stride=stride, seed=222)
     clusteringObject.clusterTrajectories()
     clusteringObject.eliminateLowPopulatedClusters(clusterCountsThreshold)
     clusterCenters = clusteringObject.clusterCenters
