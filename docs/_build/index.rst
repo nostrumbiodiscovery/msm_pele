@@ -41,7 +41,21 @@ Installation
 ============
 .. toctree::
    installation
+
+Tests
+======
+.. toctree::
+   tests
+
+Cookbook
+========
+.. toctree::
    cookbook
+
+Tutorial
+========
+.. toctree::
+   tutorial
 
 Documentation
 =============
@@ -53,19 +67,11 @@ Benchmark
 .. toctree::
    benchmark
 
-Tutorial
-========
-.. toctree::
-   tutorial
-
 Support
 =======
 .. toctree::
    support
 
-
-
 Indices and tables
 ==================
-
 * :ref:`search`
