@@ -4,6 +4,8 @@ class ClusteringTypes:
     rmsd = "rmsd"
     contactMap = "contactMap"
     lastSnapshot = "lastSnapshot"
+    null = "null"
+    MSMClustering = "MSM"
     thresholdCalculator = "thresholdCalculator"
     ligandResname = "ligandResname"
     ligandResnum = "ligandResnum"
@@ -16,6 +18,14 @@ class ClusteringTypes:
     Jaccard = "Jaccard"
     correlation = "correlation"
     symmetries = "symmetries"
+    tica = "tica"
+    atom_Ids = "atom_Ids"
+    writeCA = "writeCA"
+    sidechains = "sidechains"
+    tica_lagtime = "tica_lagtime"
+    tica_nICs = "tica_nICs"
+    tica_kinetic_map = "tica_kinetic_map"
+    tica_commute_map = "tica_commute_map"
 
 
 class ThresholdCalculator:
@@ -49,16 +59,20 @@ class DensityCalculatorParams:
 class StringSpawningTypes:
     type = "type"
     independent = "independent"
+    independentMetric = "independentMetric"
     sameWeight = "sameWeight"
     inverselyProportional = "inverselyProportional"
     epsilon = "epsilon"
     fast = "FAST"
     simulatedAnnealing = "simulatedAnnealing"
-    # New parameters for variable epsilon(experimental)
     variableEpsilon = "variableEpsilon"
     UCB = "UCB"
     REAP = "REAP"
     null = "null"
+    ProbabilityMSMCalculator = "ProbabilityMSM"
+    MetastabilityMSMCalculator = "MetastabilityMSM"
+    UncertaintyMSMCalculator = "UncertaintyMSM"
+    IndependentMSMCalculator = "IndependentMSM"
 
 
 class SpawningParams:
@@ -86,6 +100,8 @@ class SpawningParams:
     alpha = "alpha"
     nclusters = "n"
     metricsInd = "metricsInd"
+    lagtime = "lagtime"
+    minPos = "minPos"
 
 
 class SpawningDensity:
@@ -115,7 +131,6 @@ class SimulationParams:
     destination = "destination"
     origin = "origin"
     seed = "seed"
-    time = "time"
     peleSteps = "peleSteps"
     iterations = "iterations"
     exitCondition = "exitCondition"
@@ -136,7 +151,33 @@ class SimulationParams:
     condition = "condition"
     numTrajs = "numberTrajectories"
     equilibrationLength = "equilibrationLength"
+    trajectoryName = "trajectoryName"
     srun = "useSrun"
+    srunParameters = "srunParameters"
+    mpiParameters = "mpiParameters"
+    # params for MD
+    ligandCharge = "ligandCharge"
+    nonBondedCutoff = "nonBondedCutoff"
+    Temperature = "temperature"
+    runningPlatform = "runningPlatform"
+    minimizationIterations = "minimizationIterations"
+    repoterfreq = "reporterFrequency"
+    productionLength = "productionLength"
+    waterBoxSize = "WaterBoxSize"
+    trajsPerReplica = "trajectoriesPerReplica"
+    numReplicas = "numReplicas"
+    timeStep = "timeStep"
+    equilibrationLengthNVT = "equilibrationLengthNVT"
+    equilibrationLengthNPT = "equilibrationLengthNPT"
+    constraintsMin = "constraintsMinimization"
+    constraintsNVT = "constraintsNVT"
+    constraintsNPT = "constraintsNPT"
+    devicesPerTrajectory = "devicesPerTrajectory"
+    forcefield = "forcefield"
+    customparamspath = "customparamspath"
+    maxDevicesPerReplica = "maxDevicesPerReplica"
+    format = "format"
+    ligandName = "ligandName"
 
 
 class ExitConditionType:

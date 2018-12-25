@@ -1,16 +1,18 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
-import glob
 import os
-from AdaptivePELE.freeEnergies import estimateDG
+import glob
+import sys
 import numpy as np
+from six import reraise as raise_
+from AdaptivePELE.freeEnergies import estimateDG
 
 
-def main(trajsPerEpoch, lagtime, nclusters, clusteringStride=1, nruns=10, lagtimes=[1, 10, 25, 50, 100, 250, 400, 500, 600, 1000], output=None):
+def main(trajsPerEpoch, lagtime, nclusters, clusteringStride=1, nruns=10, lagtimes=[1, 10, 25, 50, 100, 250, 400, 500, 600, 1000], output="."):
     allFolders = np.array(glob.glob("MSM_*"))
     epochs = [int(folder[4:]) for folder in allFolders]
     args = np.argsort(epochs)
     sortedFolders = allFolders[args]
-    origDir = output if output else os.getcwd()
+    origDir = output
     resultsFile = os.path.join(origDir, "results.txt")
 
     with open(resultsFile, "a") as f:
@@ -35,11 +37,20 @@ def main(trajsPerEpoch, lagtime, nclusters, clusteringStride=1, nruns=10, lagtim
                                            folderWithTraj="rawData",
                                            clusterCountsThreshold=0,
                                            clusteringStride=clusteringStride)
-        dG, stdDg, db, stdDb = estimateDG.estimateDG(parameters, cleanupClusterCentersAtStart=True)
-        print("FINAL RESULTS EPOCH %d: dG: %f +- %f, asymmetric fluxes: %f +- %f" % (epoch, dG, stdDg, db, stdDb))
-        resultsEpoch.append([dG, stdDg, db, stdDb])
-        with open(resultsFile, "a") as f:
-            f.write("%d %.3f %.3f %.3f %.3f\n" % (epoch, dG, stdDg, db, stdDb))
+        try:
+            dG, stdDg, db, stdDb = estimateDG.estimateDG(parameters, cleanupClusterCentersAtStart=True)
+            print("FINAL RESULTS EPOCH %d: dG: %f +- %f, asymmetric fluxes: %f +- %f" % (epoch, dG, stdDg, db, stdDb))
+            resultsEpoch.append([dG, stdDg, db, stdDb])
+            with open(resultsFile, "a") as f:
+                f.write("%d %.3f %.3f %.3f %.3f\n" % (epoch, dG, stdDg, db, stdDb))
+        except Exception as err:
+            resultsEpoch.append(["Estimation in this epoch crashed"])
+            if "distribution contains entries smaller" in str(err):
+                print("Caught exception in folder %s with lag %d and k %d, moving to next iteration" % (folder, lagtime, nclusters))
+                with open("error.txt", "w") as fe:
+                    fe.write("Caught exception in folder %s with lag %d and k %d, moving to next iteration\n" % (folder, lagtime, nclusters))
+            else:
+                raise_(*sys.exc_info())
         os.chdir("..")
 
     print("Results")

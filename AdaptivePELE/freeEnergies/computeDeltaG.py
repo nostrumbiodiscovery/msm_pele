@@ -8,10 +8,11 @@
 """
 from __future__ import absolute_import, division, print_function, unicode_literals
 from builtins import range
-import numpy as np
 import glob
 import sys
+import itertools
 import argparse
+import numpy as np
 try:
     import cPickle
 except ImportError:
@@ -19,7 +20,6 @@ except ImportError:
 from pyemma.coordinates.clustering import AssignCenters
 from AdaptivePELE.freeEnergies import runMarkovChainModel as run
 from AdaptivePELE.freeEnergies import utils
-import itertools
 
 
 def assignNewTrajectories(trajs, clusterCenters):
@@ -299,7 +299,7 @@ def main(trajWildcard, reweightingT=1000):
     d = 0.75
 
     originalFilenames = glob.glob(trajWildcard)
-    #originalFilenames = glob.glob("rawData/"+trajWildcard)
+    # originalFilenames = glob.glob("rawData/"+trajWildcard)
     originalCoordinates = gather_coordinates(originalFilenames)
 
     bins = create_box(clusters, originalCoordinates, d)

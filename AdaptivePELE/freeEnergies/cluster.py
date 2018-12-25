@@ -1,32 +1,39 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import os
-import numpy as np
 import glob
+import scipy
+import numpy as np
+from AdaptivePELE.utilities import utilities
 import pyemma.coordinates as coor
 from pyemma.coordinates.clustering import AssignCenters
-import scipy
 
 
 class Cluster:
-    def __init__(self, numClusters, trajectoryFolder, trajectoryBasename, stride=1, alwaysCluster=True, seed=False):
+    def __init__(self, numClusters, trajectoryFolder, trajectoryBasename, stride=1, alwaysCluster=True, discretizedPath=None, seed=False):
         """
             alwaysCluster: clusterize regardless of whether discretized/clusterCenters.dat exists or not
         """
-
-        self.discretizedFolder = "discretized"
+        if discretizedPath is None:
+            self.discretizedFolder = "discretized"
+        else:
+            self.discretizedFolder = discretizedPath
         self.clusterCentersFile = os.path.join(self.discretizedFolder, "clusterCenters.dat")
         self.clusterCenters = np.array([])
         self.dTrajTemplateName = os.path.join(self.discretizedFolder, "%s.disctraj")
         self.clusteringFile = "clustering_object.pkl"
         self.stride = stride
+        self.seed = seed
         self.trajFilenames = []
         self.dtrajs = []
         self.alwaysCluster = alwaysCluster
         self.numClusters = numClusters
         self.trajectoryFolder = trajectoryFolder
         self.trajectoryBasename = trajectoryBasename
-        self.seed = seed
         self.x = []
+
+    def cleanDiscretizedFolder(self):
+        utilities.cleanup(self.discretizedFolder)
+        utilities.makeFolder(self.discretizedFolder)
 
     def cluster(self, trajectories):
         """ Cluster the trajectories into numClusters clusters using kmeans
@@ -50,7 +57,7 @@ class Cluster:
         if self.alwaysCluster or not os.path.exists(self.clusterCentersFile):
             print("Clustering data...")
             cl = self.cluster(self.x)  # cl: pyemma's clusteringObject
-            makeFolder(self.discretizedFolder)
+            utilities.makeFolder(self.discretizedFolder)
             self.clusterCenters = cl.clustercenters
             self._writeClusterCenters(self.clusterCenters, self.clusterCentersFile)
             print("Assigning data...")
@@ -101,7 +108,7 @@ class Cluster:
 
 def loadTrajFiles(trajectoryFolder, trajectory_basename):
     trajectoryBasename = os.path.join(trajectoryFolder, trajectory_basename)
-
+    print(trajectoryBasename)
     # load traj
     files = glob.glob(trajectoryBasename)
     x = len(files)*[0]

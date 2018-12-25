@@ -1,10 +1,10 @@
 import numpy as np
 from io import open
 cimport cython
-from cpython cimport array
-import array
 cimport numpy as np
 from libc.math cimport sqrt
+from libc.stdlib cimport rand, RAND_MAX
+
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
@@ -94,3 +94,92 @@ def isSidechain(basestring string, bint writeSide, list sidechains):
 def is_model(basestring line):
     cdef basestring check = "ENDMDL"
     return check in line[:7]
+
+
+@cython.boundscheck(False)
+@cython.wraparound(False)
+@cython.cdivision(True)
+cpdef calculateAutoCorrelation(list lagtimes, list dtrajs, int nclusters, int nLags):
+    cdef double[:, :] autoCorr = np.zeros((nclusters, nLags))
+    cdef int N = 0
+    cdef int v1, v2
+    cdef double[:] M = np.zeros(nLags)
+    cdef long[:] traj
+    cdef int lagtime
+    cdef Py_ssize_t il, i, j, Nt
+    cdef double[:] C = np.zeros(nclusters)
+    cdef double[:] mean = np.zeros(nclusters)
+    cdef double[:] var = np.zeros(nclusters)
+    cdef double N_f, var_tmp
+    cdef int maxLag = max(lagtimes)
+    for traj in dtrajs:
+        Nt = traj.size
+        if Nt < maxLag:
+            raise ValueError("Lagtime specified are too big for the trajectories!")
+        N += Nt
+        for i in range(Nt):
+            C[traj[i]] += 1
+    N_f = <double>(N)
+    var_tmp = N_f*(N_f-1)
+    for i in range(nclusters):
+        mean[i] = C[i]/N_f
+        var[i] = (N*C[i]-(C[i]**2))/var_tmp
+
+    for traj in dtrajs:
+        Nt = traj.size
+        for il in range(nLags):
+            lagtime = lagtimes[il]
+            M[il] += Nt-lagtime
+            for i in range(Nt-lagtime):
+                for c in range(nclusters):
+                    v1 = 0
+                    v2 = 0
+                    if c == traj[i]:
+                        v1 = 1
+                    if c == traj[i+lagtime]:
+                        v2 = 1
+                    autoCorr[c, il] += (v1-mean[c])*(v2-mean[c])
+
+    for i in range(nclusters):
+        for j in range(nLags):
+            autoCorr[i, j] /= M[j]
+            autoCorr[i, j] /= var[i]
+    return np.array(autoCorr)
+
+
+@cython.boundscheck(False)
+@cython.wraparound(False)
+@cython.cdivision(True)
+cpdef double[:] runSimulation(double[:, :] P, int steps, int startingPosition, long[:] states):
+    cdef Py_ssize_t n = P.shape[0]
+    cdef int position = startingPosition
+    cdef Py_ssize_t step
+
+    cdef double[:] traj = np.zeros(steps)
+    traj[0] = position
+    for step in range(1, steps):
+        position = sample(states, P[position])
+        traj[step] = position
+
+    return traj
+
+cpdef int sample(long[:] states, double[:] prob):
+    """ Method obtained from http://keithschwarz.com/darts-dice-coins/ named roulette wheel selection"""
+    cdef double rnd = rand() / (RAND_MAX + 1.0)
+    return binary_search(rnd, prob)
+
+cdef int binary_search(double rnd, double[:] prob):
+    cdef Py_ssize_t l = 0
+    cdef Py_ssize_t r = prob.shape[0]-1
+    cdef int mid
+    while l < r:
+        mid =  (l+r) / 2
+        if prob[mid] < rnd:
+            l = mid + 1
+        else:
+            r = mid - 1
+    if prob[l] < rnd:
+        # return the first element that is larger than the random number
+        return l + 1
+    else:
+        return l
