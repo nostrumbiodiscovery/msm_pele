@@ -151,7 +151,7 @@ def get_centers_info(trajectoryFolder, trajectoryBasename, num_clusters, cluster
     return centersInfo
 
 
-def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=None, value1=None, value2=None, sasa=True, perc_sasa_min=0.25, perc_sasa_int=0.5):
+def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=None, value1=None, value2=None, sasa=True, perc_sasa_min=0.25, perc_sasa_int=0.5, gaussian = False):
 
     #Initialize contant variables
     trajectoryFolder = "allTrajs"
@@ -175,7 +175,7 @@ def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=N
 
     #Extract COM Coordinates from simulation
     if not glob.glob("*/extractedCoordinates/coord_*"):
-        extractCoords.main(lig_resname=ligand_resname, non_Repeat=True, atom_Ids=atom_ids, nProcessors=cpus, parallelize=False, topology=topology)
+        extractCoords.main(lig_resname=ligand_resname, non_Repeat=False, atom_Ids=atom_ids, nProcessors=cpus, parallelize=False, topology=topology)
 
     #Cluster
     clusteringObject = cluster.Cluster(num_clusters, trajectoryFolder,
