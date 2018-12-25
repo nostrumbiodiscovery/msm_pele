@@ -4,19 +4,21 @@ import os
 import MSM_PELE.Helpers.check_env_var as env
 env.check_dependencies()
 import shutil
+import glob
 import argparse
 import MSM_PELE.constants as cs
 import MSM_PELE.PlopRotTemp.launcher as plop
 import MSM_PELE.Helpers.helpers as hp
 import MSM_PELE.Helpers.pele_env as pele
+import MSM_PELE.Helpers.center_of_mass as cm
 import MSM_PELE.Helpers.simulation as ad
 import MSM_PELE.Helpers.clusterAdaptiveRun as cl
-import MSM_PELE.Helpers.center_of_mass as cm
 import MSM_PELE.Helpers.system_prep as sp
 import MSM_PELE.Box.box as bx
 import MSM_PELE.PPP.mut_prep4pele as ppp
 import MSM_PELE.Helpers.msm_analysis as msm
 import MSM_PELE.Helpers.missing_residues as mr
+import MSM_PELE.Helpers.solventOBCParamsGenerator as obc
 
 __version__ = "2.0.0"
 
@@ -49,26 +51,32 @@ def run(args):
                 	mr.create_template(args, env)
                 env.logger.info("Template {}z created".format(res))
 
+        # Parametrize solvent parameters if need it
+        if env.solvent == "OBC":
+            shutil.copy(env.obc_tmp, env.obc_file)
+            for template in glob.glob(os.path.join(env.template_folder, "*")):
+                obc.main(template, env.obc_file)
+
         # Fill in Simulation Templates
-        ad.SimulationBuilder(env.pele_exit_temp,  env.topology, cs.EX_PELE_KEYWORDS, env.native, args.forcefield, args.chain, "\n".join(protein_constraints), args.cpus, env.license, env.log)
-        ad.SimulationBuilder(env.pele_temp,  env.topology, cs.EX_PELE_KEYWORDS, env.native, args.forcefield, args.chain, "\n".join(protein_constraints), args.cpus, env.license, env.log)
+        ad.SimulationBuilder(env.pele_exit_temp,  env.topology, cs.EX_PELE_KEYWORDS, env.native, args.forcefield, args.chain, "\n".join(protein_constraints), env.license, env.log, env.solvent)
+        ad.SimulationBuilder(env.pele_temp,  env.topology, cs.EX_PELE_KEYWORDS, env.native, args.forcefield, args.chain, "\n".join(protein_constraints),  env.license, env.log, env.solvent)
 
     if args.restart in ["all", "adaptive"]:
         # Run Adaptive Exit
         env.logger.info("Running ExitPath Adaptive")
-        adaptive_exit = ad.SimulationBuilder(env.ad_ex_temp, env.topology, cs.EX_ADAPTIVE_KEYWORDS, cs.RESTART, env.adap_ex_output,
+        simulation = ad.SimulationBuilder(env.ad_ex_temp, env.topology, cs.EX_ADAPTIVE_KEYWORDS, cs.RESTART, env.adap_ex_output,
             env.adap_ex_input, env.cpus, env.pele_exit_temp, env.residue, env.equil_steps, env.random_num)
-        adaptive_exit.run(hook=True)
+        simulation.run_adaptive(env, hook=True)
         env.logger.info("ExitPath Adaptive run successfully")
 
 
     if args.restart in ["all", "adaptive", "pele"]:
 
         #KMeans Clustering
-        env.logger.info("Running MSM Clustering")
+        env.logger.info("Running Exit Path Clustering")
         with hp.cd(env.adap_ex_output):
             cluster_centers = cl.main(env.clusters, env.cluster_output, args.residue, "", env.cpus, env.topology, env.sasamin, env.sasamax, env.sasa, env.perc_sasa_min, env.perc_sasa_int)
-        env.logger.info("MSM Clustering run successfully")
+        env.logger.info("Exit Path Clustering run successfully")
 
         # Create Box
         env.logger.info("Creating box")
@@ -76,21 +84,30 @@ def run(args):
         env.logger.info("Box created successfully ")
 
         # Pele Exploration
-        env.logger.info("Running standard Pele")
-        ad.SimulationBuilder(env.pele_temp,  env.topology, cs.PELE_KEYWORDS, box, BS_sasa_min, BS_sasa_max)
-        adaptive_long = ad.SimulationBuilder(env.ad_l_temp,  env.topology, cs.ADAPTIVE_KEYWORDS,
-            cs.RESTART, env.adap_l_output, env.adap_l_input, args.cpus, env.pele_temp, args.residue, env.random_num, env.steps)
-        adaptive_long.run(limitTime=args.time)
-        env.logger.info("Pele run successfully")
+        for i in range(env.iterations):
+            env.logger.info("Running standard Pele")
+            inputs = [ cs.INPUT_PELE.format(f) for f in glob.glob(env.adap_l_input) ]
+            output = os.path.join(env.adap_l_output, str(i))
+            if not os.path.isdir(output):
+                os.mkdir(output)
+            print(output)
+            hp.change_output(env.pele_temp, output)
+            simulation = ad.SimulationBuilder(env.pele_temp,  env.topology, cs.PELE_KEYWORDS, cs.RESTART, os.path.join(env.adap_l_output, output),
+                ",\n".join(inputs), env.random_num, env.steps, box, env.box_metric, BS_sasa_min, BS_sasa_max)
+            time_sim = simulation.run_pele(env, limitTime=env.time)
+            env.logger.info("Pele run successfully in {}".format(time_sim))
+            env.logger.info("Running MSM analysis")
+            msm.analyse_results(env, runTica=False)
+            env.logger.info("MSM analysis run successfully")
 
-    if args.restart in ["all", "adaptive", "pele", "msm", "analyse"]:
+    if args.restart in ["msm", "analyse"]:
 
         # MSM Analysis
         env.logger.info("Running MSM analysis")
-        msm.analyse_results(env, args, runTica=False)
+        msm.analyse_results(env, runTica=False)
         env.logger.info("MSM analysis run successfully")
 
-        env.logger.info("{} System run successfully".format(args.residue))
+    env.logger.info("{} System run successfully".format(args.residue))
 
 
 def parse_args(args=[]):
@@ -133,7 +150,9 @@ def parse_args(args=[]):
     parser.add_argument("--ext_temp",  nargs="+", type=str, help="Use external template to parametrize the ligand i.e. /path/mgz", default=[])
     parser.add_argument("--nosasa",  action='store_true', help="Do not filter clusters by sasa i.e. --nosasa")
     parser.add_argument("--perc_sasa",  nargs="+", type=float, help="Distribution of clusters at the adaptive exit. default [0.25, 0.5, 0.25] i.e. 0.1 0.7 0.1", default = [0.25, 0.5, 0.25])
-
+    parser.add_argument("--box_metric",  action='store_true', help="Do not filter clusters by sasa i.e. --nosasa")
+    parser.add_argument('--iterations', type=int, help='Number of MSM iterations. default [1] i.e. --iterations 3', default=1)
+    parser.add_argument('--solvent', type=str, help='Type of implicit solvent (OBC/VDGBNP). default [OBC]. i.e. --solvent VDGBNP', default="OBC")
     
     args = parser.parse_args(args) if args else parser.parse_args()
     return args

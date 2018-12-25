@@ -72,10 +72,10 @@ EQ_STEPS = 50
 GRIDRES = '10.0'
 
 # TEMPLATE KEYWORDS
-ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "SEED", "STEPS"]
+ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "SEED", "STEPS", "ITERATIONS", "MSM_CLUST", "LAGTIME", "MIN_POS"]
 EX_ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "EQ_STEPS", "SEED"]
-EX_PELE_KEYWORDS = ["NATIVE", "FORCEFIELD", "CHAIN", "CONSTRAINTS", "CPUS", "LICENSES", "LOGFILE"]
-PELE_KEYWORDS = ["BOX", "SASA_min", "SASA_max", "LOGFILE"]
+EX_PELE_KEYWORDS = ["NATIVE", "FORCEFIELD", "CHAIN", "CONSTRAINTS", "LICENSES", "LOGFILE", "SOLVENT"]
+PELE_KEYWORDS = [ "RESTART", "OUTPUT", "INPUT", "SEED", "STEPS", "BOX", "BOX_METRIC", "SASA_min", "SASA_max" ]
 NATIVE = '''
                         {{
 
@@ -97,6 +97,11 @@ NATIVE = '''
 
 
 '''
+BOX_METRIC = '''
+			{
+			    "type": "isPerturbedAtomSetCOMOutOfTheBox"
+			}
+	     '''
 
 BOX = '''
 MODEL $MODEL
@@ -123,6 +128,9 @@ CONECT    8    4    5    7
 ENDMDL
 '''
 
+INPUT_PELE = '{{ "files" : [ {{ "path" : "{}" }} ] }}'
+
+
 SYSTEM = "System {} checked successfully\n\t**Missing residues found {}\n\t**Gaps found {}\n\t**Metals found {}"
 
 
@@ -135,6 +143,7 @@ FOLDERS = ["",
            "DataLocal/Templates/AMBER99sb/HeteroAtoms/",
            "DataLocal/Templates/AMBER99sbBSC0/HeteroAtoms/",
            "DataLocal/LigandRotamerLibs",
+           "DataLocal/OBC",
            "output_pele",
            "output_adaptive_exit",
            "output_clustering",
@@ -142,26 +151,26 @@ FOLDERS = ["",
           ]
 
 FILES_SP = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_SP.conf"),
-                 os.path.join(DIR, "Templates/adaptive_exit.conf"), os.path.join(DIR, "Templates/adaptive_long.conf"),
+                 os.path.join(DIR, "Templates/adaptive_exit.conf"),
                  os.path.join(DIR, "Templates/pele_exit.conf")]
 
 FILES_XP = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_XP.conf"),
-                 os.path.join(DIR, "Templates/adaptive_exit.conf"), os.path.join(DIR, "Templates/adaptive_long.conf"),
+                 os.path.join(DIR, "Templates/adaptive_exit.conf"),
                  os.path.join(DIR, "Templates/pele_exit.conf")]
 
 FILES_XP2 = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_XP2.conf"),
-                 os.path.join(DIR, "Templates/adaptive_exit.conf"), os.path.join(DIR, "Templates/adaptive_long.conf"),
+                 os.path.join(DIR, "Templates/adaptive_exit.conf"),
                 os.path.join(DIR, "Templates/pele_exit.conf")]
 
 FILES_TEST_XP2 = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_XP2.conf"),
-                 os.path.join(DIR, "Templates/adaptive_exit_test.conf"), os.path.join(DIR, "Templates/adaptive_long_test.conf"),
+                 os.path.join(DIR, "Templates/adaptive_exit_test.conf"),
                  os.path.join(DIR, "Templates/pele_exit.conf")]
 
 FILES_TEST = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_SP.conf"),
-                 os.path.join(DIR, "Templates/adaptive_exit_test.conf"), os.path.join(DIR, "Templates/adaptive_long_test.conf"),
+                 os.path.join(DIR, "Templates/adaptive_exit_test.conf"),
                  os.path.join(DIR, "Templates/pele_exit.conf")]
 
-FILES_NAME = ["box.pdb", "pele.conf", "adaptive_exit.conf", "adaptive_long.conf", "pele_exit.conf"]
+FILES_NAME = ["box.pdb", "pele.conf", "adaptive_exit.conf",  "pele_exit.conf"]
 
 # ERRORS
 CLUSTER_ERROR = "Number of cpus ({}) must be bigger than clusters ({})"

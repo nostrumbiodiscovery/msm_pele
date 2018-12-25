@@ -23,24 +23,24 @@ PMF_FILE = "pmf_xyzg_0.dat"
 N_BEST = 5
 
 
-def analyse_results(env, args, runTica=True):
-    if args.restart in ["all", "adaptive", "pele", "msm"]:
-    	run_msm(env, args, runTica)
-    if args.restart in ["all", "adaptive", "pele", "msm", "analyse"]:
+def analyse_results(env, runTica=True):
+    if env.restart in ["all", "adaptive", "pele", "msm"]:
+    	run_msm(env, runTica)
+    if env.restart in ["all", "adaptive", "pele", "msm", "analyse"]:
         # In case of more than one simulation, i.e. MSM_0, MSM_1, etc
         for i, folder in enumerate(glob.glob(os.path.join(env.adap_l_output, "MSM_*"))):
             analyse_msm(i, env, folder)
         rp.report_MSM(env, os.path.join(env.adap_l_output, "MSM_{}".format(len(glob.glob(os.path.join(env.adap_l_output, "MSM_*")))-1)))
 
 
-def run_msm(env, args, runTica=True):
+def run_msm(env, runTica=True):
     with hp.cd(env.adap_l_output):
         trajs_per_epoch = len(glob.glob(os.path.join("0", "*report*")))
         if runTica:
-            td.main(DIMENSIONS, clusters, args.residue, lagtime, trajs_per_epoch, 1000)
+            td.main(DIMENSIONS, clusters, env.residue, lagtime, trajs_per_epoch, 1000)
             return()
         else:
-            extractCoords.main(lig_resname=args.residue, non_Repeat=False, atom_Ids="", nProcessors=args.cpus, parallelize=False, topology=env.topology)
+            extractCoords.main(lig_resname=env.residue, non_Repeat=False, atom_Ids="", nProcessors=env.cpus, parallelize=False, topology=env.topology)
             prepareMSMFolders.main()
             estimateDGAdaptive.main(trajs_per_epoch, env.lagtime, env.msm_clust, lagtimes=env.lagtimes, output=env.results)
             results_file = summerize(env.results)

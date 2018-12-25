@@ -15,6 +15,15 @@ def silentremove(*args, **kwargs):
 def is_exit_finish(path, test):
     return bs.main(path, test=test)
 
+def change_output(inp_file, out_folder):
+    with open(inp_file, "r") as f:
+        lines = f.readlines()
+
+    new_lines = [ '        "reportPath" : "{}",\n'.format(os.path.join(out_folder, "report"))  if "reportPath" in line else line for line in lines ]
+    final_lines = [ '        "trajectoryPath" : "{}"\n'.format(os.path.join(out_folder, "trajectory.xtc"))  if "trajectoryPath" in line else line for line in new_lines ]
+
+    with open(inp_file, "w") as f:
+        f.write("".join(final_lines))
 
 class cd:
     """Context manager for changing the current working directory"""

@@ -23,8 +23,11 @@ class EnviroBuilder(object):
         self.system = args.system
         self.box = args.box
         self.user_center = args.user_center
+        self.solvent = args.solvent
         self.user_radius = args.user_radius
         self.box_type = args.box_type
+        self.box_metric = cs.BOX_METRIC if args.box_metric else " "
+        self.iterations = args.iterations
         self.forcefield = args.forcefield
         self.residue = args.residue
         self.templates = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), "PeleTemplates"))
@@ -38,6 +41,7 @@ class EnviroBuilder(object):
         self.pdb = args.pdb
         self.steps = args.steps
         self.nonstandard = args.nonstandard
+        self.time = args.time
         self.lagtime = args.lagtime
         self.msm_clust = args.msm_clust
         self.log = '"simulationLogPath" : "$OUTPUT_PATH/logFile.txt",' if args.log else ""
@@ -79,7 +83,7 @@ class EnviroBuilder(object):
         Build sasa related constants for later
         classifing the exit simulation clusters
         """
-        self.steps = self.steps if not self.test else 1
+        self.steps = self.steps if not self.test else 5
         self.lagtime = 1 if self.test else self.lagtime
         self.lagtimes = None if self.test else [50, 100, 200, 500]
         self.msm_clust = 2 if self.test else self.msm_clust
@@ -126,19 +130,23 @@ class EnviroBuilder(object):
         self.adap_ex_input = os.path.join(self.pele_dir, os.path.basename(self.system_fix))
         self.adap_ex_output = os.path.join(self.pele_dir, "output_adaptive_exit")
         self.exit_path = os.path.join(self.adap_ex_output, "exit_path")
+        self.template_folder = os.path.join(self.pele_dir, "DataLocal/Templates/{}/HeteroAtoms/".format(self.forcefield))
+        self.obc_tmp = os.path.join(cs.DIR, "Templates/solventParamsHCTOBC.txt")
+        self.obc_file = os.path.join(self.pele_dir, "DataLocal/OBC/solventParamsHCTOBC.txt")
         self.results = os.path.join(self.pele_dir, "results")
         self.cluster_output = os.path.join(self.pele_dir, "output_clustering")
-        self.adap_l_input = "{}/initial_*"
+        self.adap_l_input = os.path.join(self.pele_dir, "output_clustering/initial_*")
         self.adap_l_output = os.path.join(self.pele_dir, "output_pele")
         self.ad_ex_temp = os.path.join(self.pele_dir, "adaptive_exit.conf")
         self.ad_l_temp = os.path.join(self.pele_dir, "adaptive_long.conf")
         self.pele_exit_temp = os.path.join(self.pele_dir, "pele_exit.conf")
         self.pele_temp = os.path.join(self.pele_dir, "pele.conf")
         self.box_temp = os.path.join(self.pele_dir, "box.pdb")
+        self._pele_temp = os.path.join(cs.DIR, "Templates/pele_SP.conf")
         self.clusters_output = os.path.join(self.cluster_output, "clusters_{}_KMeans_allSnapshots.pdb".format(self.clusters))
         self.ligand_ref = os.path.join(self.pele_dir, "ligand.pdb")
         self.native = cs.NATIVE.format(os.path.abspath(self.native), self.chain) if self.native else cs.NATIVE.format(os.path.abspath(self.ligand_ref), self.chain)
-        self.topology = None if self.pdb else os.path.join(self.adap_ex_output, "topology.pdb")
+        self.topology = None if self.pdb else os.path.join(self.adap_ex_output, "topologies/topology_0.pdb")
 
     def create(self):
         if self.restart == "all":
