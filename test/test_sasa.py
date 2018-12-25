@@ -41,7 +41,7 @@ def test_sasa_clustering(ext_args, sasa_min, sasa_int, test_type):
     ad.SimulationBuilder(env.pele_temp,  env.topology, cs.PELE_KEYWORDS, box, BS_sasa_min, BS_sasa_max)
     adaptive_long = ad.SimulationBuilder(env.ad_l_temp,  env.topology, cs.ADAPTIVE_KEYWORDS,
         cs.RESTART, env.adap_l_output, env.adap_l_input, args.cpus, env.pele_temp, args.residue, env.random_num, env.steps)
-    adaptive_long.run(limitTime=args.time)
+    adaptive_long.run_pele(env, limitTime=args.time)
     files = glob.glob(os.path.join(test_path, "L02_TEST/output_pele/0/report_*"))
     
     test_correct = True
