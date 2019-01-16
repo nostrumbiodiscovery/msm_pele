@@ -37,8 +37,8 @@ def run(args):
 
         # Parametrize Ligand
         env.logger.info("Creating template for residue {}".format(args.residue))
-	with hp.cd(env.pele_dir):
-        	plop.parametrize_miss_residues(args, env, syst)
+    with hp.cd(env.pele_dir):
+        plop.parametrize_miss_residues(args, env, syst)
         env.logger.info("Template {}z created".format(args.residue.lower()))
 
         # Parametrize missing residues
