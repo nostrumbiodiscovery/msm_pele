@@ -3,7 +3,6 @@ matplotlib.use('Agg')
 import os
 import MSM_PELE.Helpers.check_env_var as env
 env.check_dependencies()
-import shutil
 import argparse
 import MSM_PELE.constants as cs
 import MSM_PELE.PlopRotTemp.launcher as plop
@@ -11,7 +10,6 @@ import MSM_PELE.Helpers.helpers as hp
 import MSM_PELE.Helpers.pele_env as pele
 import MSM_PELE.Helpers.simulation as ad
 import MSM_PELE.Helpers.clusterAdaptiveRun as cl
-import MSM_PELE.Helpers.center_of_mass as cm
 import MSM_PELE.Helpers.system_prep as sp
 import MSM_PELE.Helpers.box as bx
 import MSM_PELE.PPP.mut_prep4pele as ppp
@@ -19,6 +17,7 @@ import MSM_PELE.Helpers.msm_analysis as msm
 import MSM_PELE.Helpers.missing_residues as mr
 
 __version__ = "1.0.3"
+
 
 def run(args):
     # Build folders and logging
@@ -32,7 +31,8 @@ def run(args):
 
         # Prepare System
         system_fix, missing_residues, gaps, metals, protein_constraints = ppp.main(syst.system, env.pele_dir, charge_terminals=args.charge_ter,
-                no_gaps_ter=args.gaps_ter, mid_chain_nonstd_residue=env.nonstandard, renumber=env.renumber)
+                                                                                   no_gaps_ter=args.gaps_ter, mid_chain_nonstd_residue=env.nonstandard,
+                                                                                   renumber=env.renumber)
         env.logger.info(cs.SYSTEM.format(system_fix, missing_residues, gaps, metals))
 
         # Parametrize Ligand
@@ -45,26 +45,25 @@ def run(args):
         for res, __, _ in missing_residues:
             if res != args.residue:
                 env.logger.info("Creating template for residue {}".format(res))
-		with hp.cd(env.pele_dir):
-                	mr.create_template(args, env)
-                env.logger.info("Template {}z created".format(res))
+        with hp.cd(env.pele_dir):
+            mr.create_template(args, env)
+            env.logger.info("Template {}z created".format(res))
 
         # Fill in Simulation Templates
-        ad.SimulationBuilder(env.pele_exit_temp,  env.topology, cs.EX_PELE_KEYWORDS, env.native, args.forcefield, args.chain, "\n".join(protein_constraints), args.cpus, env.license, env.log)
-        ad.SimulationBuilder(env.pele_temp,  env.topology, cs.EX_PELE_KEYWORDS, env.native, args.forcefield, args.chain, "\n".join(protein_constraints), args.cpus, env.license, env.log, env.reject)
+        ad.SimulationBuilder(env.pele_exit_temp, env.topology, cs.EX_PELE_KEYWORDS, env.native, args.forcefield, args.chain, "\n".join(protein_constraints), args.cpus, env.license, env.log)
+        ad.SimulationBuilder(env.pele_temp, env.topology, cs.EX_PELE_KEYWORDS, env.native, args.forcefield, args.chain, "\n".join(protein_constraints), args.cpus, env.license, env.log, env.reject)
 
     if args.restart in ["all", "adaptive"]:
         # Run Adaptive Exit
         env.logger.info("Running ExitPath Adaptive")
         adaptive_exit = ad.SimulationBuilder(env.ad_ex_temp, env.topology, cs.EX_ADAPTIVE_KEYWORDS, cs.RESTART, env.adap_ex_output,
-            env.adap_ex_input, env.cpus, env.pele_exit_temp, env.residue, env.equil_steps, env.random_num)
+                                             env.adap_ex_input, env.cpus, env.pele_exit_temp, env.residue, env.equil_steps, env.random_num)
         adaptive_exit.run(hook=True)
         env.logger.info("ExitPath Adaptive run successfully")
 
-
     if args.restart in ["all", "adaptive", "pele"]:
 
-        #KMeans Clustering
+        # KMeans Clustering
         if not os.path.isfile(env.clusters_output):
             env.logger.info("Running MSM Clustering")
             with hp.cd(env.adap_ex_output):
@@ -80,9 +79,9 @@ def run(args):
 
         # Pele Exploration
         env.logger.info("Running standard Pele")
-        ad.SimulationBuilder(env.pele_temp,  env.topology, cs.PELE_KEYWORDS, center, radius, BS_sasa_min, BS_sasa_max)
-        adaptive_long = ad.SimulationBuilder(env.ad_l_temp,  env.topology, cs.ADAPTIVE_KEYWORDS,
-            cs.RESTART, env.adap_l_output, env.adap_l_input, args.cpus, env.pele_temp, args.residue, env.random_num, env.steps)
+        ad.SimulationBuilder(env.pele_temp, env.topology, cs.PELE_KEYWORDS, center, radius, BS_sasa_min, BS_sasa_max)
+        adaptive_long = ad.SimulationBuilder(env.ad_l_temp, env.topology, cs.ADAPTIVE_KEYWORDS,
+                                             cs.RESTART, env.adap_l_output, env.adap_l_input, args.cpus, env.pele_temp, args.residue, env.random_num, env.steps)
         adaptive_long.run(limitTime=args.time)
         env.logger.info("Pele run successfully")
 
@@ -121,20 +120,19 @@ if __name__ == "__main__":
     parser.add_argument("--precision2", action='store_true', help="Use an intermediate control file to achieve better convergence")
     parser.add_argument("--test", action='store_true', help="Run a fast MSM_PELE test")
     parser.add_argument("--user_center", "-c", nargs='+', type=float, help='center of the box', default=None)
-    parser.add_argument("--user_radius", "-r", type=float,  help="Radius of the box", default=None)
-    parser.add_argument("--folder", "-wf", type=str,  help="Folder to apply the restart to", default=None)
-    parser.add_argument("--pdb", action='store_true',  help="Use pdb files as output")
-    parser.add_argument("--nonstandard", nargs="+",  help="Mid Chain non standard residues to be treated as ATOM not HETATOM", default = [])
-    parser.add_argument("--lagtime", type=int,  help="MSM Lagtime to use", default=100)
-    parser.add_argument("--steps", type=int,  help="MSM Steps to use", default=1000)
-    parser.add_argument("--msm_clust", type=int,  help="Number of clusters created to converge MSM", default=200)
-    parser.add_argument("--time", type=int,  help="Limit of time to run pele exploration", default=None)
-    parser.add_argument("--log", action='store_true',  help="Print LogFiles when running PELE")
-    parser.add_argument("--nonrenum", action='store_false',  help="Don't renumber structure")
+    parser.add_argument("--user_radius", "-r", type=float, help="Radius of the box", default=None)
+    parser.add_argument("--folder", "-wf", type=str, help="Folder to apply the restart to", default=None)
+    parser.add_argument("--pdb", action='store_true', help="Use pdb files as output")
+    parser.add_argument("--nonstandard", nargs="+", help="Mid Chain non standard residues to be treated as ATOM not HETATOM", default=[])
+    parser.add_argument("--lagtime", type=int, help="MSM Lagtime to use", default=100)
+    parser.add_argument("--steps", type=int, help="MSM Steps to use", default=1000)
+    parser.add_argument("--msm_clust", type=int, help="Number of clusters created to converge MSM", default=200)
+    parser.add_argument("--time", type=int, help="Limit of time to run pele exploration", default=None)
+    parser.add_argument("--log", action='store_true', help="Print LogFiles when running PELE")
+    parser.add_argument("--nonrenum", action='store_false', help="Don't renumber structure")
 
-    
     args = parser.parse_args()
-    if(args.clust > args.cpus and args.restart != "msm" and not args.test ):
+    if args.clust > args.cpus and args.restart != "msm" and not args.test:
         raise ValueError(cs.CLUSTER_ERROR.format(args.cpus, args.clust))
     else:
         run(args)
