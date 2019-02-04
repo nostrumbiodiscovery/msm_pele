@@ -1,4 +1,5 @@
 import os
+import signal
 import time
 from MSM_PELE.Helpers import helpers, template_builder
 import MSM_PELE.AdaptivePELE.adaptiveSampling as ad
@@ -32,11 +33,11 @@ class SimulationBuilder(template_builder.TemplateBuilder):
 
             if limitTime:
                 try:
-                    proc = subprocess.Popen(toRun, shell=False,  universal_newlines=True)
+                    proc = subprocess.Popen(toRun, shell=False,  universal_newlines=True, preexec_fn=os.setsid)
                     (out, err) = proc.communicate(timeout=limitTime)
                 except subprocess.TimeoutExpired:
                     print("killing")
-                    proc.kill()
+                    os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
             else:
                 proc = subprocess.Popen(toRun, shell=False, universal_newlines=True)
                 (out, err) = proc.communicate()
@@ -45,7 +46,7 @@ class SimulationBuilder(template_builder.TemplateBuilder):
                     print(err)
 
             endTime = time.time()
-            return "PELE took %.2f sec" % (endTime - startTime)
+        return "PELE took %.2f sec" % (endTime - startTime)
 
 
     def run_adaptive(self, env, hook=False, limitTime=False):
