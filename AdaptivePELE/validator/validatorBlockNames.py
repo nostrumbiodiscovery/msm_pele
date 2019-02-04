@@ -44,13 +44,19 @@ class SpawningParams:
         "metricWeights": "basestring",
         "metricsInd": "list",
         "condition": "basestring",
-        "n": "numbers.Real"
+        "n": "numbers.Real",
+        "lagtime": "numbers.Real",
+        "minPos": "list"
     }
     types = {
         "sameWeight": {
             "reportFilename": "basestring"
         },
         "independent": {
+            "reportFilename": "basestring"
+        },
+        "independentMetric": {
+            "metricColumnInReport": "numbers.Real",
             "reportFilename": "basestring"
         },
         "inverselyProportional": {
@@ -83,6 +89,18 @@ class SpawningParams:
         "REAP": {
             "reportFilename": "basestring",
             "metricColumnInReport": "numbers.Real"
+        },
+        "ProbabilityMSM": {
+            "lagtime": "numbers.Real"
+        },
+        "MetastabilityMSM": {
+            "lagtime": "numbers.Real"
+        },
+        "UncertaintyMSM": {
+            "lagtime": "numbers.Real"
+        },
+        "IndependentMSM": {
+            "lagtime": "numbers.Real"
         }
     }
     density = {
@@ -122,7 +140,13 @@ class SimulationParams:
             "peleSteps": "numbers.Real",
             "iterations": "numbers.Real"
             },
-        "md": {}}
+        "md": {
+            "processors": "numbers.Real",
+            "seed": "numbers.Real",
+            "productionLength": "numbers.Real",
+            "iterations": "numbers.Real",
+            "numReplicas": "numbers.Real"
+        }}
     params = {
         "executable": "basestring",
         "data": "basestring",
@@ -142,7 +166,32 @@ class SimulationParams:
         "equilibrationLength": "numbers.Real",
         "numberEquilibrationStructures": "numbers.Real",
         "useSrun": "bool",
-        "exitCondition": "dict"
+        "srunParameters": "basestring",
+        "mpiParameters": "basestring",
+        "exitCondition": "dict",
+        "trajectoryName": "basestring",
+        "ligandCharge": "numbers.Real",
+        "ligandName": "basestring",
+        "nonBondedCutoff": "numbers.Real",
+        "timeStep": "numbers.Real",
+        "Temperature": "numbers.Real",
+        "runningPlatform": "basestring",
+        "minimizationIterations": "numbers.Real",
+        "reporterFrequency": "numbers.Real",
+        "productionLength": "numbers.Real",
+        "WaterBoxSize": "numbers.Real",
+        "forcefield": "basestring",
+        "trajectoriesPerReplica": "numbers.Real",
+        "equilibrationLengthNVT": "numbers.Real",
+        "equilibrationLengthNPT": "numbers.Real",
+        "devicesPerTrajectory": "int",
+        "constraintsMinimization": "numbers.Real",
+        "constraintsNVT": "numbers.Real",
+        "constraintsNPT": "numbers.Real",
+        "customparamspath": "basestring",
+        "numReplicas": "numbers.Real",
+        "maxDevicesPerReplica": "numbers.Real",
+        "format": "basestring"
     }
     exitCondition = {
         "types": {
@@ -151,7 +200,7 @@ class SimulationParams:
             "metricMultipleTrajectories": "basestring"
         },
         "params": {
-            "metricCol": "int",
+            "metricCol": "numbers.Real",
             "exitValue": "numbers.Real",
             "condition": "basestring",
             "numTrajs": "numbers.Real"
@@ -161,26 +210,43 @@ class SimulationParams:
 
 class clusteringTypes:
     types = {
-        "rmsd": {
-        },
+        "rmsd": {},
         "contactMap": {
-            "similarityEvaluator": "basestring"
+            "similarityEvaluator": "basestring",
+            "ligandResname": "basestring"
         },
         "lastSnapshot": {
+            "ligandResname": "basestring"
+        },
+        "null": {
+            "ligandResname": "basestring"
+        },
+        "MSM": {
+            "ligandResname": "basestring",
+            "nclusters": "numbers.Real"
         }
     }
     params = {
         "rmsd": "basestring",
         "contactMap": "basestring",
-        "contactThresholdDistance": "numbers.Real",
         "lastSnapshot": "basestring",
+        "null": "basestring",
+        "contactThresholdDistance": "numbers.Real",
         "ligandResname": "basestring",
         "ligandResnum": "numbers.Real",
         "ligandChain": "basestring",
         "similarityEvaluator": "basestring",
         "symmetries": "list",
         "alternativeStructure": "bool",
-        "nclusters": "numbers.Real"
+        "nclusters": "numbers.Real",
+        "tica": "bool",
+        "atom_Ids": "list",
+        "writeCA": "bool",
+        "sidechains": "bool",
+        "tica_lagtime": "numbers.Real",
+        "tica_nICs": "numbers.Real",
+        "tica_kinetic_map": "bool",
+        "tica_commute_map": "bool"
     }
     thresholdCalculator = {
         "types": {

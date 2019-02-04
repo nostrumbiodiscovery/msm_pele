@@ -8,8 +8,8 @@ import os
 machine = socket.getfqdn()
 if "bsc.mn" in machine:
     SCHRODINGER = "/gpfs/projects/bsc72/SCHRODINGER_ACADEMIC"
-    PELE = "/gpfs/projects/bsc72/PELE++/nord/rev090518"
-    PELE_BIN = "/gpfs/projects/bsc72/PELE++/nord/rev090518/bin/PELE-1.5_mpi"
+    PELE = "/gpfs/projects/bsc72/MultiBoxPELE/bin/"
+    PELE_BIN = "/gpfs/projects/bsc72/MultiBoxPELE/build/PELE-1.5"
     MPIRUN = "/apps/INTEL/2017.4/impi/2017.3.196/bin64"
     LICENSE = "/gpfs/projects/bsc72/PELE++/license"
     MMSHARE = None
@@ -72,10 +72,10 @@ EQ_STEPS = 50
 GRIDRES = '10.0'
 
 # TEMPLATE KEYWORDS
-ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "SEED", "STEPS"]
+ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "SEED", "STEPS", "ITERATIONS", "MSM_CLUST", "LAGTIME", "MIN_POS"]
 EX_ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "EQ_STEPS", "SEED"]
-EX_PELE_KEYWORDS = ["NATIVE", "FORCEFIELD", "CHAIN", "CONSTRAINTS", "CPUS", "LICENSES", "LOGFILE"]
-PELE_KEYWORDS = ["BOX_CENTER", "BOX_RADIUS", "SASA_min", "SASA_max", "LOGFILE"]
+EX_PELE_KEYWORDS = ["NATIVE", "FORCEFIELD", "CHAIN", "CONSTRAINTS", "LICENSES", "LOGFILE", "SOLVENT"]
+PELE_KEYWORDS = [ "RESTART", "OUTPUT", "INPUT", "SEED", "STEPS", "BOX", "BOX_METRIC", "SASA_min", "SASA_max" ]
 NATIVE = '''
                         {{
 
@@ -97,6 +97,39 @@ NATIVE = '''
 
 
 '''
+BOX_METRIC = '''
+			{
+			    "type": "isPerturbedAtomSetCOMOutOfTheBox"
+			}
+	     '''
+
+BOX = '''
+MODEL $MODEL
+HEADER    CORNERS OF BOX
+REMARK    CENTER (X Y Z)   $CENTER_X  $CENTER_Y  $CENTER_Z
+REMARK    RADIUS $RADIUS
+REMARK    DIMENSIONS (X Y Z)   31.116  26.557  29.958
+ATOM      1  DUA BOX     1 $V1
+ATOM      2  DUB BOX     1 $V2
+ATOM      3  DUC BOX     1 $V3
+ATOM      4  DUD BOX     1 $V4
+ATOM      5  DUE BOX     1 $V5
+ATOM      6  DUF BOX     1 $V6
+ATOM      7  DUG BOX     1 $V7
+ATOM      8  DUH BOX     1 $V8
+CONECT    1    2    4    5
+CONECT    2    1    3    6
+CONECT    3    2    4    7
+CONECT    4    1    3    8
+CONECT    5    1    6    8
+CONECT    6    2    5    7
+CONECT    7    3    6    8
+CONECT    8    4    5    7
+ENDMDL
+'''
+
+INPUT_PELE = '{{ "files" : [ {{ "path" : "{}" }} ] }}'
+
 
 SYSTEM = "System {} checked successfully\n\t**Missing residues found {}\n\t**Gaps found {}\n\t**Metals found {}"
 
@@ -110,32 +143,34 @@ FOLDERS = ["",
            "DataLocal/Templates/AMBER99sb/HeteroAtoms/",
            "DataLocal/Templates/AMBER99sbBSC0/HeteroAtoms/",
            "DataLocal/LigandRotamerLibs",
+           "DataLocal/OBC",
            "output_pele",
            "output_adaptive_exit",
-           "output_clustering"
+           "output_clustering",
+           "results"
           ]
 
 FILES_SP = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_SP.conf"),
-                 os.path.join(DIR, "Templates/adaptive_exit.conf"), os.path.join(DIR, "Templates/adaptive_long.conf"),
+                 os.path.join(DIR, "Templates/adaptive_exit.conf"),
                  os.path.join(DIR, "Templates/pele_exit.conf")]
 
 FILES_XP = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_XP.conf"),
-                 os.path.join(DIR, "Templates/adaptive_exit.conf"), os.path.join(DIR, "Templates/adaptive_long.conf"),
+                 os.path.join(DIR, "Templates/adaptive_exit.conf"),
                  os.path.join(DIR, "Templates/pele_exit.conf")]
 
 FILES_XP2 = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_XP2.conf"),
-                 os.path.join(DIR, "Templates/adaptive_exit.conf"), os.path.join(DIR, "Templates/adaptive_long.conf"),
+                 os.path.join(DIR, "Templates/adaptive_exit.conf"),
                 os.path.join(DIR, "Templates/pele_exit.conf")]
 
-FILES_TEST_XP2 = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_XP2.conf"),
-                 os.path.join(DIR, "Templates/adaptive_exit_test.conf"), os.path.join(DIR, "Templates/adaptive_long_test.conf"),
+FILES_TEST_XP = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_XP.conf"),
+                 os.path.join(DIR, "Templates/adaptive_exit_test.conf"),
                  os.path.join(DIR, "Templates/pele_exit.conf")]
 
 FILES_TEST = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_SP.conf"),
-                 os.path.join(DIR, "Templates/adaptive_exit_test.conf"), os.path.join(DIR, "Templates/adaptive_long_test.conf"),
+                 os.path.join(DIR, "Templates/adaptive_exit_test.conf"),
                  os.path.join(DIR, "Templates/pele_exit.conf")]
 
-FILES_NAME = ["box.pdb", "pele.conf", "adaptive_exit.conf", "adaptive_long.conf", "pele_exit.conf"]
+FILES_NAME = ["box.pdb", "pele.conf", "adaptive_exit.conf",  "pele_exit.conf"]
 
 # ERRORS
 CLUSTER_ERROR = "Number of cpus ({}) must be bigger than clusters ({})"

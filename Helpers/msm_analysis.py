@@ -5,6 +5,7 @@ from MSM_PELE.AdaptivePELE.freeEnergies import getRepresentativeStructures as ge
 import MSM_PELE.Helpers.tica as td
 import MSM_PELE.Helpers.helpers as hp
 import MSM_PELE.Helpers.plotMSMAdvancedInfo as pt
+import MSM_PELE.Helpers.MSM_report as rp
 import shutil
 import numpy as np
 
@@ -22,30 +23,36 @@ PMF_FILE = "pmf_xyzg_0.dat"
 N_BEST = 5
 
 
-def analyse_results(env, args, runTica=True):
-    lagtime = 1 if args.test else env.lagtime
-    lagtimes = None if args.test else None
-    clusters = 2 if args.test else env.msm_clust
+def analyse_results(env, runTica=True):
+    if env.restart in ["all", "adaptive", "pele", "msm"]:
+    	run_msm(env, runTica)
+    if env.restart in ["all", "adaptive", "pele", "msm", "analyse"]:
+        # In case of more than one simulation, i.e. MSM_0, MSM_1, etc
+        for i, folder in enumerate(glob.glob(os.path.join(env.adap_l_output, "MSM_*"))):
+            analyse_msm(i, env, folder)
+        rp.report_MSM(env, os.path.join(env.adap_l_output, "MSM_{}".format(len(glob.glob(os.path.join(env.adap_l_output, "MSM_*")))-1)))
+
+
+def run_msm(env, runTica=True):
     with hp.cd(env.adap_l_output):
-    	trajs_per_epoch = len(glob.glob(os.path.join("0", "*report*")))
+        trajs_per_epoch = len(glob.glob(os.path.join("0", "*report*")))
         if runTica:
-            td.main(DIMENSIONS, clusters, args.residue, lagtime, trajs_per_epoch, 1000)
+            td.main(DIMENSIONS, clusters, env.residue, lagtime, trajs_per_epoch, 1000)
             return()
         else:
-            extractCoords.main(lig_resname=args.residue, non_Repeat=False, atom_Ids="", nProcessors=args.cpus, parallelize=True, topology=env.topology)
+            extractCoords.main(lig_resname=env.residue, non_Repeat=False, atom_Ids="", nProcessors=env.cpus, parallelize=False, topology=env.topology)
             prepareMSMFolders.main()
-            estimateDGAdaptive.main(trajs_per_epoch, lagtime, clusters, lagtimes=lagtimes)
-            results_file = summerize(env.adap_l_output)
-            shutil.move(results_file, os.path.join(env.pele_dir, "results.txt"))
-            # In case of more than one simulation, i.e. MSM_0, MSM_1, etc
-            MSM_folders = glob.glob(os.path.join(env.adap_l_output, "MSM_*"))
-	    print(MSM_folders)
-            for i, folder in enumerate(MSM_folders):
-		try:
-			getRepr.main(os.path.join(env.adap_l_output, folder, REPRESENTATIVES_FILE), ".", output=REPRESENTATIVES_STRUCTURES % i, topology=env.topology)
-		except IndexError: 
-		    pass
-		pt.main(4, i+1, 5, folder, True, True, True, None, None, env.system_fix, True, False, None, folder, env.residue)
+            estimateDGAdaptive.main(trajs_per_epoch, env.lagtime, env.msm_clust, lagtimes=env.lagtimes, output=env.results)
+            results_file = summerize(env.results)
+
+def analyse_msm(iteration, env, folder):
+    with hp.cd(env.adap_l_output):
+        try:
+            getRepr.main(os.path.join(env.adap_l_output, folder, REPRESENTATIVES_FILE), ".", output=REPRESENTATIVES_STRUCTURES % iteration, topology=env.topology)
+        except IndexError:
+            pass
+        pt.main(4, 1, 5, folder, True, True, True, None, None, env.system_fix, True, False, None, folder, env.residue)
+        
 
 def summerize(pele_path):
     results_file = os.path.join(pele_path, "results.txt")

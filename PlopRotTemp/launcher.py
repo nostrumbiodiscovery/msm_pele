@@ -1,7 +1,10 @@
 import os
 import MSM_PELE.constants as cs
-import subprocess
 import MSM_PELE.Helpers.helpers as hp
+try:
+    import subprocess32 as subprocess
+except ImportError:
+    import subprocess
 
 def parametrize_miss_residues(args, env, syst):
     SPYTHON = os.path.join(cs.SCHRODINGER, "utilities/python")
@@ -10,10 +13,14 @@ def parametrize_miss_residues(args, env, syst):
     options = retrieve_options(args, env)
     if args.mae_lig:
         mae_charges = True
-        subprocess.call("{} {} {} {} {} {}".format(SPYTHON, file_path, options, args.mae_lig, args.residue, env.pele_dir).split())
+        print("Running Plop from mae")
+        print("{} {} {} {} {} {}".format(SPYTHON, file_path, options, env.mae_lig, args.residue, env.pele_dir))
+        subprocess.call("{} {} {} {} {} {}".format(SPYTHON, file_path, options, env.mae_lig, args.residue, env.pele_dir).split())
         hp.silentremove([syst.system])
     else:
         mae_charges = False
+        print("Running Plop from pdb")
+        print("{} {} {} {} {} {}".format(SPYTHON, file_path, options, env.mae_lig, args.residue, env.pele_dir))
         subprocess.call("{} {} {} {} {} {}".format(SPYTHON, file_path, options, syst.lig, args.residue, env.pele_dir).split())
         hp.silentremove([syst.lig])
 

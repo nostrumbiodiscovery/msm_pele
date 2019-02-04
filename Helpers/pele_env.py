@@ -13,35 +13,61 @@ class EnviroBuilder(object):
     """
 
     def __init__(self, folders, files, args):
+        """
+        Base class that encodes as attributes
+        the software parameters for each stage
+        """
         self.folders = folders
+        self.ext_temp = args.ext_temp
         self.files = files
         self.system = args.system
+        self.box = args.box
+        self.user_center = args.user_center
+        self.solvent = args.solvent
+        self.user_radius = args.user_radius
+        self.box_type = args.box_type
+        self.box_metric = cs.BOX_METRIC if args.box_metric else " "
+        self.iterations = args.iterations
         self.forcefield = args.forcefield
         self.residue = args.residue
         self.templates = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), "PeleTemplates"))
-        self.cpus = args.cpus = args.cpus if not args.test else 4 
         self.restart = args.restart
         self.native = args.native
         self.chain = args.chain
-        self.mae_lig = args.mae_lig
+        self.mae_lig = os.path.abspath(args.mae_lig) if args.mae_lig else None
         self.clusters = args.clust = args.clust if not args.test else 2
         self.test = args.test
         self.folder = args.folder
         self.pdb = args.pdb
-	self.nonstandard = args.nonstandard
+        self.steps = args.steps
+        self.nonstandard = args.nonstandard
+        self.time = args.time
         self.lagtime = args.lagtime
-        self.steps = args.steps if not self.test else 1
         self.msm_clust = args.msm_clust
-	self.log = '"simulationLogPath" : "$OUTPUT_PATH/logFile.txt",' if args.log else ""
-        self.build_constant_paths()
-	self.renumber = args.nonrenum
+        self.log = '"simulationLogPath" : "$OUTPUT_PATH/logFile.txt",' if args.log else ""
+        self.renumber = args.nonrenum
+        self.nosasa = args.nosasa
+        self.sasa = args.sasa
+        self.perc_sasa = args.perc_sasa
+        #Choose CPUS
+        if args.test:
+            self.cpus = args.cpus = 4
+        elif args.restart == "analise":
+            self.cpus = args.cpus = 1
+        else:
+            self.cpus = args.cpus
+        #Build constants for each module
+        self.build_sasa_constants()
+        self.build_msm_constants()
+        self.build_path_constants()
+
 
     @classmethod
     def build_env(cls, args):
-        if args.test and not args.precision2:
+        if args.test and not args.precision:
             env = cls(cs.FOLDERS, cs.FILES_TEST, args)
-	elif args.test and args.precision2:
-            env = cls(cs.FOLDERS, cs.FILES_TEST_XP2, args)
+	elif args.test and args.precision:
+            env = cls(cs.FOLDERS, cs.FILES_TEST_XP, args)
         elif args.precision:
             env = cls(cs.FOLDERS, cs.FILES_XP, args)
         elif args.precision2:
@@ -51,7 +77,29 @@ class EnviroBuilder(object):
         env.create()
         return env
 
-    def build_constant_paths(self):
+
+    def build_msm_constants(self):
+        """
+        Build sasa related constants for later
+        classifing the exit simulation clusters
+        """
+        self.steps = self.steps if not self.test else 5
+        self.lagtime = 1 if self.test else self.lagtime
+        self.lagtimes = None if self.test else [50, 100, 200, 500]
+        self.msm_clust = 2 if self.test else self.msm_clust
+
+
+    def build_sasa_constants(self):
+        """
+        Build sasa related constants for later
+        classifing the exit simulation clusters
+        """
+        self.perc_sasa_min, self.perc_sasa_int, self.perc_sasa_max = self.perc_sasa
+        self.sasamin, self.sasamax = self.sasa if self.sasa else [None, None]
+        self.sasa = True if not self.nosasa and not self.test else False
+            
+
+    def build_path_constants(self):
 
         self.template = None
         self.rotamers_file = None
@@ -75,20 +123,30 @@ class EnviroBuilder(object):
         else:
             self.system_fix = os.path.join(self.pele_dir, "{}_processed.pdb".format(os.path.splitext(os.path.basename(self.system))[0]))
 
+        for f in self.ext_temp:
+            cs.FILES_NAME.append(os.path.join("DataLocal/Templates/{}/HeteroAtoms/".format(self.forcefield), os.path.basename(f)))
+            self.files.append(os.path.basename(f))
+            
         self.adap_ex_input = os.path.join(self.pele_dir, os.path.basename(self.system_fix))
         self.adap_ex_output = os.path.join(self.pele_dir, "output_adaptive_exit")
+        self.exit_path = os.path.join(self.adap_ex_output, "exit_path")
+        self.template_folder = os.path.join(self.pele_dir, "DataLocal/Templates/{}/HeteroAtoms/".format(self.forcefield))
+        self.obc_tmp = os.path.join(cs.DIR, "Templates/solventParamsHCTOBC.txt")
+        self.obc_file = os.path.join(self.pele_dir, "DataLocal/OBC/solventParamsHCTOBC.txt")
+        self.results = os.path.join(self.pele_dir, "results")
         self.cluster_output = os.path.join(self.pele_dir, "output_clustering")
-        self.adap_l_input = "{}/initial_*"
+        self.adap_l_input = os.path.join(self.pele_dir, "output_clustering/initial_*")
         self.adap_l_output = os.path.join(self.pele_dir, "output_pele")
         self.ad_ex_temp = os.path.join(self.pele_dir, "adaptive_exit.conf")
         self.ad_l_temp = os.path.join(self.pele_dir, "adaptive_long.conf")
         self.pele_exit_temp = os.path.join(self.pele_dir, "pele_exit.conf")
         self.pele_temp = os.path.join(self.pele_dir, "pele.conf")
         self.box_temp = os.path.join(self.pele_dir, "box.pdb")
+        self._pele_temp = os.path.join(cs.DIR, "Templates/pele_SP.conf")
         self.clusters_output = os.path.join(self.cluster_output, "clusters_{}_KMeans_allSnapshots.pdb".format(self.clusters))
         self.ligand_ref = os.path.join(self.pele_dir, "ligand.pdb")
         self.native = cs.NATIVE.format(os.path.abspath(self.native), self.chain) if self.native else cs.NATIVE.format(os.path.abspath(self.ligand_ref), self.chain)
-        self.topology = None if self.pdb else os.path.join(self.adap_ex_output, "topology.pdb")
+        self.topology = None if self.pdb else os.path.join(self.adap_ex_output, "topologies/topology_0.pdb")
 
     def create(self):
         if self.restart == "all":

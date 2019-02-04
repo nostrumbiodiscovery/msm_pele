@@ -44,7 +44,7 @@ class ZMATRIX:
             try:
                 filein = open(filename, 'r')
             except IOError:
-                print "    * No such file or directory: {}".format(filename)
+                print("    * No such file or directory: {}".format(filename))
                 self.Name = None
                 return None
             else:
@@ -59,8 +59,8 @@ class ZMATRIX:
         counter = 0
         for line in raw_data:
             if line.strip() == "":
-                print "The template for the residue {} in {} has a blank line. " \
-                      "Check it or not! Whatever you want.".format(self.Name, filename)
+                print("The template for the residue {} in {} has a blank line. " \
+                      "Check it or not! Whatever you want.".format(self.Name, filename))
                 continue
             if self.Name[-1] in ['z', 'b', 'e', 'a']:
                 possible_name = line[:5]
@@ -93,7 +93,7 @@ class ZMATRIX:
                 add_vdw = True
                 counter = num_of_atoms
                 if counter == 0:
-                    print " - There's a problem with the template of the residue {}.".format(aminoacid_name)
+                    print(" - There's a problem with the template of the residue {}.".format(aminoacid_name))
                     break
             elif add_vdw:
                 self.VdWRadius.append((float(tmp_list[1]) / 2))
