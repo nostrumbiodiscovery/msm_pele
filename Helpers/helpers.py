@@ -1,5 +1,6 @@
 import os
 import re
+import random
 import MSM_PELE.Helpers.best_structs as bs
 
 
@@ -19,11 +20,19 @@ def change_output(inp_file, out_folder):
     with open(inp_file, "r") as f:
         lines = f.readlines()
 
-    new_lines = [ '        "reportPath" : "{}",\n'.format(os.path.join(out_folder, "report"))  if "reportPath" in line else line for line in lines ]
-    final_lines = [ '        "trajectoryPath" : "{}"\n'.format(os.path.join(out_folder, "trajectory.xtc"))  if "trajectoryPath" in line else line for line in new_lines ]
+    new_lines = []
+    for line in lines:
+        if "reportPath" in line:
+            new_lines.append('        "reportPath" : "{}",\n'.format(os.path.join(out_folder, "report")))
+        elif "trajectoryPath" in line:
+            new_lines.append('        "trajectoryPath" : "{}"\n'.format(os.path.join(out_folder, "trajectory.xtc")))
+        elif "seed" in line:
+            new_lines.append('        "RandomGenerator" : {{ "seed" : {} }},\n'.format(random.randint(1,10000)))
+        else:
+            new_lines.append(line)
 
-    with open(inp_file, "w") as f:
-        f.write("".join(final_lines))
+    with open(inp_file, "w") as fout:
+        fout.write("".join(new_lines))
 
 class cd:
     """Context manager for changing the current working directory"""

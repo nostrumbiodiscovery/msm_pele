@@ -72,6 +72,12 @@ def run(args):
 
     if args.restart in ["all", "adaptive", "pele"]:
 
+        #Check restart variables
+        try:
+            initial_iteration = max([ int(os.path.basename(os.path.normpath(folder))) for folder in glob.glob(os.path.join(env.adap_l_output, "*/")) if os.path.basename(os.path.normpath(folder)).isdigit() ])
+        except ValueError: 
+            initial_iteration = 0
+
         #KMeans Clustering
         env.logger.info("Running Exit Path Clustering")
         with hp.cd(env.adap_ex_output):
@@ -84,7 +90,7 @@ def run(args):
         env.logger.info("Box created successfully ")
 
         # Pele Exploration
-        for i in range(env.iterations):
+        for i in range(initial_iteration, env.iterations):
             env.logger.info("Running standard Pele")
             inputs = [ cs.INPUT_PELE.format(f) for f in glob.glob(env.adap_l_input) ]
             output = os.path.join(env.adap_l_output, str(i))
@@ -140,7 +146,7 @@ def parse_args(args=[]):
     parser.add_argument("--pdb", action='store_true',  help="Use pdb files as output")
     parser.add_argument("--nonstandard", nargs="+",  help="Mid Chain non standard residues to be treated as ATOM not HETATOM", default = [])
     parser.add_argument("--lagtime", type=int,  help="MSM Lagtime to use", default=100)
-    parser.add_argument("--steps", type=int,  help="MSM Steps to use", default=1000)
+    parser.add_argument("--steps", type=int,  help="MSM Steps to use", default=10000)
     parser.add_argument("--msm_clust", type=int,  help="Number of clusters created to converge MSM", default=200)
     parser.add_argument("--time", type=int,  help="Limit of time to run pele exploration", default=None)
     parser.add_argument("--log", action='store_true',  help="Print LogFiles when running PELE")

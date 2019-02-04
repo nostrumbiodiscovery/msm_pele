@@ -162,7 +162,7 @@ FILES_XP2 = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Template
                  os.path.join(DIR, "Templates/adaptive_exit.conf"),
                 os.path.join(DIR, "Templates/pele_exit.conf")]
 
-FILES_TEST_XP2 = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_XP2.conf"),
+FILES_TEST_XP = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templates/pele_XP.conf"),
                  os.path.join(DIR, "Templates/adaptive_exit_test.conf"),
                  os.path.join(DIR, "Templates/pele_exit.conf")]
 
