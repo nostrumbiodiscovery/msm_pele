@@ -64,10 +64,10 @@ class EnviroBuilder(object):
 
     @classmethod
     def build_env(cls, args):
-        if args.test and not args.precision2:
+        if args.test and not args.precision:
             env = cls(cs.FOLDERS, cs.FILES_TEST, args)
-	elif args.test and args.precision2:
-            env = cls(cs.FOLDERS, cs.FILES_TEST_XP2, args)
+	elif args.test and args.precision:
+            env = cls(cs.FOLDERS, cs.FILES_TEST_XP, args)
         elif args.precision:
             env = cls(cs.FOLDERS, cs.FILES_XP, args)
         elif args.precision2:
