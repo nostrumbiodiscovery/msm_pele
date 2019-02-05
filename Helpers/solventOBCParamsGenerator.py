@@ -125,7 +125,7 @@ def parseImpactTemplate(impactTemplate):
         if len(line)== 68 and len(line.split())==9:
             tmp = line.split()
             atomNamesAndTypes.append([tmp[4].replace('_',''),tmp[3]])
-        atomNumber.append(tmp[0])           
+            atomNumber.append(tmp[0])           
 
         if 'BOND' in line[:5]: 
             read = True
@@ -133,9 +133,9 @@ def parseImpactTemplate(impactTemplate):
         if 'THET' in line[:5]:
             read = False    
             continue
-    if read:
-        tmp2 = line.split()
-        bonds.append([tmp2[0],tmp2[1]]) 
+        if read:
+            tmp2 = line.split()
+            bonds.append([tmp2[0],tmp2[1]]) 
 
     # get number of atoms connected
  
@@ -145,22 +145,20 @@ def parseImpactTemplate(impactTemplate):
     for ele in atomNumber:
         counter = 0
         atomAttached = ''
-    for bond in bonds:
-        if ele==bond[0]:
-            counter +=1
-            print('counting   ',ele,bond[0])
-            if getShortName(atomNamesAndTypes[int(ele[0])-1][0])[0]=='H':
-                atomAttached= getShortName(atomNamesAndTypes[int(bond[1])-1][0])[0]
-        if ele==bond[1]:
-            counter +=1
-            print('counting   ',ele,bond[1])
-            if getShortName(atomNamesAndTypes[int(ele[0])-1][0])[0]=='H':
-                atomAttached= getShortName(atomNamesAndTypes[int(bond[0])-1][0])[0]
+        for bond in bonds:
+            if ele==bond[0]:
+                counter +=1
+                print('counting   ',ele,bond[0])
+                if getShortName(atomNamesAndTypes[int(ele[0])-1][0])[0]=='H':
+                    atomAttached= getShortName(atomNamesAndTypes[int(bond[1])-1][0])[0]
+            if ele==bond[1]:
+                counter +=1
+                print('counting   ',ele,bond[1])
+                if getShortName(atomNamesAndTypes[int(ele[0])-1][0])[0]=='H':
+                    atomAttached= getShortName(atomNamesAndTypes[int(bond[0])-1][0])[0]
 
-    numberOfConnections.append([counter,atomAttached])
+        numberOfConnections.append([counter,atomAttached])
 
-    for i in range(len(atomNumber)):
-        print(atomNumber[i],numberOfConnections[i])
  
     return name, atomNamesAndTypes,numberOfConnections
 
@@ -180,7 +178,7 @@ def getOverlapscalefactorsFromAtomName(atomName,atomTypesOverlapscalefactors,ato
     if not found:
         shortName = shortName[0]
 
-    overlapFactor,found = assignOverlapFactor(shortName,atomTypesOverlapscalefactors,numberOfBonds,atomName)
+        overlapFactor,found = assignOverlapFactor(shortName,atomTypesOverlapscalefactors,numberOfBonds,atomName)
 
     for atomType in atomTypesHCTradii:
         if shortName==atomType[0].upper():
