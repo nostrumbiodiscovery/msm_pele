@@ -29,8 +29,8 @@ def GenerateMap(zmat1, zmat2, name1, name2):
         last_common_parent = zmat1.GetParentName(common_atoms[-1])
         # print 'a', last_common_parent
         if last_common_parent not in common_atoms:
-            print "u o something's terribly wrong!" \
-                  "error in mutation from {} to {} ".format(name1, name2)
+            print("something's wrong!" \
+                  "error in mutation from {} to {} ").format(name1, name2)
         res1_change = zmat1.GetAllChildrenAtoms(last_common_parent)
         res2_change = zmat2.GetAllChildrenAtoms(last_common_parent)
         for at in zmat1.GetDirectChildrenAtoms(last_common_parent):
@@ -92,11 +92,7 @@ def GenerateMap(zmat1, zmat2, name1, name2):
                 try:
                     common_atoms.pop(common_atoms.index('CD'))
                 except ValueError:
-                    print 'something is wrong with prolines...'
-                    print name1, name2
-                    print common_atoms
-                    print changing_atoms
-                    print volatile_atoms
+                    print('something is wrong with prolines...')
 
 
     dir1 = "{}-{}".format(name1, name2)
@@ -121,13 +117,13 @@ fileout.write("{\n")
 for x, aa1 in enumerate(aminoacids):
     for aa2 in aminoacids[x + 1:]:
         if aa1 == "PRO":
-            print "mutation {} to {} do it by hand".format(aa1, aa2)
+            print("mutation {} to {} do it by hand").format(aa1, aa2)
             continue
         elif aa1 in cyclics and aa2 in cyclics:
-            print "mutation {} to {} do it by hand".format(aa1, aa2)
+            print("mutation {} to {} do it by hand").format(aa1, aa2)
             continue
         elif aa1 == "GLY" and aa2 == "PRO":
-            print "mutation {} to {} do it by hand".format(aa1, aa2)
+            print("mutation {} to {} do it by hand").format(aa1, aa2)
             continue
 
         # print "working with :" , aa1, aa2

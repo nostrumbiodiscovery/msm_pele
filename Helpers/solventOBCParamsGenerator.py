@@ -103,12 +103,12 @@ atomTypesHCTradii = [['H','0.85'],
 
 # Parse the impact template to get the residue name and the atom names and atom types
 def parseImpactTemplate(impactTemplate):
-    print 'Parsing ... ',impactTemplate
+    print('Parsing ... ',impactTemplate)
     
     try:
         fileout = open(impactTemplate)
     except:
-        print 'Impossible to open the file ....  ',impactTemplate
+        print('Impossible to open the file ....  ',impactTemplate)
         sys.exit()
     
     name = ''
@@ -125,44 +125,42 @@ def parseImpactTemplate(impactTemplate):
         if len(line)== 68 and len(line.split())==9:
             tmp = line.split()
             atomNamesAndTypes.append([tmp[4].replace('_',''),tmp[3]])
-	    atomNumber.append(tmp[0])   	    
+        atomNumber.append(tmp[0])           
 
         if 'BOND' in line[:5]: 
-		read = True
-		continue	
+            read = True
+            continue    
         if 'THET' in line[:5]:
-		read = False	
-		continue
-	if read:
-		tmp2 = line.split()
-		bonds.append([tmp2[0],tmp2[1]])	
+            read = False    
+            continue
+    if read:
+        tmp2 = line.split()
+        bonds.append([tmp2[0],tmp2[1]]) 
 
     # get number of atoms connected
  
     numberOfConnections = []
 
-    for f in bonds:
-	print f
 
     for ele in atomNumber:
-	counter = 0
-	atomAttached = ''
-	for bond in bonds:
-		if ele==bond[0]:
-			counter +=1
-			print 'counting   ',ele,bond[0]
-			if getShortName(atomNamesAndTypes[int(ele[0])-1][0])[0]=='H':
-				atomAttached= getShortName(atomNamesAndTypes[int(bond[1])-1][0])[0]
-		if ele==bond[1]:
-			counter +=1
-			print 'counting   ',ele,bond[1]
-			if getShortName(atomNamesAndTypes[int(ele[0])-1][0])[0]=='H':
-				atomAttached= getShortName(atomNamesAndTypes[int(bond[0])-1][0])[0]
+        counter = 0
+        atomAttached = ''
+    for bond in bonds:
+        if ele==bond[0]:
+            counter +=1
+            print('counting   ',ele,bond[0])
+            if getShortName(atomNamesAndTypes[int(ele[0])-1][0])[0]=='H':
+                atomAttached= getShortName(atomNamesAndTypes[int(bond[1])-1][0])[0]
+        if ele==bond[1]:
+            counter +=1
+            print('counting   ',ele,bond[1])
+            if getShortName(atomNamesAndTypes[int(ele[0])-1][0])[0]=='H':
+                atomAttached= getShortName(atomNamesAndTypes[int(bond[0])-1][0])[0]
 
-	numberOfConnections.append([counter,atomAttached])
+    numberOfConnections.append([counter,atomAttached])
 
     for i in range(len(atomNumber)):
-    	print atomNumber[i],numberOfConnections[i]   
+        print(atomNumber[i],numberOfConnections[i])
  
     return name, atomNamesAndTypes,numberOfConnections
 
@@ -172,7 +170,6 @@ def getOverlapscalefactorsFromAtomName(atomName,atomTypesOverlapscalefactors,ato
    
     shortName = getShortName(atomName)
 
-    print shortName
  
     overlapFactor = '2.0'
     radii ='0.80'
@@ -181,10 +178,9 @@ def getOverlapscalefactorsFromAtomName(atomName,atomTypesOverlapscalefactors,ato
     overlapFactor, found = assignOverlapFactor(shortName,atomTypesOverlapscalefactors,numberOfBonds,atomName)
 
     if not found:
-	print 'fffffffff',shortName
-	shortName = shortName[0]
+        shortName = shortName[0]
 
-	overlapFactor,found = assignOverlapFactor(shortName,atomTypesOverlapscalefactors,numberOfBonds,atomName)
+    overlapFactor,found = assignOverlapFactor(shortName,atomTypesOverlapscalefactors,numberOfBonds,atomName)
 
     for atomType in atomTypesHCTradii:
         if shortName==atomType[0].upper():
@@ -193,28 +189,28 @@ def getOverlapscalefactorsFromAtomName(atomName,atomTypesOverlapscalefactors,ato
     return overlapFactor,radii,found
 
 def assignOverlapFactor(name,atomTypeOverlapFactorTable,numberOfBonds,realName):
-	
-	overlapFactor = ''
+    
+    overlapFactor = ''
 
-	found = False
+    found = False
 
-	for atomType in atomTypeOverlapFactorTable:
-        	if name==atomType[0].upper():
-           		overlapFactor = atomType[1]
-            		found = True
-           	 	print 'Atom Name ',realName,'   identified as ',atomType[0], '  with ',numberOfBonds, 'internal name  ',name 
-  
-	if name=='H' and numberOfBonds[1]=='O': 
-		overlapFactor='1.05' 
-   	if name=='H' and numberOfBonds[1]=='N': overlapFactor='1.15' 
+    for atomType in atomTypeOverlapFactorTable:
+            if name==atomType[0].upper():
+                overlapFactor = atomType[1]
+                found = True
+                print('Atom Name ',realName,'   identified as ',atomType[0], '  with ',numberOfBonds, 'internal name  ',name)  
 
-	if name=='C' and numberOfBonds[0]==3: overlapFactor='1.875' 
-	if name=='C' and numberOfBonds[0]==2: overlapFactor='1.825' 
-	if name=='N' and numberOfBonds[0]==4: overlapFactor='1.625' 
-	if name=='N' and numberOfBonds[0]==1: overlapFactor='1.60' 
-	if name=='O' and numberOfBonds[0]==1: overlapFactor='1.48' 
+    if name=='H' and numberOfBonds[1]=='O': 
+        overlapFactor='1.05' 
+    if name=='H' and numberOfBonds[1]=='N': overlapFactor='1.15' 
+
+    if name=='C' and numberOfBonds[0]==3: overlapFactor='1.875' 
+    if name=='C' and numberOfBonds[0]==2: overlapFactor='1.825' 
+    if name=='N' and numberOfBonds[0]==4: overlapFactor='1.625' 
+    if name=='N' and numberOfBonds[0]==1: overlapFactor='1.60' 
+    if name=='O' and numberOfBonds[0]==1: overlapFactor='1.48' 
  
-	return overlapFactor,found
+    return overlapFactor,found
 
 # extract atom type from atom name for hetero atoms
 def getShortName(name):
@@ -227,16 +223,16 @@ def getShortName(name):
     end = 0
 
     for iterator in range(0,size):
-	char = name[iterator]
-	if not char.isdigit():
-		start = iterator
-		break	
+        char = name[iterator]
+        if not char.isdigit():
+            start = iterator
+            break   
 
     for iterator in reversed(range(0,size)):
-	char = name[iterator]
-	if not char.isdigit():
-		end = iterator
-		break	
+        char = name[iterator]
+        if not char.isdigit():
+            end = iterator
+            break   
 
     short = name[start:end+1]
 
@@ -253,7 +249,6 @@ def generateSolventTemplate(residueName, atomNamesAndTypes,paramtersLst,atomType
     
     for i,ele in enumerate(atomNamesAndTypes):
         found = False
-	print ele
         for param in paramtersLst:
             if ele[1]==param[0]:
                 templateParameters.append(residueName+'Z   '+ele[0]+'   '+ele[1]+'    '+param[1]+'   '+param[2]+'\n') 
@@ -265,7 +260,7 @@ def generateSolventTemplate(residueName, atomNamesAndTypes,paramtersLst,atomType
             overlapFactor, radii, foundNoStd = getOverlapscalefactorsFromAtomName(ele[0],atomTypesOverlapFactors,atomTypesHCTradii,numberOfBonds[i])
             
             if not foundNoStd:
-                print 'Parameter NOT found in the template database ....... '+ele[0]+'   '+ele[1]+'  using default parameters'
+                print('Parameter NOT found in the template database ....... '+ele[0]+'   '+ele[1]+'  using default parameters')
 
             templateParameters.append(residueName+'Z   '+ele[0]+'   '+ele[1]+'    '+overlapFactor+'   '+radii+'\n') 
         

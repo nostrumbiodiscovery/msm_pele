@@ -39,7 +39,7 @@ def run(args):
 
         # Parametrize Ligand
         env.logger.info("Creating template for residue {}".format(args.residue))
-	with hp.cd(env.pele_dir):
+        with hp.cd(env.pele_dir):
         	plop.parametrize_miss_residues(args, env, syst)
         env.logger.info("Template {}z created".format(args.residue.lower()))
 
@@ -47,7 +47,7 @@ def run(args):
         for res, __, _ in missing_residues:
             if res != args.residue:
                 env.logger.info("Creating template for residue {}".format(res))
-		with hp.cd(env.pele_dir):
+                with hp.cd(env.pele_dir):
                 	mr.create_template(args, env)
                 env.logger.info("Template {}z created".format(res))
 
@@ -96,7 +96,6 @@ def run(args):
             output = os.path.join(env.adap_l_output, str(i))
             if not os.path.isdir(output):
                 os.mkdir(output)
-            print(output)
             hp.change_output(env.pele_temp, output)
             simulation = ad.SimulationBuilder(env.pele_temp,  env.topology, cs.PELE_KEYWORDS, cs.RESTART, os.path.join(env.adap_l_output, output),
                 ",\n".join(inputs), env.random_num, env.steps, box, env.box_metric, BS_sasa_min, BS_sasa_max)
