@@ -13,23 +13,18 @@ Conda Installation (Recommended)
 
 **Create conda**::
 
-  conda create -y -n py27 python=2.7 anaconda
+  conda create --name py36 python=3.6
 
 **Activate Env**::
 
-  source activate py27
+  source activate py36
 
-**Install dependencies**::
+**Install software**::
 
-  ~/conda/envs/py27/bin/pip install msmtools
+  from the folder containing MSM_PELE and with the python used to run the software later:
 
-  ~/conda/envs/py27/bin/pip install pyemma
+  python MSM_PELE/setup.py install --schr </path/to/schrodinger> --pele </path/to/pele/> --pele-license </path/to/pele/licenses> --pele-exec </path/to/pele/bin> --mpirun </path/to/mpi> 
 
-  ~/conda/envs/py27/bin/pip install prody==1.8.2
-
-  ~/conda/envs/py27/bin/pip install sklearn
-
- 
 MSM PELE Configuration
 -----------------------
 
@@ -37,9 +32,6 @@ MSM PELE Configuration
  
   export PYTHONPATH=$PYTHONPATH:'/path/to/MSM_PELE/'
 
-**Changing local path**::
-
-  Change the public variables path under **MSM_PELE/constants.py** to the ones local to your machine
 
 **Pyemma config**::
 
