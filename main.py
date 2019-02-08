@@ -4,6 +4,7 @@ import os
 import MSM_PELE.Helpers.check_env_var as env
 env.check_dependencies()
 import shutil
+import random
 import glob
 import argparse
 import MSM_PELE.constants as cs
@@ -39,7 +40,7 @@ def run(args):
 
         # Parametrize Ligand
         env.logger.info("Creating template for residue {}".format(args.residue))
-        with hp.cd(env.pele_dir):
+	with hp.cd(env.pele_dir):
         	plop.parametrize_miss_residues(args, env, syst)
         env.logger.info("Template {}z created".format(args.residue.lower()))
 
@@ -47,7 +48,7 @@ def run(args):
         for res, __, _ in missing_residues:
             if res != args.residue:
                 env.logger.info("Creating template for residue {}".format(res))
-                with hp.cd(env.pele_dir):
+		with hp.cd(env.pele_dir):
                 	mr.create_template(args, env)
                 env.logger.info("Template {}z created".format(res))
 
@@ -78,19 +79,24 @@ def run(args):
         except ValueError: 
             initial_iteration = 0
 
-        #KMeans Clustering
-        env.logger.info("Running Exit Path Clustering")
-        with hp.cd(env.adap_ex_output):
-            cluster_centers = cl.main(env.clusters, env.cluster_output, args.residue, "", env.cpus, env.topology, env.sasamin, env.sasamax, env.sasa, env.perc_sasa_min, env.perc_sasa_int)
-        env.logger.info("Exit Path Clustering run successfully")
-
-        # Create Box
-        env.logger.info("Creating box")
-        box, BS_sasa_min, BS_sasa_max = bx.create_box(cluster_centers, env)
-        env.logger.info("Box created successfully ")
-
-        # Pele Exploration
+        # For each iteration
         for i in range(initial_iteration, env.iterations):
+
+            # KMeans Clustering with different seed
+            env.logger.info("Running Exit Path Clustering")
+            with hp.cd(env.adap_ex_output):
+                seed = 742304 if env.test else random.randint(1,1000000)
+                env.logger.info(seed)
+                cluster_centers = cl.main(env.clusters, env.cluster_output, args.residue, "", env.cpus, env.topology, env.sasamin, env.sasamax, env.sasa, env.perc_sasa_min, env.perc_sasa_int, seed=seed, iteration=i)
+            env.logger.info("Exit Path Clustering run successfully")
+
+            # Create Exploration Box
+            if i == 0:
+                env.logger.info("Creating box")
+                box, BS_sasa_min, BS_sasa_max = bx.create_box(cluster_centers, env)
+                env.logger.info("Box created successfully ")
+
+            # Explore
             env.logger.info("Running standard Pele")
             inputs = [ cs.INPUT_PELE.format(f) for f in glob.glob(env.adap_l_input) ]
             output = os.path.join(env.adap_l_output, str(i))
@@ -101,15 +107,17 @@ def run(args):
                 ",\n".join(inputs), env.random_num, env.steps, box, env.box_metric, BS_sasa_min, BS_sasa_max)
             time_sim = simulation.run_pele(env, limitTime=env.time)
             env.logger.info("Pele run successfully in {}".format(time_sim))
+
+            # Analyse simulation
             env.logger.info("Running MSM analysis")
-            msm.analyse_results(env, runTica=False)
+            msm.analyse_results(env, runTica=False, last=i == (env.iterations-1))
             env.logger.info("MSM analysis run successfully")
 
     if args.restart in ["msm", "analyse"]:
 
-        # MSM Analysis
+        # MSM Final Analysis
         env.logger.info("Running MSM analysis")
-        msm.analyse_results(env, runTica=False)
+        msm.analyse_results(env, runTica=False, last=True)
         env.logger.info("MSM analysis run successfully")
 
     env.logger.info("{} System run successfully".format(args.residue))

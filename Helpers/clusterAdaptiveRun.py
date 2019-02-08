@@ -151,7 +151,7 @@ def get_centers_info(trajectoryFolder, trajectoryBasename, num_clusters, cluster
     return centersInfo
 
 
-def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=None, value1=None, value2=None, sasa=True, perc_sasa_min=0.25, perc_sasa_int=0.5, gaussian = False):
+def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=None, value1=None, value2=None, sasa=True, perc_sasa_min=0.25, perc_sasa_int=0.5, gaussian = False, seed=222, iteration=1):
 
     #Initialize contant variables
     trajectoryFolder = "allTrajs"
@@ -180,7 +180,7 @@ def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=N
     #Cluster
     clusteringObject = cluster.Cluster(num_clusters, trajectoryFolder,
                                        trajectoryBasename, alwaysCluster=True,
-                                       stride=stride, seed=222)
+                                       stride=stride, seed=seed)
     clusteringObject.clusterTrajectories()
     clusteringObject.eliminateLowPopulatedClusters(clusterCountsThreshold)
     clusterCenters = clusteringObject.clusterCenters
@@ -188,7 +188,7 @@ def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=N
 
     #Get Output path
     COMArray = [centersInfo[i]['center'] for i in centersInfo]
-    writePDB(COMArray, outputFolder+"exit_path.pdb")
+    writePDB(COMArray, outputFolder+"exit_path{}.pdb".format(iteration))
 
     #Split clusters by sasa
     if sasa:
