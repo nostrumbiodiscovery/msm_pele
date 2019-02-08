@@ -23,14 +23,15 @@ PMF_FILE = "pmf_xyzg_0.dat"
 N_BEST = 5
 
 
-def analyse_results(env, runTica=True):
+def analyse_results(env, runTica=True, last=False):
     if env.restart in ["all", "adaptive", "pele", "msm"]:
     	run_msm(env, runTica)
     if env.restart in ["all", "adaptive", "pele", "msm", "analyse"]:
         # In case of more than one simulation, i.e. MSM_0, MSM_1, etc
         for i, folder in enumerate(glob.glob(os.path.join(env.adap_l_output, "MSM_*"))):
             analyse_msm(i, env, folder)
-        rp.report_MSM(env, os.path.join(env.adap_l_output, "MSM_{}".format(len(glob.glob(os.path.join(env.adap_l_output, "MSM_*")))-1)))
+        if last:
+            rp.report_MSM(env, os.path.join(env.adap_l_output, "MSM_{}".format(len(glob.glob(os.path.join(env.adap_l_output, "MSM_*")))-1)))
 
 
 def run_msm(env, runTica=True):

@@ -71,7 +71,8 @@ def report_MSM(env, folder):
 
 def get_dG_line(env):
     with open(os.path.join(env.results, "results.txt"), "r") as f:
-        for line in f:
+        lines = f.readlines()
+        for line in reversed(lines):
             if not line.startswith("#"):
                 _, dg, std, _, _, _ = line.strip("\n").split()
                 return dg + " +- " + std 

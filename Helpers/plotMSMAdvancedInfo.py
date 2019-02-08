@@ -145,7 +145,7 @@ def main(nEigenvectors, nRuns, m, outputFolder, plotEigenvectors, plotGMRQ, plot
                 plt.savefig(os.path.join(GMRQPlots, "GMRQ.png" % t))
     if plotTransitions:
         sasas = []
-        for file in glob.glob("0/repor*"):
+        for file in glob.glob("*/repor*"):
             sasas.extend(pd.read_csv(file, sep='    ', engine='python')["sasaLig"].values)
         sasas = np.array(sasas)
         plt.figure()
