@@ -19,14 +19,14 @@ if "bsc.mn" in machine:
 
 elif "mn.bsc" in machine:
     SCHRODINGER = "/gpfs/projects/bsc72/SCHRODINGER_ACADEMIC_NORD"
-    PELE = "/gpfs/projects/bsc72/PELE++/nord/rev090518"
-    PELE_BIN = "/gpfs/projects/bsc72/PELE++/nord/rev090518/bin/PELE-1.5_mpi"
+    PELE = "/gpfs/projects/bsc72/PELE_Multibox_nord"
+    PELE_BIN = "/gpfs/projects/bsc72/PELE_Multibox_nord/build/PELE-1.5"
     MPIRUN = "/apps/OPENMPI/1.8.1-mellanox/bin"
     LICENSE = "/gpfs/projects/bsc72/PELE++/license"
     MMSHARE = None
     # Provisional workaround until best_struct.py is fixed
-    ACCEPTED_STEPS_NAME = "AcceptedSteps"
-    CRITERIA = "SASA"
+    ACCEPTED_STEPS_NAME = "numberOfAcceptedPeleSteps"
+    CRITERIA = "sasaLig"
 
 elif "bsccv" in machine:
     SCHRODINGER = "/data2/bsc72/SCHRODINGER_ACADEMIC"
@@ -52,11 +52,11 @@ elif "NBD" in machine:
     ACCEPTED_STEPS_NAME = "numberOfAcceptedPeleSteps"
     CRITERIA = "sasaLig"
 else:
-    SCHRODINGER = "deade"
-    PELE = "dea"
-    PELE_BIN = "ded"
-    MPIRUN = "a"
-    LICENSE = "daede"
+    SCHRODINGER = "Will be substitued to schr path installation"
+    PELE = "Will be substitued to pele path installation"
+    PELE_BIN = "Will be substitued to pele bin path installation"
+    MPIRUN = "Will be substitued to mpirun path installation"
+    LICENSE = "Will be substitued to license path installation"
     MMSHARE = None
     # Provisional workaround until best_struct.py is fixed
     ACCEPTED_STEPS_NAME = "numberOfAcceptedPeleSteps"
