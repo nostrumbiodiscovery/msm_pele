@@ -429,7 +429,7 @@ def clusterEpochTrajs(clusteringMethod, epoch, epochOutputPathTempletized, topol
     clusteringMethod.cluster(paths, topology=topologies, epoch=epoch, outputPathConstants=outputPathConstants)
 
 
-def clusterPreviousEpochs(clusteringMethod, finalEpoch, epochOutputPathTempletized, simulationRunner, topologies, outputPathConstants):
+def clusterPreviousEpochs(clusteringMethod, finalEpoch, epochOutputPathTempletized, simulationRunner, topologies, outputPathConstants=None):
     """
         Cluster all previous epochs using the clusteringMethod object
 
