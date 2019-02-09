@@ -31,7 +31,10 @@ def analyse_results(env, runTica=True, last=False):
         for i, folder in enumerate(glob.glob(os.path.join(env.adap_l_output, "MSM_*"))):
             analyse_msm(i, env, folder)
         if last:
-            rp.report_MSM(env, os.path.join(env.adap_l_output, "MSM_{}".format(len(glob.glob(os.path.join(env.adap_l_output, "MSM_*")))-1)))
+            try:
+                rp.report_MSM(env, os.path.join(env.adap_l_output, "MSM_{}".format(len(glob.glob(os.path.join(env.adap_l_output, "MSM_*")))-1)))
+            except IOError:
+                pass
 
 
 def run_msm(env, runTica=True):
