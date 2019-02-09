@@ -1,6 +1,6 @@
 import subprocess
 import shutil
-subprocess.call("pip install numpy cython".split())
+# subprocess.call("pip install numpy cython".split())
 import numpy
 from setuptools import setup, find_packages, Command
 from string import Template
@@ -134,7 +134,7 @@ setup(
     include_package_data=True,
     install_requires=['numpy', 'matplotlib', 'pandas', 'cython', 'mdtraj', 'scipy', 'pyemma', 'prody==1.8.2', 'fpdf'],
     cmdclass=cmdclass,
-    ext_modules=cythonize(ext_modules),  # accepts a glob pattern
+    ext_modules=ext_modules,  # accepts a glob pattern
     include_dirs=[numpy.get_include()]
 )
 
