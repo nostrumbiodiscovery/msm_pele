@@ -50,6 +50,7 @@ def writeInitialStructures(centers_info, filename_template, topology=None):
 
 def split_by_sasa(centers_info, value1, value2, topology=None, perc_sasa_min=0.25, perc_sasa_int=0.5):
     sasas = {}
+    print(centers_info)
     for cluster_num in centers_info:
         epoch_num, traj_num, snap_num = map(int, centers_info[cluster_num]['structure'])
         sasa = get_sasa(epoch_num, traj_num, snap_num)
@@ -62,7 +63,9 @@ def split_by_sasa(centers_info, value1, value2, topology=None, perc_sasa_min=0.2
 def get_sasa(epoch_num, traj_num, snap_num):
     report = os.path.join(str(epoch_num), "report_{}".format(traj_num))
     report_data = pd.read_csv(report, sep='    ', engine='python')
-    return report_data[cs.CRITERIA].values.tolist()[snap_num]
+    condition = (report_data.iloc[:,1] == snap_num )
+    valid_step = report_data[condition]
+    return valid_step[cs.CRITERIA].values[0]
 
 def sasa_classifier(sasas, value1, value2):
     sasas_max = {}

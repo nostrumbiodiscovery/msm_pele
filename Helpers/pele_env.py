@@ -83,7 +83,7 @@ class EnviroBuilder(object):
         Build sasa related constants for later
         classifing the exit simulation clusters
         """
-        self.steps = self.steps if not self.test else 5
+        self.steps = self.steps if not self.test else 10
         self.lagtime = 1 if self.test else self.lagtime
         self.lagtimes = None if self.test else [50, 100, 200, 500]
         self.msm_clust = 2 if self.test else self.msm_clust
