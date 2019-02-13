@@ -1,5 +1,8 @@
 import matplotlib
 matplotlib.use('Agg')
+from pyemma import config
+config.show_progress_bars = False
+config.mute = True
 import os
 import MSM_PELE.Helpers.check_env_var as env
 env.check_dependencies()

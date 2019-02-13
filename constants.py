@@ -52,11 +52,11 @@ elif "NBD" in machine:
     ACCEPTED_STEPS_NAME = "numberOfAcceptedPeleSteps"
     CRITERIA = "sasaLig"
 else:
-    SCHRODINGER = "deade"
-    PELE = "dea"
-    PELE_BIN = "ded"
-    MPIRUN = "a"
-    LICENSE = "daede"
+    SCHRODINGER = "Will be substitued to schr path installation"
+    PELE = "Will be substitued to pele path installation"
+    PELE_BIN = "Will be substitued to pele bin path installation"
+    MPIRUN = "Will be substitued to mpirun path installation"
+    LICENSE = "Will be substitued to license path installation"
     MMSHARE = None
     # Provisional workaround until best_struct.py is fixed
     ACCEPTED_STEPS_NAME = "numberOfAcceptedPeleSteps"
