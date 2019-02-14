@@ -107,7 +107,7 @@ def run(args):
                 os.mkdir(output)
             hp.change_output(env.pele_temp, output)
             simulation = ad.SimulationBuilder(env.pele_temp,  env.topology, cs.PELE_KEYWORDS, cs.RESTART, os.path.join(env.adap_l_output, output),
-                ",\n".join(inputs), env.random_num, env.steps, box, env.box_metric, BS_sasa_min, BS_sasa_max)
+                ",\n".join(inputs), env.random_num, env.steps, box, env.box_metric, BS_sasa_min, BS_sasa_max, env.temp)
             time_sim = simulation.run_pele(env, limitTime=env.time)
             env.logger.info("Pele run successfully in {}".format(time_sim))
 
@@ -157,6 +157,7 @@ def parse_args(args=[]):
     parser.add_argument("--nonstandard", nargs="+",  help="Mid Chain non standard residues to be treated as ATOM not HETATOM", default = [])
     parser.add_argument("--lagtime", type=int,  help="MSM Lagtime to use", default=100)
     parser.add_argument("--steps", type=int,  help="MSM Steps to use", default=10000)
+    parser.add_argument("--temp", type=int,  help="Temperature to use", default=1000)
     parser.add_argument("--msm_clust", type=int,  help="Number of clusters created to converge MSM", default=200)
     parser.add_argument("--time", type=int,  help="Limit of time to run pele exploration", default=None)
     parser.add_argument("--log", action='store_true',  help="Print LogFiles when running PELE")

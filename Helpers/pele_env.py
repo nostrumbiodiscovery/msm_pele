@@ -47,6 +47,7 @@ class EnviroBuilder(object):
         self.log = '"simulationLogPath" : "$OUTPUT_PATH/logFile.txt",' if args.log else ""
         self.renumber = args.nonrenum
         self.nosasa = args.nosasa
+	self.temp = args.temp
         self.sasa = args.sasa
         self.perc_sasa = args.perc_sasa
         #Choose CPUS
