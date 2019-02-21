@@ -71,12 +71,7 @@ def patch_environ():
 
 def check_dependencies():
         #Update env_variables
-        adaptive_folder = os.path.join(constants.DIR, "AdaptivePELE")
-        if "PYTHONPATH" in os.environ:
-            os.environ["PYTHONPATH"] = "{}:{}:{}".format(adaptive_folder, constants.DIR, os.environ["PYTHONPATH"])
-        else:
-            os.environ["PYTHONPATH"] = "{}:{}".format(adaptive_folder, constants.DIR)
-        os.environ["PELE"] = constants.PELE
+        sys.path.append(constants.DIR)
         
         #Update binaries
         try:
