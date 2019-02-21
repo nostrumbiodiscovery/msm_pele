@@ -20,7 +20,7 @@ import MSM_PELE.Helpers.clusterAdaptiveRun as cl
 import MSM_PELE.Helpers.system_prep as sp
 import MSM_PELE.Box.box as bx
 import MSM_PELE.PPP.mut_prep4pele as ppp
-import MSM_PELE.Helpers.msm_analysis as msm
+import MSM_PELE.Analysis.msm_analysis as msm
 import MSM_PELE.Helpers.missing_residues as mr
 import MSM_PELE.Helpers.solventOBCParamsGenerator as obc
 

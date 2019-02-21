@@ -1,5 +1,5 @@
 import numpy as np
-import MSM_PELE.Helpers.plotMSMAdvancedInfo as pm
+import MSM_PELE.Analysis.plotMSMAdvancedInfo as pm
 
 
 def get_points(pdb):

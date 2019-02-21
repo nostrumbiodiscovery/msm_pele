@@ -1,13 +1,13 @@
 import os
 import glob
+import shutil
+import numpy as np
 from MSM_PELE.AdaptivePELE.freeEnergies import extractCoords, prepareMSMFolders, estimateDGAdaptive
 from MSM_PELE.AdaptivePELE.freeEnergies import getRepresentativeStructures as getRepr
 import MSM_PELE.Helpers.tica as td
 import MSM_PELE.Helpers.helpers as hp
-import MSM_PELE.Helpers.plotMSMAdvancedInfo as pt
-import MSM_PELE.Helpers.MSM_report as rp
-import shutil
-import numpy as np
+import MSM_PELE.Analysis.plotMSMAdvancedInfo as pt
+import MSM_PELE.Analysis.MSM_report as rp
 
 # DEFAULT VALUES
 LAGTIME = 100

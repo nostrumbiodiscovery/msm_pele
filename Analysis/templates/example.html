@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <title>Flask Google Maps Example</title>
+            {{"decoupled-map"|googlemap_js(37.4419, -122.1419, varname="decoupledmap", markers=[(37.4419, -122.1419)])}}
+            {{mymap.js}}
+            {{sndmap.js}}
+            {{trdmap.js}}
+            {{clustermap.js}}
+            {{movingmap.js}}
+            {{rectmap.js}}
+            {{circlemap.js}}
+            {{plinemap.js}}
+            {{pgonmap.js}}
+            {{collapsible.js}}
+            {{infoboxmap.js}}
+            {{clickmap.js}}
+
+    </head>
+    <body>
+        <h1>Flask Google Maps Example</h1>
+
+        <form action="/closest_atm" method="POST">
+            <input type="text", name="position"/>
+            <input type="submit" value="submit"/>
+        </form>
+        <hr>
+
+        <h2> MAP</h2>
+        {{googlemap("simple-map", lat, lng, varname="simplemap")}}
+        <code>
+            <pre>
+            </pre>
+        </code>

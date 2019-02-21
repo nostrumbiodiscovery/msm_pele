@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSHTy5Zf5GkbKeSRPjN9yATtZ0j9SO8_U&callback=initMap"
+    async defer></script>
+  </head>
+
+
+  <body>
+    <form action="/closest_atm" method="POST">
+        <input type="text", name="position"/>
+        <input type="submit" value="submit"/>
+    </form>
+ <select action="/filter" method="GET" name="user_action">
+  <option value="transfer">Transfer</option>
+  <option value="ingreso">Ingreso</option>
+  <option value="extraer">Extraer</option>
+</select> 
+
+    <div id="map"></div>
+    <div id="capture"></div>
+
+    <script>
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: {{lat}}, lng: {{lng}}},
+          zoom: 8
+        });
+      var marker = new google.maps.Marker({position: {lat: {{lat}}, lng: {{lng}}}, map: map});
+      {% for loc in locations%}
+      marker = new google.maps.Marker({position: {lat: {{loc[1]}}, lng: {{loc[2]}} }, map: map, title: "title" });
+      {% endfor %}
+    }
+    </script>
+  </body>
+
+</html>
