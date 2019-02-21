@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PlopRotTemp &mdash; MSM_PELE 2.0.0 documentation</title>
+  <title>Unit Tests &mdash; MSM_PELE 2.0.0 documentation</title>
   
 
   
@@ -27,7 +27,9 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting Started" href="cookbook.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -83,8 +85,11 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="tests.html">Unit Tests</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Unit Tests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#run-unit-test">Run unit test</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="cookbook.html">Getting Started</a></li>
@@ -145,13 +150,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>PlopRotTemp</li>
+      <li>Unit Tests</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/ploprotemp.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/tests.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -164,8 +169,25 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="ploprottemp">
-<h1>PlopRotTemp<a class="headerlink" href="#ploprottemp" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="unit-tests">
+<h1>Unit Tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="run-unit-test">
+<h2>Run unit test<a class="headerlink" href="#run-unit-test" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>It is recommended to run the unit tests after installation by:</div></blockquote>
+<p>1- <strong>Extract test data</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="o">-</span><span class="n">xvf</span> <span class="n">MSM_PELE</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">data</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+<p>2- <strong>Run test</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">where</span><span class="o">/</span><span class="n">you</span><span class="o">/</span><span class="n">want</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">runTheTest</span><span class="o">/</span><span class="n">from</span><span class="o">/</span>
+
+<span class="n">sbatch</span> <span class="n">MSM_PEE</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">test</span><span class="o">.</span><span class="n">sl</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -173,6 +195,15 @@
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="cookbook.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="installation.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

@@ -67,6 +67,11 @@ Benchmark
 .. toctree::
    benchmark
 
+Changelog
+==========
+.. toctree::
+   changelog
+
 Support
 =======
 .. toctree::

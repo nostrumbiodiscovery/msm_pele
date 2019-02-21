@@ -85,7 +85,6 @@
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#conda-installation-recommended">Conda Installation (Recommended)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#msm-pele-configuration">MSM PELE Configuration</a></li>
 </ul>
 </li>
 </ul>
@@ -103,6 +102,9 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="benchmark.html">Benchmark</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="support.html">Support</a></li>
@@ -179,46 +181,16 @@ before practice. Furthermore MSM PELE requires Schrodinger and PELE installation
 <div class="section" id="conda-installation-recommended">
 <h2>Conda Installation (Recommended)<a class="headerlink" href="#conda-installation-recommended" title="Permalink to this headline">¶</a></h2>
 <p><strong>Create conda</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">y</span> <span class="o">-</span><span class="n">n</span> <span class="n">py27</span> <span class="n">python</span><span class="o">=</span><span class="mf">2.7</span> <span class="n">anaconda</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">--</span><span class="n">name</span> <span class="n">py36</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.6</span>
 </pre></div>
 </div>
 <p><strong>Activate Env</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">activate</span> <span class="n">py27</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">activate</span> <span class="n">py36</span>
 </pre></div>
 </div>
-<p><strong>Install dependencies</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">~/</span><span class="n">conda</span><span class="o">/</span><span class="n">envs</span><span class="o">/</span><span class="n">py27</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">pip</span> <span class="n">install</span> <span class="n">msmtools</span>
-
-<span class="o">~/</span><span class="n">conda</span><span class="o">/</span><span class="n">envs</span><span class="o">/</span><span class="n">py27</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyemma</span>
-
-<span class="o">~/</span><span class="n">conda</span><span class="o">/</span><span class="n">envs</span><span class="o">/</span><span class="n">py27</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">pip</span> <span class="n">install</span> <span class="n">prody</span><span class="o">==</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">2</span>
-
-<span class="o">~/</span><span class="n">conda</span><span class="o">/</span><span class="n">envs</span><span class="o">/</span><span class="n">py27</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">pip</span> <span class="n">install</span> <span class="n">sklearn</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="msm-pele-configuration">
-<h2>MSM PELE Configuration<a class="headerlink" href="#msm-pele-configuration" title="Permalink to this headline">¶</a></h2>
-<p><strong>Enviromental variables</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export PYTHONPATH=$PYTHONPATH:&#39;/path/to/MSM_PELE/&#39;
-</pre></div>
-</div>
-<p><strong>Changing local path</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Change</span> <span class="n">the</span> <span class="n">public</span> <span class="n">variables</span> <span class="n">path</span> <span class="n">under</span> <span class="o">**</span><span class="n">MSM_PELE</span><span class="o">/</span><span class="n">constants</span><span class="o">.</span><span class="n">py</span><span class="o">**</span> <span class="n">to</span> <span class="n">the</span> <span class="n">ones</span> <span class="n">local</span> <span class="n">to</span> <span class="n">your</span> <span class="n">machine</span>
-</pre></div>
-</div>
-<p><strong>Pyemma config</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python
-
-&gt; import pyemma
-
-&gt; pyemma.config.used_filenames
-</pre></div>
-</div>
-<p>You will recieve a list with files where it is possible to find configuration from pyemma. You need to go over these files and change:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">show_progress_bars</span> <span class="o">=</span> <span class="n">Flase</span>
-
-<span class="n">mute</span><span class="o">=</span> <span class="kc">True</span>
+<p><strong>Install software</strong>:</p>
+<p>From the folder containing MSM_PELE and with the python used to run the software later:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">MSM_PELE</span><span class="o">/</span><span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span> <span class="o">--</span><span class="n">schr</span> <span class="o">&lt;/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">schrodinger</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">pele</span> <span class="o">&lt;/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">pele</span><span class="o">/&gt;</span> <span class="o">--</span><span class="n">pele</span><span class="o">-</span><span class="n">license</span> <span class="o">&lt;/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">pele</span><span class="o">/</span><span class="n">licenses</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">pele</span><span class="o">-</span><span class="n">exec</span> <span class="o">&lt;/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">pele</span><span class="o">/</span><span class="nb">bin</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">mpirun</span> <span class="o">&lt;/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">mpi</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </div>
