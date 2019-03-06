@@ -22,6 +22,7 @@ class EnviroBuilder(object):
         self.files = files
         self.system = args.system
         self.box = args.box
+        self.one_exit = args.one_exit
         self.user_center = args.user_center
         self.solvent = args.solvent
         self.user_radius = args.user_radius
@@ -36,6 +37,8 @@ class EnviroBuilder(object):
         self.chain = args.chain
         self.mae_lig = os.path.abspath(args.mae_lig) if args.mae_lig else None
         self.clusters = args.clust = args.clust if not args.test else 2
+        self.exit_iters = args.exit_iters if not args.test else 1
+        self.eq_struct = args.eq_struct if not args.test else 1
         self.test = args.test
         self.folder = args.folder
         self.pdb = args.pdb
@@ -129,6 +132,7 @@ class EnviroBuilder(object):
             self.files.append(os.path.basename(f))
             
         self.adap_ex_input = os.path.join(self.pele_dir, os.path.basename(self.system_fix))
+        self.adap_exit_template = os.path.join(cs.DIR, "Templates/adaptive_exit.conf")
         self.adap_ex_output = os.path.join(self.pele_dir, "output_adaptive_exit")
         self.exit_path = os.path.join(self.adap_ex_output, "exit_path{}")
         self.template_folder = os.path.join(self.pele_dir, "DataLocal/Templates/{}/HeteroAtoms/".format(self.forcefield))
