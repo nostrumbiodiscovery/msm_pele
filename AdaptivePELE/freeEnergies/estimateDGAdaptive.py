@@ -21,7 +21,7 @@ def main(trajsPerEpoch, lagtime, nclusters, clusteringStride=1, nruns=10, lagtim
 
     resultsEpoch = []
     initialEpoch = 0
-    for i, folder in enumerate(sortedFolders[initialEpoch:]):
+    for i, folder in enumerate([sortedFolders[-1], ]):
         epoch = i + initialEpoch
         print(epoch, folder)
         os.chdir(folder)
