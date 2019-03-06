@@ -1,75 +1,74 @@
-==============
-Documentation
-==============
+==================
+Parameters
+==================
 
 .. toctree::
    :maxdepth: 2
 
+Required Paramaters:
+------------------------
 
-Pipeline Paramaters
---------------------
+If you want to use OPLS2005 charges:
 
+- **complex.pdb** initial pdb with receptor and ligand already docked
 
+- **resname** residue name of the ligand
 
-  - **Protein Preparation for Pele**:
+- **chain** chain of the ligand
 
-    The input complex will be processed by the software checking  next features:
+::
 
-    - HIS/HIP/HID will be transform into PELE language.
+    i.e.0 python -m MSM_PELE.main complex.pbd resname chain
+    
+    i.e.1 python -m MSM_PELE.main complex.pbd LIG Z 
 
-    - Capping loops will be neutral
+If you want to use external charges:
 
-    - Constraints will be applied every 10 Calphas on the receptor complex.
+- **receptor.pdb** pdb of the receptor with the bound conformation to the docked ligand
 
-    - Constraints will be applied on all metals and its coordinates.
+- **resname** residue name of the ligand
 
-    - Partial missing sidechains will be added
+- **chain** chain of the ligand
 
-    - Template residues and non standard aminoacids will be checked
+- **--mae_lig ligand.mae** mae file of the ligand with QM charges 
 
-    - Other found errors will be outputted to screen for the user to change them manually. 
+::
 
-    |    
+    i.e.0 python -m MSM_PELE.main complex.pbd resname chain --mae_lig ligand.mae
+    
+    i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --mae_lig ligand.mae
 
-  - **Adaptive Exit**:
-
-    An adaptive PELE exit simulation will be performed over the docked complex until 5 trajectories reach a SASA bigger than 0.95. Then, the exit path will be clusterize using KMeans algorithm and this will serve as input on the next PELE explortion simulation.
-  
-  .. figure:: adaptive_out.png
-    :scale: 80%
-    :align: center
-    :alt: Install need it plugin to visualize the Adaptive exit simulation
-
-    Clusters of two Adaptive exit simulations with different ligands over the
-    same target    
-
-  - **Pele Exploration**:
-  
-  A PELE exploration will be performed with all the previous cluster as
-  different initial postions of the ligand to explore as much transitions as
-  posible between the slowest binding modes. Then, points will be clusterize
-  through a KMeans algorithm.
+Output Parameters
+-------------------
 
 
-  .. figure:: pele.png
-    :scale: 80%
-    :align: center
-    :alt: Install need it plugin to visualize PELE simulation
+- **--folder** specify the output name of the folder
 
-    PELE MC simulation clusters
-   
+::
 
-  - **MSM Analysis**:
-  
-  Finally, the transition matrix will be computed and diagonilize for several
-  subsets of the previous data. Using thermodinamic stadistic on the subset's
-  eigenvectors, absolute free energies and its standard deviation can be
-  stimated as well as system's markovianity.
+  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --folder folder_name
+
+  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --folder LIG_MSM
+
+- **--pdb** use pdb as output file (default=.xtc)
+
+::
+
+  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --pdb
+
+  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --pdb
+
+- **--log** print a log simulation file for each CPU whenever running a PELE simulation
+
+::
+
+  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --log
+
+  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --log
 
 
-
-Restart
---------
+Restart Parameters
+-------------------
 
 
   - **- - restart** restart the simulation from [adaptive, pele, msm]:
@@ -91,8 +90,10 @@ Restart
     i.e.3 python -m MSM_PELE.main complex.pbd LIG Z --restart msm
 
 
-Input Preparation
--------------------
+Input Preparation Parameters
+-----------------------------
+
+The input complex will be processed by the software checking  next features:
 
 - **--charge_ter** to charge all terminal resiues of the receptor.
 
@@ -153,8 +154,8 @@ Input Preparation
 
   i.e. python -m MSM_PELE.main complex.pbd LIG Z --gridres 30
 
-Adaptive Exit simulation
--------------------------
+Exit Simulation Parameters
+----------------------------
 
 - **--clust** number of clusters after adaptive exit simulation. It must always
   be smaller than the number of cpu power. [default=40]
@@ -173,8 +174,10 @@ Adaptive Exit simulation
 
   i.e.1 python -m MSM_PELE.main complex.pbd LIG Z--cpus 128
 
-Exit simulation clustering
-----------------------------
+Exit simulation clustering Parameters
+-------------------------------------
+
+An adaptive PELE exit simulation will be performed over the docked complex until 5 trajectories reach a SASA bigger than 0.95. Then, the exit path will be clusterize using KMeans algorithm and this will serve as input on the next PELE explortion simulation.
 
 - **--no_sasa** Cluster with K-means and start from all clusters with the same probability 
 
@@ -206,8 +209,8 @@ Exit simulation clustering
 
   i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --perc_sasa 0.3 0.6 0.1
 
-Box
-----
+Box Parameters
+---------------
 
 - **--box_type** One single big box to most conformational space or multiple 
   little boxes to limit this and speed up calculations. default [multiple]
@@ -241,8 +244,25 @@ Box
 
   i.e.0 python -m MSM_PELE.main complex.pbd resname chain --user_center 22.2 -3.4 12.5 31.24 32.59.76 --radius 21 8 (2 boxes)
 
-Exploration
------------
+Exploration Parameters
+-------------------------
+  
+A PELE exploration will be performed with all the previous cluster as
+different initial postions of the ligand to explore as much transitions as
+posible between the slowest binding modes. Then, points will be clusterize
+through a KMeans algorithm.
+
+
+- **--native** calculate RMSd of each step in respect to an external pdb
+
+::
+
+  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --confile
+  /path/to/myconfile.conf --native native.pdb
+
+  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --confile pele.conf 
+  --native x_ray_complex.pdb
+
 
 - **--confile** Use your own pele exploration configuration file
 
@@ -268,3 +288,11 @@ Exploration
 
   i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --test
 
+
+MSM Analysis
+--------------
+
+Finally, the transition matrix will be computed and diagonilize for several
+subsets of the previous data. Using thermodinamic stadistic on the subset's
+eigenvectors, absolute free energies and its standard deviation can be
+stimated as well as system's markovianity.
