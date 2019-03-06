@@ -24,28 +24,35 @@ def parseargs():
     return args.bs, args.points
 
 
-def create_box(clusters, env):
+def create_box(clusters, env, iteration):
     # Check exit simulation is properly finished
     BS_sasa_min, BS_sasa_max = hp.is_exit_finish(env.adap_ex_output, env.test)
     # Retrieve BoxBuilderobj where
     # all abox carachteristics will be append
     box = BoxBuilder()
-    # Retrieve info from pdb file
-    if env.box:
-        box.center, box.radius, box.box_type = box.from_file(env.box)
-    # Retrieve info from user
-    elif env.user_center and env.user_radius:
-        box.center, box.radius, box.box_type = box.from_list(env.user_center, env.user_radius)
-    # Create single box
-    elif env.box_type == "fixed":
-        box.center, box.radius, box.box_type = fixed_box.build_box(env.adap_ex_input, env.clusters_output, env.ligand_ref)
-    # Create multiple box
-    elif env.box_type == "multiple":
-        box.center, box.radius, box.box_type = multiple_box.build_box(clusters, env)
-    # Build box image
-    box.to_pdb(env.box_temp)
-    # Build box string for simulation
-    box_string = box.to_PELE_string()
+    if iteration == 0:
+        # Retrieve info from pdb file
+        if env.box:
+            box.center, box.radius, box.box_type = box.from_file(env.box)
+        # Retrieve info from user
+        elif env.user_center and env.user_radius:
+            box.center, box.radius, box.box_type = box.from_list(env.user_center, env.user_radius)
+        # Create single box
+        elif env.box_type == "fixed":
+            box.center, box.radius, box.box_type = fixed_box.build_box(env.adap_ex_input, env.clusters_output, env.ligand_ref)
+        # Create multiple box
+        elif env.box_type == "multiple":
+            box.center, box.radius, box.box_type = multiple_box.build_box(clusters, env)
+        # Build box image
+        box.to_pdb(env.box_temp)
+        # Build box string for simulation
+        box_string = box.to_PELE_string()
+    else:
+	env.box = os.path.join(env.pele_dir, "box.pdb")
+	box.center, box.radius, box.box_type = box.from_file(env.box)
+        # Build box string for simulation
+        box_string = box.to_PELE_string()
+
     # Ensure box connectivity
     box.remove_clusters_out_of_box(env.clusters_output, file_path=env.cluster_output)
     return box_string, BS_sasa_min, BS_sasa_max

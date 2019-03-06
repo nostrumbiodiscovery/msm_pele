@@ -65,16 +65,9 @@ def run(args):
         ad.SimulationBuilder(env.pele_exit_temp,  env.topology, cs.EX_PELE_KEYWORDS, env.native, args.forcefield, args.chain, "\n".join(protein_constraints), env.license, env.log, env.solvent)
         ad.SimulationBuilder(env.pele_temp,  env.topology, cs.EX_PELE_KEYWORDS, env.native, args.forcefield, args.chain, "\n".join(protein_constraints),  env.license, env.log, env.solvent)
 
-    if args.restart in ["all", "adaptive"]:
-        # Run Adaptive Exit
-        env.logger.info("Running ExitPath Adaptive")
-        simulation = ad.SimulationBuilder(env.ad_ex_temp, env.topology, cs.EX_ADAPTIVE_KEYWORDS, cs.RESTART, env.adap_ex_output,
-            env.adap_ex_input, env.cpus, env.pele_exit_temp, env.residue, env.equil_steps, env.random_num)
-        simulation.run_adaptive(env, hook=True)
-        env.logger.info("ExitPath Adaptive run successfully")
 
 
-    if args.restart in ["all", "adaptive", "pele"]:
+    if args.restart in ["all", "pele"]:
 
         #Check restart variables
         try:
@@ -85,19 +78,34 @@ def run(args):
         # For each iteration
         for i in range(initial_iteration, env.iterations):
 
-            # KMeans Clustering with different seed
-            env.logger.info("Running Exit Path Clustering")
-            with hp.cd(env.adap_ex_output):
-                seed = 742304 if env.test else random.randint(1,1000000)
-                env.logger.info(seed)
-                cluster_centers = cl.main(env.clusters, env.cluster_output, args.residue, "", env.cpus, env.topology, env.sasamin, env.sasamax, env.sasa, env.perc_sasa_min, env.perc_sasa_int, seed=seed, iteration=i)
-            env.logger.info("Exit Path Clustering run successfully")
+            if not env.one_exit or i == 0:
+                # Run Multiple Adaptive Exit if no specified the contrary
+                env.logger.info("Running ExitPath Adaptive {}".format(i))
+                env.adap_ex_output = os.path.join(env.pele_dir, "output_adaptive_exit/iteration{}".format(i+1)) 
+                env.topology = None if env.pdb else os.path.join(env.adap_ex_output, "topologies/topology_0.pdb")
+                env.cluster_output = os.path.join(env.pele_dir, "output_clustering/iteration{}".format(i+1))
+                env.clusters_output = os.path.join(env.cluster_output, "clusters_{}_KMeans_allSnapshots.pdb".format(env.clusters))
+                env.adap_l_input = os.path.join(env.cluster_output, "initial_*")
+                shutil.copy(env.adap_exit_template, env.ad_ex_temp)
+                simulation = ad.SimulationBuilder(env.ad_ex_temp, env.topology, cs.EX_ADAPTIVE_KEYWORDS, cs.RESTART, env.adap_ex_output,
+                    env.adap_ex_input, env.cpus, env.pele_exit_temp, env.residue, env.equil_steps, env.random_num, env.exit_iters,
+                    env.eq_struct)
+                simulation.run_adaptive(env, hook=True)
+                env.logger.info("ExitPath Adaptive run successfully")
+                
+
+                # KMeans Clustering with different seed
+                env.logger.info("Running Exit Path Clustering")
+                with hp.cd(env.adap_ex_output):
+                    seed = 742304 if env.test else random.randint(1,1000000)
+                    env.logger.info(seed)
+                    cluster_centers = cl.main(env.clusters, env.cluster_output, args.residue, "", env.cpus, env.topology, env.sasamin, env.sasamax, env.sasa, env.perc_sasa_min, env.perc_sasa_int, seed=seed, iteration=i)
+                env.logger.info("Exit Path Clustering run successfully")
 
             # Create Exploration Box
-            if i == 0:
-                env.logger.info("Creating box")
-                box, BS_sasa_min, BS_sasa_max = bx.create_box(cluster_centers, env)
-                env.logger.info("Box created successfully ")
+            env.logger.info("Creating box")
+            box, BS_sasa_min, BS_sasa_max = bx.create_box(cluster_centers, env, i)
+            env.logger.info("Box created successfully ")
 
             # Explore
             env.logger.info("Running standard Pele")
@@ -169,7 +177,10 @@ def parse_args(args=[]):
     parser.add_argument("--perc_sasa",  nargs="+", type=float, help="Distribution of clusters at the adaptive exit. default [0.25, 0.5, 0.25] i.e. 0.1 0.7 0.1", default = [0.25, 0.5, 0.25])
     parser.add_argument("--box_metric",  action='store_true', help="Do not filter clusters by sasa i.e. --nosasa")
     parser.add_argument('--iterations', type=int, help='Number of MSM iterations. default [1] i.e. --iterations 3', default=1)
+    parser.add_argument('--exit_iters', type=int, help='Number of exit epochs on simulation. default [100] i.e. --exit_iters 1', default=100)
+    parser.add_argument('--eq_struct', type=int, help='Number of structures extracted from inital equilibration to launch exit simulation. default [10] i.e. --eq_struct 1', default=10)
     parser.add_argument('--solvent', type=str, help='Type of implicit solvent (OBC/VDGBNP). default [OBC]. i.e. --solvent VDGBNP', default="OBC")
+    parser.add_argument("--one_exit",  action='store_true', help="Perform only one adaptive exit simulation")
     
     args = parser.parse_args(args) if args else parser.parse_args()
     return args
