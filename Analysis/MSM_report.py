@@ -57,13 +57,10 @@ def report_MSM(env, folder):
     # Transitions
     pdf.cell(-170)
     pdf.set_font('Arial', 'B', 11)
-    pdf.cell(10, 249, 'Transition Hist' +62*"\t" + "Transitions")
-    with hp.cd(env.adap_l_output): 
-    	plot(2, 7, ".", os.path.join(folder, "transitions/transitions.png"), "steps", "sasa", zcol="", style="PRINT_RMSD_STEPS")
+    pdf.cell(10, 249, 'Transition Hist')
     pdf.cell(0)
     pdf.set_font('Arial', 'B', 11)
     pdf.image(plots.transition_hist, 10, 140, 83)
-    pdf.image(plots.transitions, 100, 140, 83)
 
     #Output report    
     pdf.output(OUTPUT, 'F')
