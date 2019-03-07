@@ -127,7 +127,14 @@ def run(args):
     if args.restart in ["msm", "analyse"]:
 
         # MSM Final Analysis
+	i = env.iterations-1
         env.logger.info("Running MSM analysis")
+        env.logger.info("Running ExitPath Adaptive {}".format(i))
+        env.adap_ex_output = os.path.join(env.pele_dir, "output_adaptive_exit/iteration{}".format(i+1)) 
+        env.topology = None if env.pdb else os.path.join(env.adap_ex_output, "topologies/topology_0.pdb")
+        env.cluster_output = os.path.join(env.pele_dir, "output_clustering/iteration{}".format(i+1))
+        env.clusters_output = os.path.join(env.cluster_output, "clusters_{}_KMeans_allSnapshots.pdb".format(env.clusters))
+        env.adap_l_input = os.path.join(env.cluster_output, "initial_*")
         msm.analyse_results(env, runTica=False, last=True)
         env.logger.info("MSM analysis run successfully")
 
