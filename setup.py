@@ -83,7 +83,7 @@ def installer(schr, pele, pele_exec, pele_license, mpirun):
 
         
 
-packages = ['numpy', 'matplotlib', 'pandas', 'cython', 'mdtraj', 'scipy', 'pyemma', 'prody==1.8.2', 'fpdf']
+packages = ['numpy', 'matplotlib', 'pandas', 'cython', 'mdtraj', 'scipy', 'pyemma==2.4', 'prody==1.8.2', 'fpdf']
 here = path.abspath(path.dirname(__file__))
 ext_modules = []
 cmdclass = {}
