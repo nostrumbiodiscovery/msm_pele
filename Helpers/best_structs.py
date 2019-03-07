@@ -52,7 +52,7 @@ def main(path, test=False, criteria="7", n_structs=500, sort_order="max", out_fr
 
       Input:
 
-         Path: Path to look for *report* files in all its subfolders.
+         Path: Path to look for *report_* files in all its subfolders.
 
          Criteria: Criteria to sort the structures.
          Needs to be the name of one of the Pele's report file column.
@@ -68,9 +68,8 @@ def main(path, test=False, criteria="7", n_structs=500, sort_order="max", out_fr
 
         f_out: Name of the n outpu
     """
-    import pdb; pdb.set_trace()
     # Get Files
-    reports = glob.glob(os.path.join(path, "*/*report*"))
+    reports = glob.glob(os.path.join(path, "*/*report_*"))
     #reports = [report for report in all_reports if(os.path.basename(os.path.dirname(report)).isdigit())]
 
     # Data Mining

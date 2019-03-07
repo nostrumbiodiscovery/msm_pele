@@ -13,8 +13,8 @@ def silentremove(*args, **kwargs):
                 pass
 
 
-def is_exit_finish(path, test):
-    return bs.main(path, test=test)
+def is_exit_finish(path, test, criteria="7"):
+    return bs.main(path, criteria=criteria, test=test)
 
 def change_output(inp_file, out_folder):
     with open(inp_file, "r") as f:
