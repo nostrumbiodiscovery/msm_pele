@@ -199,7 +199,7 @@ def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=N
         COMArray = [centersInfo[i]['center'] for i in centersInfo]
 
     #Output results
-    #writePDB(COMArray, outputFolder+"clusters_%d_KMeans_allSnapshots.pdb" % original_clust)
+    writePDB(COMArray, outputFolder+"clusters_%d_KMeans_allSnapshots.pdb" % original_clust)
     writeInitialStructures(centersInfo, outputFolder+"initial_%d.pdb", topology=topology)
 
     return clusterCenters
