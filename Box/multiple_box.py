@@ -22,7 +22,7 @@ def get_centers(system, BS_location, centroid, radius=9):
     # radius=d/(2n-2)
     current_point = BS_location
     exit_func = lambda x: BS_location + x * (centroid-BS_location)/np.linalg.norm(centroid-BS_location)
-    radius = radius if 100 > radius > 5 else 9
+    radius = radius if 100 > radius > 5 else 12
     alpha = 0
     # Check the distance to the centroid because we want to pass the centroid
     # and go two times that distance.
