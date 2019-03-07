@@ -39,10 +39,14 @@ class SystemBuilder(pl.EnviroBuilder):
         name = os.path.basename(os.path.splitext(self.receptor)[0])
         self.complex = os.path.join(self.pele_dir, "{}_complex.pdb".format(name))
 
-        with open(self.receptor, 'r') as pdb_file:
-            receptor_text = [line for line in pdb_file if line.startswith("ATOM") or line.startswith("HETATM") or line.startswith("TER")]
-        with open(self.lig_ref, 'r') as pdb_file:
-            ligand_text = [line for line in pdb_file if line.startswith("HETATM")]
+        try:
+            with open(self.receptor, 'r') as pdb_file:
+                receptor_text = [line for line in pdb_file if line.startswith("ATOM") or line.startswith("HETATM") or line.startswith("TER")]
+            with open(self.lig_ref, 'r') as pdb_file:
+                ligand_text = [line for line in pdb_file if line.startswith("HETATM")]
+        except IOError:
+            raise IOError("Receptor or ligand not found. Check your ligand residue/chain name or input files")
+
         if not receptor_text  or not ligand_text:
             raise ValueError("The ligand_pdb was not properly created check your mae file")
 
