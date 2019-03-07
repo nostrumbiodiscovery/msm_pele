@@ -26,7 +26,8 @@ def parseargs():
 
 def create_box(clusters, env, iteration):
     # Check exit simulation is properly finished
-    BS_sasa_min, BS_sasa_max = hp.is_exit_finish(env.adap_ex_output, env.test)
+    sasa_column = "6" if env.noRMSD else "7"
+    BS_sasa_min, BS_sasa_max = hp.is_exit_finish(env.adap_ex_output, env.test, criteria=sasa_column)
     # Retrieve BoxBuilderobj where
     # all abox carachteristics will be append
     box = BoxBuilder()

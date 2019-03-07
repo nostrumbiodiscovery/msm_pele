@@ -81,11 +81,7 @@ def run(args):
             if not env.one_exit or i == 0:
                 # Run Multiple Adaptive Exit if no specified the contrary
                 env.logger.info("Running ExitPath Adaptive {}".format(i))
-                env.adap_ex_output = os.path.join(env.pele_dir, "output_adaptive_exit/iteration{}".format(i+1)) 
-                env.topology = None if env.pdb else os.path.join(env.adap_ex_output, "topologies/topology_0.pdb")
-                env.cluster_output = os.path.join(env.pele_dir, "output_clustering/iteration{}".format(i+1))
-                env.clusters_output = os.path.join(env.cluster_output, "clusters_{}_KMeans_allSnapshots.pdb".format(env.clusters))
-                env.adap_l_input = os.path.join(env.cluster_output, "initial_*")
+                env.update_variable_for_iteration(i)
                 shutil.copy(env.adap_exit_template, env.ad_ex_temp)
                 simulation = ad.SimulationBuilder(env.ad_ex_temp, env.topology, cs.EX_ADAPTIVE_KEYWORDS, cs.RESTART, env.adap_ex_output,
                     env.adap_ex_input, env.cpus, env.pele_exit_temp, env.residue, env.equil_steps, env.random_num, env.exit_iters,
@@ -127,14 +123,8 @@ def run(args):
     if args.restart in ["msm", "analyse"]:
 
         # MSM Final Analysis
-	i = env.iterations-1
         env.logger.info("Running MSM analysis")
-        env.logger.info("Running ExitPath Adaptive {}".format(i))
-        env.adap_ex_output = os.path.join(env.pele_dir, "output_adaptive_exit/iteration{}".format(i+1)) 
-        env.topology = None if env.pdb else os.path.join(env.adap_ex_output, "topologies/topology_0.pdb")
-        env.cluster_output = os.path.join(env.pele_dir, "output_clustering/iteration{}".format(i+1))
-        env.clusters_output = os.path.join(env.cluster_output, "clusters_{}_KMeans_allSnapshots.pdb".format(env.clusters))
-        env.adap_l_input = os.path.join(env.cluster_output, "initial_*")
+        env.update_variable_for_iteration(env.iterations-1)
         msm.analyse_results(env, runTica=False, last=True)
         env.logger.info("MSM analysis run successfully")
 
@@ -188,6 +178,7 @@ def parse_args(args=[]):
     parser.add_argument('--eq_struct', type=int, help='Number of structures extracted from inital equilibration to launch exit simulation. default [10] i.e. --eq_struct 1', default=10)
     parser.add_argument('--solvent', type=str, help='Type of implicit solvent (OBC/VDGBNP). default [OBC]. i.e. --solvent VDGBNP', default="OBC")
     parser.add_argument("--one_exit",  action='store_true', help="Perform only one adaptive exit simulation")
+    parser.add_argument("--noRMSD",  action='store_true', help="De not use keep track RMSD to the initial position")
     
     args = parser.parse_args(args) if args else parser.parse_args()
     return args

@@ -8,7 +8,7 @@ import MSM_PELE.constants as cs
 
 class EnviroBuilder(object):
     """
-        Base class wher the needed pele environment
+        Base class wher the needed pele selfironment
         is build by creating folders and files
     """
 
@@ -23,6 +23,7 @@ class EnviroBuilder(object):
         self.system = args.system
         self.box = args.box
         self.one_exit = args.one_exit
+        self.noRMSD = args.noRMSD
         self.user_center = args.user_center
         self.solvent = args.solvent
         self.user_radius = args.user_radius
@@ -69,17 +70,17 @@ class EnviroBuilder(object):
     @classmethod
     def build_env(cls, args):
         if args.test and not args.precision:
-            env = cls(cs.FOLDERS, cs.FILES_TEST, args)
+            self = cls(cs.FOLDERS, cs.FILES_TEST, args)
 	elif args.test and args.precision:
-            env = cls(cs.FOLDERS, cs.FILES_TEST_XP, args)
+            self = cls(cs.FOLDERS, cs.FILES_TEST_XP, args)
         elif args.precision:
-            env = cls(cs.FOLDERS, cs.FILES_XP, args)
+            self = cls(cs.FOLDERS, cs.FILES_XP, args)
         elif args.precision2:
-            env = cls(cs.FOLDERS, cs.FILES_XP2, args)
+            self = cls(cs.FOLDERS, cs.FILES_XP2, args)
         else:
-            env = cls(cs.FOLDERS, cs.FILES_SP, args)
-        env.create()
-        return env
+            self = cls(cs.FOLDERS, cs.FILES_SP, args)
+        self.create()
+        return self
 
 
     def build_msm_constants(self):
@@ -150,8 +151,20 @@ class EnviroBuilder(object):
         self._pele_temp = os.path.join(cs.DIR, "Templates/pele_SP.conf")
         self.clusters_output = os.path.join(self.cluster_output, "clusters_{}_KMeans_allSnapshots.pdb".format(self.clusters))
         self.ligand_ref = os.path.join(self.pele_dir, "ligand.pdb")
-        self.native = cs.NATIVE.format(os.path.abspath(self.native), self.chain) if self.native else cs.NATIVE.format(os.path.abspath(self.ligand_ref), self.chain)
+        if self.native:
+            self.native = cs.NATIVE.format(os.path.abspath(self.native), self.chain)
+        elif not self.noRMSD:
+            self.native = cs.NATIVE.format(os.path.abspath(self.ligand_ref), self.chain)
+        else:
+            self.native = ""
         self.topology = None if self.pdb else os.path.join(self.adap_ex_output, "topologies/topology_0.pdb")
+
+    def update_variable_for_iteration(self, i):
+        self.adap_ex_output = os.path.join(self.pele_dir, "output_adaptive_exit/iteration{}".format(i+1)) 
+        self.topology = None if self.pdb else os.path.join(self.adap_ex_output, "topologies/topology_0.pdb")
+        self.cluster_output = os.path.join(self.pele_dir, "output_clustering/iteration{}".format(i+1))
+        self.clusters_output = os.path.join(self.cluster_output, "clusters_{}_KMeans_allSnapshots.pdb".format(self.clusters))
+        self.adap_l_input = os.path.join(self.cluster_output, "initial_*")
 
     def create(self):
         if self.restart == "all":
