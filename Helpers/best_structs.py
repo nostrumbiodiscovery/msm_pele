@@ -2,7 +2,6 @@ import os
 import argparse
 import pandas as pd
 import glob
-from MSM_PELE import constants
 
 """
 
@@ -28,8 +27,8 @@ N_STRUCTS = 10
 FREQ = 1
 REPORT = "report"
 TRAJ = "trajectory"
-ACCEPTED_STEPS = constants.ACCEPTED_STEPS_NAME
 PATH = 'path'
+STEPS="3"
 
 
 def parse_args():
@@ -45,7 +44,7 @@ def parse_args():
     return args.path, args.crit, args.nst, args.sort, args.ofreq
 
 
-def main(path, test=False, criteria=constants.CRITERIA, n_structs=500, sort_order="max", out_freq=FREQ):
+def main(path, test=False, criteria="7", n_structs=500, sort_order="max", out_freq=FREQ):
     """
 
       Description: Rank the traj found in the report files under path
@@ -69,18 +68,20 @@ def main(path, test=False, criteria=constants.CRITERIA, n_structs=500, sort_orde
 
         f_out: Name of the n outpu
     """
-
+    import pdb; pdb.set_trace()
     # Get Files
     reports = glob.glob(os.path.join(path, "*/*report*"))
     #reports = [report for report in all_reports if(os.path.basename(os.path.dirname(report)).isdigit())]
 
     # Data Mining
-    min_values = parse_values(reports, n_structs, criteria, sort_order)
+    if criteria.isdigit():
+        steps, criteria = get_column_names(reports, STEPS, criteria)
+    min_values = parse_values(reports, n_structs, criteria, sort_order, steps)
     values = min_values[criteria].tolist()
     paths = min_values[PATH].tolist()
     epochs = [os.path.basename(os.path.normpath(os.path.dirname(Path))) for Path in paths]
     reports_indexes = min_values.report.tolist()
-    step_indexes = min_values[ACCEPTED_STEPS].tolist()
+    step_indexes = min_values[steps].tolist()
     max_sasa_info = {i: [epoch, report, value, int(step)] for i, (epoch, report, value, step) in enumerate(zip(epochs, reports_indexes, values, step_indexes))}
  
     if not test:
@@ -102,7 +103,16 @@ def calculate_BS_sasa(sasa):
 
 
 
-def parse_values(reports, n_structs, criteria, sort_order):
+def get_column_names(reports, steps, criteria):
+    data = pd.read_csv(reports[0], sep='    ', engine='python')
+    data = list(data)
+    if criteria.isdigit():
+        return data[int(steps)-1], data[int(criteria)-1]
+    else:
+        return data[int(steps)-1]
+
+
+def parse_values(reports, n_structs, criteria, sort_order, steps):
     """
 
        Description: Parse the 'reports' and create a sorted array
@@ -112,7 +122,7 @@ def parse_values(reports, n_structs, criteria, sort_order):
 
     INITIAL_DATA = [(PATH, []),
                     (REPORT, []),
-                    (ACCEPTED_STEPS, []),
+                    (steps, []),
                     (criteria, [])
                     ]
 
@@ -120,7 +130,7 @@ def parse_values(reports, n_structs, criteria, sort_order):
     for file in reports:
         report_number = os.path.basename(file).split("_")[-1]
         data = pd.read_csv(file, sep='    ', engine='python')
-        selected_data = data.loc[:, [ACCEPTED_STEPS, criteria]]
+        selected_data = data.loc[:, [steps, criteria]]
         report_values = selected_data.nlargest(n_structs, criteria)
         report_values.insert(0, PATH, [file]*report_values[criteria].size)
         report_values.insert(1, REPORT, [report_number]*report_values[criteria].size)
@@ -135,4 +145,4 @@ def parse_values(reports, n_structs, criteria, sort_order):
 
 if __name__ == "__main__":
     path, criteria, interval, sort_order, out_freq = parse_args()
-    main(path, criteria, interval, sort_order, out_freq)
+    main(path, False, criteria, interval, sort_order, out_freq)
