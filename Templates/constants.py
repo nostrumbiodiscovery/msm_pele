@@ -19,14 +19,14 @@ if "bsc.mn" in machine:
 
 elif "mn.bsc" in machine:
     SCHRODINGER = "/gpfs/projects/bsc72/SCHRODINGER_ACADEMIC_NORD"
-    PELE = "/gpfs/projects/bsc72/PELE_Multibox_nord"
-    PELE_BIN = "/gpfs/projects/bsc72/PELE_Multibox_nord/build/PELE-1.5"
+    PELE = "/gpfs/projects/bsc72/PELE++/nord/rev090518"
+    PELE_BIN = "/gpfs/projects/bsc72/PELE++/nord/rev090518/bin/PELE-1.5_mpi"
     MPIRUN = "/apps/OPENMPI/1.8.1-mellanox/bin"
     LICENSE = "/gpfs/projects/bsc72/PELE++/license"
     MMSHARE = None
     # Provisional workaround until best_struct.py is fixed
-    ACCEPTED_STEPS_NAME = "numberOfAcceptedPeleSteps"
-    CRITERIA = "sasaLig"
+    ACCEPTED_STEPS_NAME = "AcceptedSteps"
+    CRITERIA = "SASA"
 
 elif "bsccv" in machine:
     SCHRODINGER = "/data2/bsc72/SCHRODINGER_ACADEMIC"
@@ -52,11 +52,11 @@ elif "NBD" in machine:
     ACCEPTED_STEPS_NAME = "numberOfAcceptedPeleSteps"
     CRITERIA = "sasaLig"
 else:
-    SCHRODINGER = "Will be substitued to schr path installation"
-    PELE = "Will be substitued to pele path installation"
-    PELE_BIN = "Will be substitued to pele bin path installation"
-    MPIRUN = "Will be substitued to mpirun path installation"
-    LICENSE = "Will be substitued to license path installation"
+    SCHRODINGER = "$SCHRODINGER"
+    PELE = "$PELE"
+    PELE_BIN = "$PELE_BIN"
+    MPIRUN = "$MPIRUN"
+    LICENSE = "$LICENSE"
     MMSHARE = None
     # Provisional workaround until best_struct.py is fixed
     ACCEPTED_STEPS_NAME = "numberOfAcceptedPeleSteps"
@@ -83,9 +83,9 @@ GRIDRES = '10.0'
 
 # TEMPLATE KEYWORDS
 ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "SEED", "STEPS", "ITERATIONS", "MSM_CLUST", "LAGTIME", "MIN_POS"]
-EX_ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "EQ_STEPS", "SEED", "EXIT_ITERS", "EQ_STRUCT"]
+EX_ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "EQ_STEPS", "SEED"]
 EX_PELE_KEYWORDS = ["NATIVE", "FORCEFIELD", "CHAIN", "CONSTRAINTS", "LICENSES", "LOGFILE", "SOLVENT"]
-PELE_KEYWORDS = [ "RESTART", "OUTPUT", "INPUT", "SEED", "STEPS", "BOX", "BOX_METRIC", "SASA_min", "SASA_max", "TEMP" ]
+PELE_KEYWORDS = [ "RESTART", "OUTPUT", "INPUT", "SEED", "STEPS", "BOX", "BOX_METRIC", "SASA_min", "SASA_max" ]
 NATIVE = '''
                         {{
 
@@ -108,10 +108,10 @@ NATIVE = '''
 
 '''
 BOX_METRIC = '''
-                        {
-                            "type": "isPerturbedAtomSetCOMOutOfTheBox"
-                        }
-             '''
+            {
+                "type": "isPerturbedAtomSetCOMOutOfTheBox"
+            }
+         '''
 
 BOX = '''
 MODEL $MODEL
@@ -181,7 +181,6 @@ FILES_TEST = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templat
                  os.path.join(DIR, "Templates/pele_exit.conf")]
 
 FILES_NAME = ["box.pdb", "pele.conf", "adaptive_exit.conf",  "pele_exit.conf"]
-
 
 # ERRORS
 CLUSTER_ERROR = "Number of cpus ({}) must be bigger than clusters ({})"
