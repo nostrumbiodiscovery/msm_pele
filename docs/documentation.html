@@ -191,10 +191,13 @@
 <li><strong>complex.pdb</strong> initial pdb with receptor and ligand already docked</li>
 <li><strong>resname</strong> residue name of the ligand</li>
 <li><strong>chain</strong> chain of the ligand</li>
+<li><strong>–cpus</strong> number of cpus to use</li>
+<li><strong>–time</strong> number of seconds to run each iteration</li>
+<li><strong>–temp</strong> temperature to run the simulation (binding exposed cavities 1500, charged ligands 1500, other 1000)</li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MSM_PELE</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MSM_PELE</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">cpus</span> <span class="n">number_cpus</span> <span class="o">--</span><span class="n">time</span> <span class="n">seconds</span> <span class="o">--</span><span class="n">temp</span> <span class="n">temperature</span>
 
-<span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">1</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MSM_PELE</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">LIG</span> <span class="n">Z</span>
+<span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">1</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MSM_PELE</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">LIG</span> <span class="n">Z</span>  <span class="o">--</span><span class="n">cpus</span> <span class="mi">128</span> <span class="o">--</span><span class="n">time</span> <span class="mi">25000</span> <span class="o">--</span><span class="n">temp</span> <span class="mi">1000</span>
 </pre></div>
 </div>
 <p>If you want to use external charges:</p>
@@ -203,10 +206,13 @@
 <li><strong>resname</strong> residue name of the ligand</li>
 <li><strong>chain</strong> chain of the ligand</li>
 <li><strong>–mae_lig ligand.mae</strong> mae file of the ligand with QM charges</li>
+<li><strong>–cpus</strong> number of cpus to use</li>
+<li><strong>–time</strong> number of seconds to run each iteration</li>
+<li><strong>–temp</strong> temperature to run the simulation (binding exposed cavities 1500, charged ligands 1500, other 1000)</li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MSM_PELE</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">mae_lig</span> <span class="n">ligand</span><span class="o">.</span><span class="n">mae</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MSM_PELE</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">mae_lig</span> <span class="n">ligand</span><span class="o">.</span><span class="n">mae</span> <span class="o">--</span><span class="n">cpus</span> <span class="n">number_cpus</span> <span class="o">--</span><span class="n">time</span> <span class="n">seconds</span> <span class="o">--</span><span class="n">temp</span> <span class="n">temperature</span>
 
-<span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">1</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MSM_PELE</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">LIG</span> <span class="n">Z</span> <span class="o">--</span><span class="n">mae_lig</span> <span class="n">ligand</span><span class="o">.</span><span class="n">mae</span>
+<span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">1</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MSM_PELE</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">LIG</span> <span class="n">Z</span> <span class="o">--</span><span class="n">mae_lig</span> <span class="n">ligand</span><span class="o">.</span><span class="n">mae</span> <span class="o">--</span><span class="n">cpus</span> <span class="mi">128</span> <span class="o">--</span><span class="n">time</span> <span class="mi">25000</span> <span class="o">--</span><span class="n">temp</span> <span class="mi">1000</span>
 </pre></div>
 </div>
 </div>
@@ -221,7 +227,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li><strong>–pdb</strong> use pdb as output file (default=.xtc)</li>
+<li><strong>–pdb</strong> use pdb format as output file (default=.xtc)</li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MSM_PELE</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">pdb</span>
 

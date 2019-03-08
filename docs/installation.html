@@ -85,6 +85,7 @@
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#conda-installation-recommended">Conda Installation (Recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#source-code-installation">Source Code Installation</a></li>
 </ul>
 </li>
 </ul>
@@ -180,17 +181,29 @@
 before practice. Furthermore MSM PELE requires Schrodinger and PELE installation.</p>
 <div class="section" id="conda-installation-recommended">
 <h2>Conda Installation (Recommended)<a class="headerlink" href="#conda-installation-recommended" title="Permalink to this headline">¶</a></h2>
-<p><strong>Create conda</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">--</span><span class="n">name</span> <span class="n">py36</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.6</span>
+<p><strong>Instructions</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>conda create --name py36 python=3.6
+
+source activate py36
+
+git clone https://github.com/danielSoler93/MSM_PELE.git
+
+pip install numpy cython
+
+python MSM_PELE/setup.py install --schr &lt;/path/to/schrodinger&gt; --pele &lt;/path/to/pele/&gt; --pele-license &lt;/path/to/pele/licenses&gt; --pele-exec &lt;/path/to/pele/bin&gt; --mpirun &lt;/path/to/mpi&gt;
+
+export $PYTHONPATH=$PYTHONPATH:/folder/before/MSM_PELE/:/folder/MSM_PELE/
 </pre></div>
 </div>
-<p><strong>Activate Env</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">activate</span> <span class="n">py36</span>
-</pre></div>
 </div>
-<p><strong>Install software</strong>:</p>
-<p>From the folder containing MSM_PELE and with the python used to run the software later:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">MSM_PELE</span><span class="o">/</span><span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span> <span class="o">--</span><span class="n">schr</span> <span class="o">&lt;/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">schrodinger</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">pele</span> <span class="o">&lt;/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">pele</span><span class="o">/&gt;</span> <span class="o">--</span><span class="n">pele</span><span class="o">-</span><span class="n">license</span> <span class="o">&lt;/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">pele</span><span class="o">/</span><span class="n">licenses</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">pele</span><span class="o">-</span><span class="n">exec</span> <span class="o">&lt;/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">pele</span><span class="o">/</span><span class="nb">bin</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">mpirun</span> <span class="o">&lt;/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">mpi</span><span class="o">&gt;</span>
+<div class="section" id="source-code-installation">
+<h2>Source Code Installation<a class="headerlink" href="#source-code-installation" title="Permalink to this headline">¶</a></h2>
+<p><strong>Instructions</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/danielSoler93/MSM_PELE.git
+
+python MSM_PELE/setup.py install --schr &lt;/path/to/schrodinger&gt; --pele &lt;/path/to/pele/&gt; --pele-license &lt;/path/to/pele/licenses&gt; --pele-exec &lt;/path/to/pele/bin&gt; --mpirun &lt;/path/to/mpi&gt;
+
+export $PYTHONPATH=$PYTHONPATH:/folder/before/MSM_PELE/:/folder/MSM_PELE/
 </pre></div>
 </div>
 </div>

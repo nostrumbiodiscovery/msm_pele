@@ -16,11 +16,17 @@ If you want to use OPLS2005 charges:
 
 - **chain** chain of the ligand
 
+- **--cpus** number of cpus to use
+
+- **--time** number of seconds to run each iteration
+
+- **--temp** temperature to run the simulation (binding exposed cavities 1500, charged ligands 1500, other 1000)
+
 ::
 
-    i.e.0 python -m MSM_PELE.main complex.pbd resname chain
+    i.e.0 python -m MSM_PELE.main complex.pbd resname chain --cpus number_cpus --time seconds --temp temperature
     
-    i.e.1 python -m MSM_PELE.main complex.pbd LIG Z 
+    i.e.1 python -m MSM_PELE.main complex.pbd LIG Z  --cpus 128 --time 25000 --temp 1000
 
 If you want to use external charges:
 
@@ -32,11 +38,18 @@ If you want to use external charges:
 
 - **--mae_lig ligand.mae** mae file of the ligand with QM charges 
 
+- **--cpus** number of cpus to use
+
+- **--time** number of seconds to run each iteration
+
+- **--temp** temperature to run the simulation (binding exposed cavities 1500, charged ligands 1500, other 1000)
+
+
 ::
 
-    i.e.0 python -m MSM_PELE.main complex.pbd resname chain --mae_lig ligand.mae
+    i.e.0 python -m MSM_PELE.main complex.pbd resname chain --mae_lig ligand.mae --cpus number_cpus --time seconds --temp temperature
     
-    i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --mae_lig ligand.mae
+    i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --mae_lig ligand.mae --cpus 128 --time 25000 --temp 1000
 
 Output Parameters
 -------------------
@@ -50,7 +63,7 @@ Output Parameters
 
   i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --folder LIG_MSM
 
-- **--pdb** use pdb as output file (default=.xtc)
+- **--pdb** use pdb format as output file (default=.xtc)
 
 ::
 
