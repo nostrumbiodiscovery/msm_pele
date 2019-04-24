@@ -93,7 +93,10 @@
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#pr-tutorial">PR Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#launch-the-job">Launch the job</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#analise-the-exit-path">Analise the exit path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#analise-the-mc-exploration">Analise the MC exploration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#analise-the-msm">Analise the MSM</a></li>
 </ul>
 </li>
 </ul>
@@ -174,57 +177,83 @@
             
   <div class="section" id="tutorial">
 <span id="id1"></span><h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
-<p>This section will show how to apply the platform to a Nuclear Hormone real
-case</p>
-<div class="section" id="pr-tutorial">
-<h2>PR Tutorial<a class="headerlink" href="#pr-tutorial" title="Permalink to this headline">¶</a></h2>
-<p><strong>Command</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">MSM_PELE</span><span class="o">/</span><span class="n">main</span><span class="o">.</span><span class="n">py</span> <span class="n">MSM_PELE</span><span class="o">/</span><span class="n">Examples</span><span class="o">/</span><span class="n">PR_1A28_xray_</span><span class="o">-</span><span class="n">_minimized</span><span class="o">.</span><span class="n">pdb</span> <span class="n">STR</span> <span class="n">Z</span> <span class="o">--</span><span class="n">cpus</span> <span class="mi">120</span>
+<p>This section will walk you through your first MSM job  and posterior analysis.
+We will apply MSM_PELE over a already docked progesteron receptor inhibitor.</p>
+<div class="section" id="launch-the-job">
+<h2>Launch the job<a class="headerlink" href="#launch-the-job" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MSM_PELE</span><span class="o">.</span><span class="n">main</span> <span class="o">&lt;</span><span class="nb">complex</span><span class="o">.</span><span class="n">pdb</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">resname</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">chain</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">cpus</span> <span class="o">&lt;</span><span class="n">cpus</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">iterations</span> <span class="o">&lt;</span><span class="n">n_repetitions</span><span class="o">&gt;</span>
+
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MSM_PELE</span><span class="o">.</span><span class="n">main</span> <span class="n">MSM_PELE</span><span class="o">/</span><span class="n">Examples</span><span class="o">/</span><span class="n">PR_1A28_xray_</span><span class="o">-</span><span class="n">_minimized</span><span class="o">.</span><span class="n">pdb</span> <span class="n">STR</span> <span class="n">Z</span> <span class="o">--</span><span class="n">cpus</span> <span class="mi">120</span> <span class="o">--</span><span class="n">iterations</span> <span class="mi">3</span>
 </pre></div>
 </div>
-<p><strong>Adaptive Exit Analysis</strong></p>
-<p>An Adaptive Exit simulation is performed and all conformations are
-clusterize. In order to check good discretization along the exit
-path next instructions should be followed:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">maestro</span> <span class="n">Pele_STR</span><span class="o">/</span><span class="n">PR_1A28_xray_</span><span class="o">-</span><span class="n">_minimized_processed</span><span class="o">.</span><span class="n">pdb</span> <span class="n">Pele_STR</span><span class="o">/</span><span class="n">box</span><span class="o">.</span><span class="n">pdb</span> <span class="n">Pele_STR</span><span class="o">/</span><span class="n">ouput_clustering</span><span class="o">/</span><span class="n">clustering_40_Kmeans</span><span class="o">.</span><span class="n">pdb</span>
+</div>
+<div class="section" id="analise-the-exit-path">
+<h2>Analise the exit path<a class="headerlink" href="#analise-the-exit-path" title="Permalink to this headline">¶</a></h2>
+<p>First, a complete in-out simulation (from minimum SASA to SASA 1) is performed, and all conformations are
+clusterize along the exit path. In order to ensure good correlation between ligand the next instructions should be followed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">maestro</span> <span class="o">&lt;</span><span class="n">processed_input</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">produced_box</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">all_exit_path_clusters</span><span class="o">&gt;</span>
+<span class="n">maestro</span> <span class="n">Pele_STR</span><span class="o">/</span><span class="n">PR_1A28_xray_</span><span class="o">-</span><span class="n">_minimized_processed</span><span class="o">.</span><span class="n">pdb</span> <span class="n">Pele_STR</span><span class="o">/</span><span class="n">box</span><span class="o">.</span><span class="n">pdb</span> <span class="n">Pele_STR</span><span class="o">/</span><span class="n">ouput_clustering</span><span class="o">/</span><span class="n">iteration_</span><span class="o">*/</span><span class="n">clustering_</span><span class="o">*</span><span class="n">_Kmeans</span><span class="o">.</span><span class="n">pdb</span>
 </pre></div>
 </div>
-<p>The representative pdb of each cluster can be found under PELE_STR/output_clustering:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">maestro</span> <span class="n">PELE_STR</span><span class="o">/</span><span class="n">ouput_clustering</span><span class="o">/</span><span class="n">initial_</span><span class="o">*</span>
+<p>The user must check that all ligand’s exit path simulations are similar (same exit path),
+and that the shown clusters should be representative of the entire exit path (clusters scattered along the entire path)
+otherwise simulation may not be comparable</p>
+<p>The representative structure of each cluster for each iteration can be found under <strong>PELE_STR/output_clustering/iteration_X</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">maestro</span> <span class="n">PELE_STR</span><span class="o">/</span><span class="n">ouput_clustering</span><span class="o">/</span><span class="n">iteration_X</span><span class="o">/</span><span class="n">initial_number_cluster</span><span class="o">.</span><span class="n">pdb</span>
 </pre></div>
 </div>
-<p><strong>PELE exploration Analysis</strong></p>
-<p>An exhaustive PELE exploration is performed starting from each cluster from the previous
-exit Adaptive period. There are several features we can check to know whether
-the exploration was good enough. Run the next commands under Pele_STR/output_pele/</p>
+</div>
+<div class="section" id="analise-the-mc-exploration">
+<h2>Analise the MC exploration<a class="headerlink" href="#analise-the-mc-exploration" title="Permalink to this headline">¶</a></h2>
+<p>An exhaustive PELE exploration and a posterior MSM analysis is performed
+starting from all the exit path clusters. There are several features we can check to know whether
+the exploration was good enough. Run the next commands under <strong>Pele_STR/output_pele/</strong>:</p>
 <p><cite>Transition Study</cite>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">MSM_PELE</span><span class="o">/</span><span class="n">Pele_scripts</span><span class="o">/</span><span class="n">AnalysisTools</span><span class="o">/</span><span class="n">adaptivePlot</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">1000</span> <span class="o">-</span><span class="n">rmsd</span> <span class="o">|</span> <span class="n">gnuplot</span> <span class="o">-</span><span class="n">p</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MSM_PELE</span><span class="o">.</span><span class="n">AdaptivePELE</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">adaptivePlot</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">1000</span> <span class="o">-</span><span class="n">rmsd</span> <span class="o">|</span> <span class="n">gnuplot</span> <span class="o">-</span><span class="n">p</span>
 </pre></div>
 </div>
-<p><cite>Total Energy Conformations</cite>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">MSM_PELE</span><span class="o">/</span><span class="n">Pele_scripts</span><span class="o">/</span><span class="n">AnalysisTools</span><span class="o">/</span><span class="n">adaptivePlot</span> <span class="mi">2</span> <span class="mi">4</span> <span class="mi">1000</span> <span class="o">-</span><span class="n">zcol</span> <span class="mi">2</span> <span class="o">-</span><span class="n">be</span>
-<span class="o">|</span> <span class="n">guplot</span> <span class="o">-</span><span class="n">p</span>
+<p>If there are some trajectories connecting the binding site to the bulk
+as seen in the image we can presume the MSM states will be correctly
+connected. If there would be no transitions between the low and high part
+of the chart we would recommend to increase the temperature of the simulation
+with –temp 1500 and rerun the MSM again.</p>
+<div class="figure align-center">
+<img alt="Install need it plugin to visualize the image" src="_images/transitions.png" />
+</div>
+</div>
+<div class="section" id="analise-the-msm">
+<h2>Analise the MSM<a class="headerlink" href="#analise-the-msm" title="Permalink to this headline">¶</a></h2>
+<p>To check the validity of the final MSM we can check the most important clusters
+to validate it’s importance to the final dG.</p>
+<p><cite>Visualizing the dG landscape</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">display</span> <span class="n">Pele_STR</span><span class="o">/</span><span class="n">ouput_pele</span><span class="o">/</span><span class="n">MSM_2</span><span class="p">(</span><span class="n">last</span> <span class="n">msm</span> <span class="n">folder</span><span class="p">)</span><span class="o">/</span><span class="n">PMF_plot</span><span class="o">/</span><span class="n">PMF</span><span class="o">*.</span><span class="n">png</span>
 </pre></div>
 </div>
-<p><cite>Counter Plot</cite>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">MSM_PELE</span><span class="o">/</span><span class="n">Pele_scripts</span><span class="o">/</span><span class="n">AnalysisTools</span><span class="o">/</span><span class="n">counter</span><span class="o">.</span><span class="n">py</span> <span class="mi">6</span> <span class="mi">10</span>
+<p>The clusters close to the binding site (dist = 0-3) should be the lowest dG as they should represent the slowest
+transitions between states while the clusters on the bulk should be the highest as they represent the
+highest transitions path (less important). We are chasing a profile like the next:</p>
+<div class="figure align-center">
+<img alt="Install need it plugin to visualize the image" src="_images/PMF.png" />
+</div>
+<p>Sometimes false minimas may appear (next to metals or next to the protein surface). In order to avoid that we suggest to enter
+your own box trying to exclude that part of the system from the simulation.</p>
+<p>In order to include your own box pass the flag –box box.pdb and change the CENTER and RADIUS line inside the pdb as you want
+to define the properties of the box/es (you can have more than one box per file).</p>
+<p>If your PMF looks completely scatter with no minimum close to the binding site as the plot below and the box limitation does not make any change to the results,  your system may not suitable for a MSM_PELE calculation as PELE finds too many false positive. We are currently working on that problem.</p>
+<div class="figure align-center">
+<img alt="Install need it plugin to visualize the image" src="_images/PMF_wrong.png" />
+</div>
+<p><cite>Visualizing most important Clusters</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MSM_PELE</span><span class="o">.</span><span class="n">Analysis</span><span class="o">.</span><span class="n">extract_cluster_representative</span> <span class="o">--</span><span class="n">dGmin</span> <span class="mi">0</span> <span class="o">--</span><span class="n">dGmax</span> <span class="mi">1</span> <span class="o">--</span><span class="n">dist</span> <span class="mi">0</span> <span class="o">--</span><span class="n">dist</span> <span class="mi">5</span>
 </pre></div>
 </div>
-<p><cite>Best Binding Energy Structures</cite>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">MSM_PELE</span><span class="o">/</span><span class="n">Pele_scripts</span><span class="o">/</span><span class="n">AnalysisTools</span><span class="o">/</span><span class="n">bestStructs</span><span class="o">.</span><span class="n">py</span> <span class="n">Binding</span> <span class="n">Energy</span>
-</pre></div>
-</div>
-<p><strong>MSM Analysis</strong></p>
-<p><cite>Correlation Analysis</cite>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">~/</span><span class="n">repos</span><span class="o">/</span><span class="n">PyTools</span><span class="o">/</span><span class="n">PyTools</span><span class="o">/</span><span class="n">autoCorr</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">l</span> <span class="mi">1000</span> <span class="o">-</span><span class="n">n</span> <span class="mi">200</span> <span class="o">--</span><span class="n">clusters</span>
-<span class="n">MSM_0</span><span class="o">/</span><span class="n">clusterCenters_0</span><span class="o">.</span><span class="n">dat</span> <span class="o">--</span><span class="n">trajs</span> <span class="n">allTrajs</span><span class="o">/</span>
-</pre></div>
-</div>
-<p><cite>Correlation Clusters</cite>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vmd</span> <span class="n">Pele_STR</span><span class="o">/</span><span class="n">output_pele</span><span class="o">/</span><span class="n">representative_structures</span><span class="o">/</span><span class="n">clusters_0</span><span class="o">.</span><span class="n">pdb</span> <span class="p">(</span><span class="n">Colored</span>
-<span class="k">with</span> <span class="n">the</span> <span class="n">beta</span> <span class="nb">property</span> <span class="kn">from</span> <span class="nn">red</span> <span class="p">(</span><span class="n">high</span> <span class="n">correlation</span><span class="p">)</span> <span class="n">to</span> <span class="n">blue</span> <span class="p">(</span><span class="n">low</span> <span class="n">correlation</span><span class="p">)</span>
-</pre></div>
-</div>
+<p>This will create a folder with all the structures laying inside the square
+determined by dg [0 - 1] and dist [0 -5] on the PMF*.png plot. It is higly
+important that the lowest dG clusters make sense to the user. (Close
+to binding site and making the reported catalytic interaction if known)</p>
+<p><cite>Results</cite></p>
+<p>If all the requisits before are met we can check the final results under: <strong>Pele_STR/results</strong></p>
+<p>Where we will find a final MSM pdf report with the final dG+-std together with a PMF, probability and transition plot.</p>
 </div>
 </div>
 
