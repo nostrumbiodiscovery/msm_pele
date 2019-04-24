@@ -88,10 +88,14 @@ class EnviroBuilder(object):
         Build sasa related constants for later
         classifing the exit simulation clusters
         """
-        self.steps = self.steps if not self.test else 10
         self.lagtime = 1 if self.test else self.lagtime
         self.lagtimes = None if self.test else [50, 100, 200, 500]
         self.msm_clust = 2 if self.test else self.msm_clust
+        if not self.test:
+            if self.time: self.steps = 10000
+            else: self.steps = self.steps
+        else:
+            self.steps = 10
 
 
     def build_sasa_constants(self):
