@@ -14,13 +14,13 @@ def main(native, resname, destFolder, dg1, dg2, dist1, dist2, output="most_impor
     distance = np.linalg.norm(clusters-minPos, axis=1)
     data = np.loadtxt(os.path.join(destFolder, "pmf_xyzg_%d.dat" % i))
     deltag = data[:, -1]
-    cluster_idx = [j for j, (g, d) in enumerate(zip(deltag, distance)) if (dg2 > g > dg1) and (dist2 > d > dist1)]
+    cluster_idx = [[j,g,d] for j, (g, d) in enumerate(zip(deltag, distance)) if (dg2 > g > dg1) and (dist2 > d > dist1)]
     folder = os.path.join(os.path.dirname(os.path.abspath(destFolder)), "representative_structures_pdb_0_{}".format(i))
-    structures_clusters = [os.path.join(folder, "cluster_{}.pdb".format(idx)) for idx in cluster_idx]
+    structures_clusters = [os.path.join(folder, "cluster_{}.pdb".format(idx[0])) for idx in cluster_idx]
     if not os.path.exists(output):
         os.mkdir(output)
-    for f in structures_clusters:
-        shutil.copy(f, output)
+    for f, name in zip(structures_clusters, cluster_idx):
+        shutil.copy(f, os.path.join(output, "cluster_{}_dg{}_dist{}.pdb".format(*name)))
 
 
 def add_args(parser):
@@ -39,4 +39,4 @@ if __name__ == "__main__":
     add_args(parser)
     args = parser.parse_args()
     main(args.native, args.resname, args.destFolder, args.dgmin, args.dgmax, args.distmin, args.distmax, args.output)
-~                                                                                                                            
+
