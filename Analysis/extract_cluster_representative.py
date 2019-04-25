@@ -7,6 +7,8 @@ import MSM_PELE.Analysis.plotMSMAdvancedInfo as pt
 
 
 def main(native, resname, destFolder, dg1, dg2, dist1, dist2, output="most_important_clusters"):
+    print("Extracting desired clusters...")
+    i = int(destFolder.strip("/")[-1])
     minPos = pt.get_min_Pos(native, resname)
     clusters = np.loadtxt(os.path.join(destFolder, "clusterCenters_%d.dat" % i))
     distance = np.linalg.norm(clusters-minPos, axis=1)
