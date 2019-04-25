@@ -91,10 +91,12 @@ If your PMF looks completely scatter with no minimum close to the binding site a
 
 `Visualizing most important Clusters`::
 
-  python -m MSM_PELE.Analysis.extract_cluster_representative --dGmin 0 --dGmax 1 --dist 0 --dist 5
+  python -m MSM_PELE.Analysis.extract_cluster_representative <initial_input>  <last_MSM_folder> --dgmin <min limit dG> --dgmax <max limit dg> --distmin <min limit distance> --distmax <max limit distance>
 
-This will create a folder with all the structures laying inside the square
-determined by dg [0 - 1] and dist [0 -5] on the PMF*.png plot. It is higly
+  python -m MSM_PELE.Analysis.extract_cluster_representative 4p1r_receptor_complex_processed.pdb 2KR output_pele/MSM_2/ --dgmin 0 --dgmax 2 --distmin 0 --distmax 6
+
+This will create a folder called most_important_clusters with all the structures of the clusters laying inside the square
+determined by dg [0 - 2] and dist [0 -6] on the PMF*.png plot. It is higly
 important that the lowest dG clusters make sense to the user. (Close 
 to binding site and making the reported catalytic interaction if known)
 
