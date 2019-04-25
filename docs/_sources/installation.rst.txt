@@ -37,4 +37,18 @@ Source Code Installation
 
   export $PYTHONPATH=$PYTHONPATH:/folder/before/MSM_PELE/:/folder/MSM_PELE/
 
+Update latest changes from Github Code (once already installed)
+-------------------------------------------------------------------
+
+**Instructions**::
+ 
+ cd MSM_FOLDER
+ cp constants.py ../save_loc/
+ git stash
+ git pull origin master
+ cp ../save_loc/constants.py .
+
+If you do not want to copy the constants.py every time you can 
+add your machine paths there and pull request to the repository.
+
 

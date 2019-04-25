@@ -1,4 +1,5 @@
 from itertools import islice
+import shutil
 import sys
 import os
 import glob
@@ -154,7 +155,7 @@ def get_centers_info(trajectoryFolder, trajectoryBasename, num_clusters, cluster
     return centersInfo
 
 
-def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=None, value1=None, value2=None, sasa=True, perc_sasa_min=0.25, perc_sasa_int=0.5, gaussian = False, seed=222, iteration=1):
+def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, adaptivefolder=None, topology=None, value1=None, value2=None, sasa=True, perc_sasa_min=0.25, perc_sasa_int=0.5, gaussian = False, seed=222, iteration=1):
 
     #Initialize contant variables
     trajectoryFolder = "allTrajs"
@@ -201,6 +202,8 @@ def main(num_clusters, output_folder, ligand_resname, atom_ids, cpus, topology=N
     #Output results
     writePDB(COMArray, outputFolder+"clusters_%d_KMeans_allSnapshots.pdb" % original_clust)
     writeInitialStructures(centersInfo, outputFolder+"initial_%d.pdb", topology=topology)
+    shutil.copy(os.path.join(adaptivefolder, "equilibration_1/equilibration_struc_1_1.pdb"),
+       os.path.join(outputFolder, "initial_{}.pdb".format(num_clusters)))
 
     return clusterCenters
 

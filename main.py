@@ -95,7 +95,8 @@ def run(args):
                 with hp.cd(env.adap_ex_output):
                     seed = 742304 if env.test else random.randint(1,1000000)
                     env.logger.info(seed)
-                    cluster_centers = cl.main(env.clusters, env.cluster_output, args.residue, "", env.cpus, env.topology, env.sasamin, env.sasamax, env.sasa, env.perc_sasa_min, env.perc_sasa_int, seed=seed, iteration=i)
+                    cluster_centers = cl.main(env.clusters, env.cluster_output, args.residue, "", env.cpus, env.adap_ex_output,
+                       env.topology, env.sasamin, env.sasamax, env.sasa, env.perc_sasa_min, env.perc_sasa_int, seed=seed, iteration=i)
                 env.logger.info("Exit Path Clustering run successfully")
 
             # Create Exploration Box
@@ -161,7 +162,7 @@ def parse_args(args=[]):
     parser.add_argument("--pdb", action='store_true',  help="Use pdb files as output")
     parser.add_argument("--nonstandard", nargs="+",  help="Mid Chain non standard residues to be treated as ATOM not HETATOM", default = [])
     parser.add_argument("--lagtime", type=int,  help="MSM Lagtime to use", default=100)
-    parser.add_argument("--steps", type=int,  help="MSM Steps to use", default=10000)
+    parser.add_argument("--steps", type=int,  help="MSM Steps to use", default=1000)
     parser.add_argument("--temp", type=int,  help="Temperature to use", default=1000)
     parser.add_argument("--msm_clust", type=int,  help="Number of clusters created to converge MSM", default=200)
     parser.add_argument("--time", type=int,  help="Limit of time to run pele exploration", default=None)

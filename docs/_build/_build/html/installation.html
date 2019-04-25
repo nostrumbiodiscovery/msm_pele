@@ -86,6 +86,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#conda-installation-recommended">Conda Installation (Recommended)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#source-code-installation">Source Code Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#update-latest-changes-from-github-code-once-already-installed">Update latest changes from Github Code (once already installed)</a></li>
 </ul>
 </li>
 </ul>
@@ -206,6 +207,19 @@ python MSM_PELE/setup.py install --schr &lt;/path/to/schrodinger&gt; --pele &lt;
 export $PYTHONPATH=$PYTHONPATH:/folder/before/MSM_PELE/:/folder/MSM_PELE/
 </pre></div>
 </div>
+</div>
+<div class="section" id="update-latest-changes-from-github-code-once-already-installed">
+<h2>Update latest changes from Github Code (once already installed)<a class="headerlink" href="#update-latest-changes-from-github-code-once-already-installed" title="Permalink to this headline">¶</a></h2>
+<p><strong>Instructions</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">MSM_FOLDER</span>
+<span class="n">cp</span> <span class="n">constants</span><span class="o">.</span><span class="n">py</span> <span class="o">../</span><span class="n">save_loc</span><span class="o">/</span>
+<span class="n">git</span> <span class="n">stash</span>
+<span class="n">git</span> <span class="n">pull</span> <span class="n">origin</span> <span class="n">master</span>
+<span class="n">cp</span> <span class="o">../</span><span class="n">save_loc</span><span class="o">/</span><span class="n">constants</span><span class="o">.</span><span class="n">py</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p>If you do not want to copy the constants.py every time you can
+add your machine paths there and pull request to the repository.</p>
 </div>
 </div>
 

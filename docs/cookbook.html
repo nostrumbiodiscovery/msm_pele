@@ -186,11 +186,11 @@ through your first steps.</p>
 <li>Binded .mae ligand file on the same reference space than the receptor pdb file.</li>
 </ul>
 <p><strong>Launch MSM_Pele with OPLS charges (pdb file)</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python2</span><span class="o">.</span><span class="n">X</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span> <span class="n">PDB</span> <span class="n">ligand_resname</span> <span class="n">ligand_chain</span> <span class="o">--</span><span class="n">cpus</span> <span class="n">X</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python2</span><span class="o">.</span><span class="n">X</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span> <span class="n">PDB</span> <span class="n">ligand_resname</span> <span class="n">ligand_chain</span> <span class="o">--</span><span class="n">cpus</span> <span class="n">X</span> <span class="o">--</span><span class="n">iterations</span> <span class="mi">3</span>
 </pre></div>
 </div>
 <p><strong>Launch MSM_Pele with QM charges (receptor pdb and ligand as .mae)</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python2</span><span class="o">.</span><span class="n">X</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span> <span class="n">receptor_PDB</span> <span class="n">ligand_resname</span> <span class="n">ligand_chain</span> <span class="o">--</span><span class="n">mae_lig</span> <span class="n">ligand</span><span class="o">.</span><span class="n">mae</span> <span class="o">--</span><span class="n">cpus</span> <span class="n">X</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python2</span><span class="o">.</span><span class="n">X</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span> <span class="n">receptor_PDB</span> <span class="n">ligand_resname</span> <span class="n">ligand_chain</span> <span class="o">--</span><span class="n">mae_lig</span> <span class="n">ligand</span><span class="o">.</span><span class="n">mae</span> <span class="o">--</span><span class="n">cpus</span> <span class="n">X</span> <span class="o">--</span><span class="n">iterations</span> <span class="mi">3</span>
 </pre></div>
 </div>
 </div>
