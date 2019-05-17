@@ -1,7 +1,7 @@
 # must do conda install -c travis msm_pele 
 package:
   name: msm_pele
-  version: "1.0.0"
+  version: "2.0.0"
 
 about:
   home: https://github.com/danielSoler93/msm_pele
@@ -18,12 +18,21 @@ build:
 
 requirements:
   host:
-    - python 3
+    - python
+    - numpy
+    - cython
 
   run:
     # Base dependencies
-    pyemma
-    future
-    cython
-    scikit-learn 
-    fpdf
+    - python
+    - pyemma
+    - future
+    - cython
+    - scikit-learn 
+    - fpdf
+
+test:
+  imports:
+    - msm_pele
+  commands:
+    - msm_pele -h
