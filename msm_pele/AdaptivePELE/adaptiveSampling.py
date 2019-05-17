@@ -1,6 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import os
 import sys
+import msm_pele.constants as cs
+sys.path.append(cs.DIR)
 import ast
 import json
 import time
