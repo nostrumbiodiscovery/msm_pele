@@ -37,4 +37,3 @@ if __name__ == "__main__":
     add_args(parser)
     args = parser.parse_args()
     main(args.native, args.resname, args.destFolder, args.dgmin, args.dgmax, args.distmin, args.distmax, args.output)
-~                                                                                                                            
