@@ -71,7 +71,7 @@ def patch_environ():
 
 def check_dependencies():
         #Update env_variables
-        sys.path.append(constants.DIR)
+        sys.path.append(os.path.join(constants.DIR, "msm_pele"))
         
         #Update binaries
         try:

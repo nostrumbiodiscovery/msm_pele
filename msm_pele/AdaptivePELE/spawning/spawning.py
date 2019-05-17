@@ -14,7 +14,7 @@ from AdaptivePELE.constants import constants
 from AdaptivePELE.utilities import utilities
 from AdaptivePELE.spawning import spawningTypes
 from AdaptivePELE.spawning import densitycalculator
-import MSM_PELE.Analysis.msm_analysis as msmp
+import msm_pele.Analysis.msm_analysis as msmp
 try:
     # Check if the basestring type if available, this will fail in python3
     basestring
