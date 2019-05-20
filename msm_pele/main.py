@@ -2,7 +2,7 @@ import matplotlib
 matplotlib.use('Agg')
 from pyemma import config
 config.show_progress_bars = False
-config.mute = True
+#config.mute = True
 import os
 import msm_pele.Helpers.check_env_var as env
 env.check_dependencies()
