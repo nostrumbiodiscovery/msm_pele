@@ -1,4 +1,4 @@
-# must do conda install -c travis msm_pele 
+# must do conda install -c NostrumBioDiscovery msm_pele 
 package:
   name: msm_pele
   version: "2.0.0"
@@ -20,7 +20,6 @@ requirements:
   host:
     - python
     - numpy
-    - cython
 
   run:
     # Base dependencies
@@ -29,10 +28,12 @@ requirements:
     - future
     - cython
     - scikit-learn 
+    - prody
     - fpdf
+    - numpy >=1.16
 
 test:
   imports:
     - msm_pele
-  commands:
-    - msm_pele -h
+  command:
+    - python -m msm_pele.main -h 
