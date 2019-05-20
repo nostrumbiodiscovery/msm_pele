@@ -1,10 +1,11 @@
 import os
+import sys
 import subprocess
 import argparse
-import msm_pele.Helpers.pele_env as pl
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import msm_pele.constants as cs
 
-class SystemBuilder(pl.EnviroBuilder):
+class SystemBuilder(object):
     def __init__(self, receptor, ligand, residue, pele_dir):
         self.receptor = receptor
         self.ligand = ligand
