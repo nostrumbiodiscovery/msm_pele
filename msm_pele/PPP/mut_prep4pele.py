@@ -81,7 +81,7 @@ def main(input_pdb, pele_dir, output_pdb=["",], no_gaps_ter=False, charge_termin
                       no_gaps_ter, not_proteic_ligand, gaps, not_gaps, mid_chain_nonstd_residue)
 
         coordinated_atoms_ids = {}
-        for metal, atoms_list in metals2coordinate.iteritems():
+        for metal, atoms_list in metals2coordinate.items():
             metal_id = "{} {} {}".format(WritingAtomNames(metal).getNames()[0].replace(' ','_'),
                                          metal.getChid(),
                                          metal.getResnum())

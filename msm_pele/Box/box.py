@@ -49,8 +49,8 @@ def create_box(clusters, env, iteration):
         # Build box string for simulation
         box_string = box.to_PELE_string()
     else:
-	env.box = os.path.join(env.pele_dir, "box.pdb")
-	box.center, box.radius, box.box_type = box.from_file(env.box)
+        env.box = os.path.join(env.pele_dir, "box.pdb")
+        box.center, box.radius, box.box_type = box.from_file(env.box)
         # Build box string for simulation
         box_string = box.to_PELE_string()
 

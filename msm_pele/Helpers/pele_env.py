@@ -51,7 +51,7 @@ class EnviroBuilder(object):
         self.log = '"simulationLogPath" : "$OUTPUT_PATH/logFile.txt",' if args.log else ""
         self.renumber = args.nonrenum
         self.nosasa = args.nosasa
-	self.temp = args.temp
+        self.temp = args.temp
         self.sasa = args.sasa
         self.perc_sasa = args.perc_sasa
         #Choose CPUS
@@ -71,7 +71,7 @@ class EnviroBuilder(object):
     def build_env(cls, args):
         if args.test and not args.precision:
             self = cls(cs.FOLDERS, cs.FILES_TEST, args)
-	elif args.test and args.precision:
+        elif args.test and args.precision:
             self = cls(cs.FOLDERS, cs.FILES_TEST_XP, args)
         elif args.precision:
             self = cls(cs.FOLDERS, cs.FILES_XP, args)
@@ -230,9 +230,9 @@ class EnviroBuilder(object):
         self.logger.setLevel(logging.INFO)
         formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(message)s")
         if self.restart == "all":
-			file_handler = logging.FileHandler(log_name, mode='w')
+            file_handler = logging.FileHandler(log_name, mode='w')
         else:
-			file_handler = logging.FileHandler(log_name, mode='a')
+            file_handler = logging.FileHandler(log_name, mode='a')
         file_handler.setFormatter(formatter)
         self.logger.addHandler(file_handler)
 
@@ -256,37 +256,37 @@ def is_repited(pele_dir):
     else:
         i = 1
     if os.path.isdir(pele_dir):
-		new_pele_dir = "{}_Pele_{}".format(original_dir, i)
-		new_pele_dir = is_repited(new_pele_dir)
-		return new_pele_dir
+        new_pele_dir = "{}_Pele_{}".format(original_dir, i)
+        new_pele_dir = is_repited(new_pele_dir)
+        return new_pele_dir
     else:
-		return pele_dir
+        return pele_dir
 
 def is_last(pele_dir):
 
     original_dir = None
     split_dir = pele_dir.split("_")
     for chunk in split_dir:
-		if chunk != "Pele":
-			if original_dir:
- 				original_dir = "{}_{}".format(original_dir, chunk)
-			else:
-				original_dir = chunk
-		else:
-			break
+        if chunk != "Pele":
+            if original_dir:
+                original_dir = "{}_{}".format(original_dir, chunk)
+            else:
+                original_dir = chunk
+        else:
+            break
     if split_dir[-1].isdigit():
         i = split_dir[-1]
         i = int(i) + 1 
     else:
-		i = 1 
+        i = 1 
 
     if os.path.isdir(pele_dir):
-            new_pele_dir = "{}_Pele_{}".format(original_dir, i)
-            if not os.path.isdir(new_pele_dir):
-                return pele_dir
-            else:
-			    new_pele_dir = is_last(new_pele_dir)
-			    return new_pele_dir
+        new_pele_dir = "{}_Pele_{}".format(original_dir, i)
+        if not os.path.isdir(new_pele_dir):
+            return pele_dir
+        else:
+            new_pele_dir = is_last(new_pele_dir)
+            return new_pele_dir
     else:
         return pele_dir
 

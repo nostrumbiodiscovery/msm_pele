@@ -59,7 +59,7 @@ def split_by_sasa(centers_info, value1, value2, topology=None, perc_sasa_min=0.2
     sasa_max, sasa_int, sasa_min = sasa_classifier(sasas, value1, value2)
     print("Sasa magnitude has been classified in the next clusters: Max: {}, Int: {}, Min: {}".format(sasa_max, sasa_int, sasa_min))
     clusters = update_cluster(centers_info, sasa_max, sasa_int, sasa_min, perc_sasa_min, perc_sasa_int)
-    return {i: value for i, (key, value) in enumerate(clusters.iteritems())}
+    return {i: value for i, (key, value) in enumerate(clusters.items())}
 
 def get_sasa(epoch_num, traj_num, snap_num):
     report = os.path.join(str(epoch_num), "report_{}".format(traj_num))
@@ -73,7 +73,7 @@ def sasa_classifier(sasas, value1, value2):
     sasas_int = {}
     sasas_min = {}
 
-    sasa_values = [ value for key, value in sasas.iteritems() ]
+    sasa_values = [ value for key, value in sasas.items() ]
     sasa_max = max(sasa_values)
     sasa_min = min(sasa_values)
     if value1:
@@ -85,7 +85,7 @@ def sasa_classifier(sasas, value1, value2):
     else:
         sasa_threshold_max = (sasa_min + (sasa_max -sasa_min)*0.6)
 
-    for cluster_num, sasa in sasas.iteritems():
+    for cluster_num, sasa in sasas.items():
         if sasa > sasa_threshold_max:
             sasas_max[cluster_num] = sasa
         elif sasa_threshold_max > sasa > sasa_threshold_min:
@@ -101,9 +101,9 @@ def update_cluster(centers_info, sasa_max,sasa_int, sasa_min, perc_sasa_min=0.25
     number_sasa_int_clust = int(total_of_clusters*perc_sasa_int)
     number_sasa_max_clust = int(total_of_clusters - number_sasa_min_clust - number_sasa_int_clust)
     chosen_clusters = {}
-    sasa_max = take(number_sasa_max_clust, sasa_max.iteritems())
-    sasa_int = take(number_sasa_int_clust, sasa_int.iteritems())
-    sasa_min = take(number_sasa_min_clust, sasa_min.iteritems())
+    sasa_max = take(number_sasa_max_clust, sasa_max.items())
+    sasa_int = take(number_sasa_int_clust, sasa_int.items())
+    sasa_min = take(number_sasa_min_clust, sasa_min.items())
 
     chosen_clusters.update(sasa_max)
     if len(chosen_clusters) != number_sasa_max_clust:
@@ -118,7 +118,7 @@ def update_cluster(centers_info, sasa_max,sasa_int, sasa_min, perc_sasa_min=0.25
         chosen_clusters, centers_info, extra_clust = repite_clusters(centers_info, chosen_clusters, sasa_min, total_of_clusters-len(chosen_clusters), extra_clust)
 
     for cluster_num in centers_info.copy():
-        for chosen_cluster_number in chosen_clusters.iteritems():
+        for chosen_cluster_number in chosen_clusters.items():
             if cluster_num not in list(chosen_clusters.keys()):
                 centers_info.pop(cluster_num, None)
     return centers_info
@@ -135,7 +135,7 @@ def take(n, iterable):
     return list(islice(iterable, n))
 
 def get_centers_info(trajectoryFolder, trajectoryBasename, num_clusters, clusterCenters):
-    centersInfo = {x: {"structure": None, "minDist": 1e6, "center": None} for x in xrange(num_clusters)}
+    centersInfo = {x: {"structure": None, "minDist": 1e6, "center": None} for x in range(num_clusters)}
 
     trajFiles = glob.glob(os.path.join(trajectoryFolder, trajectoryBasename))
     for traj in trajFiles:
@@ -147,7 +147,7 @@ def get_centers_info(trajectoryFolder, trajectoryBasename, num_clusters, cluster
             nSnap = snapshot[0]
             snapshotCoords = snapshot[1:]
             dist = np.sqrt(np.sum((clusterCenters-snapshotCoords)**2, axis=1))
-            for clusterInd in xrange(num_clusters):
+            for clusterInd in range(num_clusters):
                 if dist[clusterInd] < centersInfo[clusterInd]['minDist']:
                     centersInfo[clusterInd]['minDist'] = dist[clusterInd]
                     centersInfo[clusterInd]['structure'] = (epoch, int(iTraj), nSnap)

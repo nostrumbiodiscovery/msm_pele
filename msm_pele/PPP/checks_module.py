@@ -157,7 +157,7 @@ def CheckMetalsCoordination(structure):
                     coordinated_metals[metal_res] = coordinated_atoms_list#, 'angles': angles}
     coordinated_atoms_ids = {}
     if coordinated_metals:
-        for metal, atoms_list in coordinated_metals.iteritems():
+        for metal, atoms_list in coordinated_metals.items():
             metal_id = "{} {} {}".format(metal.getResname(), metal.getChid(), metal.getResnum())
             atoms_ids = [["{} {} {} {}".format(at.getResnum(), at.getResname(), at.getChid(), at.getName()),
                           calcDistance(metal, at)[0]] for at in atoms_list]
@@ -533,7 +533,7 @@ def CheckClashes(mutated_protein, mutation, zmatrix, initial_residue,
             else:
                 cd_atom_clashes.pop(cd_atom_clashes.index(n_atom_index))
     real_clashes = {}
-    for key, indices in clashes2check.iteritems():
+    for key, indices in clashes2check.items():
         real_clashing_indices = []
         for ind in indices:
             atom2check = mutated_protein.select('index {}'.format(ind))
