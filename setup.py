@@ -56,7 +56,7 @@ class PreInstallCommand(install):
 
     def run(self):
         print("Cythonazing")
-        subprocess.call("python MSM_PELE/setup.py build_ext --inplace".split())
+        subprocess.call("python msm_pele/setup.py build_ext --inplace".split())
         print("Installing packages")
         subprocess.call("pip install {}".format(" ".join(packages)).split())
         print("Setting environmental variables")
@@ -71,9 +71,9 @@ class PostInstallCommand(install):
 
 
 def installer(schr, pele, pele_exec, pele_license, mpirun):
-    shutil.copy('MSM_PELE/Templates/constants.py', 'MSM_PELE/constants.py')
+    shutil.copy('msm_pele/Templates/constants.py', 'msm_pele/constants.py')
     d = {"SCHRODINGER":schr, "PELE":pele, "PELE_BIN":pele_exec, "LICENSE":pele_license, "MPIRUN":mpirun }
-    file_input = 'MSM_PELE/constants.py'
+    file_input = 'msm_pele/constants.py'
     filein = open(file_input)
     src = Template( filein.read() )
     installation_content = src.safe_substitute(d)
@@ -87,7 +87,7 @@ packages = ['numpy', 'matplotlib', 'pandas', 'cython', 'mdtraj', 'scipy', 'pyemm
 here = path.abspath(path.dirname(__file__))
 ext_modules = []
 cmdclass = {}
-cmdclass.update({'install': PreInstallCommand})
+##cmdclass.update({'install': PreInstallCommand})
 
 
 class sdist(_sdist):
@@ -103,38 +103,43 @@ class sdist(_sdist):
 
 if use_cython:
     ext_modules += [
-        Extension("MSM_PELE.AdaptivePELE.atomset.atomset", ["MSM_PELE/AdaptivePELE/atomset/atomset.pyx"], include_dirs=["MSM_PELE/AdaptivePELE", "MSM_PELE/AdaptivePELE/atomset"]),
-        Extension("MSM_PELE.AdaptivePELE.atomset.SymmetryContactMapEvaluator", ["MSM_PELE/AdaptivePELE/atomset/SymmetryContactMapEvaluator.pyx"], include_dirs=["MSM_PELE/AdaptivePELE", "MSM_PELE/AdaptivePELE/atomset"]),
-        Extension("MSM_PELE.AdaptivePELE.atomset.RMSDCalculator", ["MSM_PELE/AdaptivePELE/atomset/RMSDCalculator.pyx"], include_dirs=["MSM_PELE/AdaptivePELE", "MSM_PELE/AdaptivePELE/atomset"]),
-        Extension("MSM_PELE.AdaptivePELE.freeEnergies.utils", ["MSM_PELE/AdaptivePELE/freeEnergies/utils.pyx"], include_dirs=["MSM_PELE/AdaptivePELE", "MSM_PELE/AdaptivePELE/freeEnergies"])
+        Extension("msm_pele.AdaptivePELE.atomset.atomset", ["msm_pele/AdaptivePELE/atomset/atomset.pyx"], include_dirs=["msm_pele/AdaptivePELE", "msm_pele/AdaptivePELE/atomset"]),
+        Extension("msm_pele.AdaptivePELE.atomset.SymmetryContactMapEvaluator", ["msm_pele/AdaptivePELE/atomset/SymmetryContactMapEvaluator.pyx"], include_dirs=["msm_pele/AdaptivePELE", "msm_pele/AdaptivePELE/atomset"]),
+        Extension("msm_pele.AdaptivePELE.atomset.RMSDCalculator", ["msm_pele/AdaptivePELE/atomset/RMSDCalculator.pyx"], include_dirs=["msm_pele/AdaptivePELE", "msm_pele/AdaptivePELE/atomset"]),
+        Extension("msm_pele.AdaptivePELE.freeEnergies.utils", ["msm_pele/AdaptivePELE/freeEnergies/utils.pyx"], include_dirs=["msm_pele/AdaptivePELE", "msm_pele/AdaptivePELE/freeEnergies"])
     ]
     cmdclass.update({'build_ext': build_ext})
 else:
     ext_modules += [
-        Extension("MSM_PELE.AdaptivePELE.atomset.atomset", ["MSM_PELE/AdaptivePELE/atomset/atomset.c"], include_dirs=["MSM_PELE/AdaptivePELE", "MSM_PELE/AdaptivePELE/atomset"]),
-        Extension("MSM_PELE.AdaptivePELE.atomset.SymmetryContactMapEvaluator", ["MSM_PELE/AdaptivePELE/atomset/SymmetryContactMapEvaluator.c"], include_dirs=["MSM_PELE/AdaptivePELE", "MSM_PELE/AdaptivePELE/atomset"]),
-        Extension("MSM_PELE.AdaptivePELE.atomset.RMSDCalculator", ["MSM_PELE/AdaptivePELE/atomset/RMSDCalculator.c"], include_dirs=["MSM_PELE/AdaptivePELE", "MSM_PELE/AdaptivePELE/atomset"]),
-        Extension("MSM_PELE.AdaptivePELE.freeEnergies.utils", ["MSM_PELE/AdaptivePELE/freeEnergies/utils.c"], include_dirs=["MSM_PELE/AdaptivePELE", "MSM_PELE/AdaptivePELE/freeEnergies"])
+        Extension("msm_pele.AdaptivePELE.atomset.atomset", ["msm_pele/AdaptivePELE/atomset/atomset.c"], include_dirs=["msm_pele/AdaptivePELE", "msm_pele/AdaptivePELE/atomset"]),
+        Extension("msm_pele.AdaptivePELE.atomset.SymmetryContactMapEvaluator", ["msm_pele/AdaptivePELE/atomset/SymmetryContactMapEvaluator.c"], include_dirs=["msm_pele/AdaptivePELE", "msm_pele/AdaptivePELE/atomset"]),
+        Extension("msm_pele.AdaptivePELE.atomset.RMSDCalculator", ["msm_pele/AdaptivePELE/atomset/RMSDCalculator.c"], include_dirs=["msm_pele/AdaptivePELE", "msm_pele/AdaptivePELE/atomset"]),
+        Extension("msm_pele.AdaptivePELE.freeEnergies.utils", ["msm_pele/AdaptivePELE/freeEnergies/utils.c"], include_dirs=["msm_pele/AdaptivePELE", "msm_pele/AdaptivePELE/freeEnergies"])
     ]
 
 # Get the long description from the README file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 setup(
-    name="MSM_PELE",
-    version="2.1",
+    name="msm_pele",
+    version="2.1.0",
     description='Markov State Model analysis on MC simulation to calculate absolute free energies',
     long_description=long_description,
-    url="https://github.com/danielSoler93/MSM_PELE/",
+    url="https://github.com/danielSoler93/msm_pele/tree/devel",
     author='Daniel Soler Viladrich, Joan Francesc Gilabert',
     author_email='daniel.soler@nostrumbiodiscovery.com, cescgina@gmail.com',
     license='',
     packages=find_packages(exclude=['docs', 'tests']),
-    package_data={"MSM_PELE/AdaptivePELE/atomset": ['*.pxd'], "MSM_PELE/Templates": ["*.pdb", "*.conf"] },
+    package_data={"msm_pele/AdaptivePELE/atomset": ['*.pxd'], "msm_pele/Templates": ["*.pdb", "*.conf"] },
     include_package_data=True,
-    install_requires=['numpy', 'matplotlib', 'pandas', 'cython', 'mdtraj', 'scipy', 'pyemma', 'prody==1.8.2', 'fpdf'],
+    install_requires=['numpy', 'mdtraj', 'scipy', 'pyemma', 'future', 'fpdf'],
     cmdclass=cmdclass,
     ext_modules=ext_modules,  # accepts a glob pattern
-    include_dirs=[numpy.get_include()]
+    include_dirs=[numpy.get_include()],
+    classifiers=(
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 2.7",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Science/Research"),
 )
 

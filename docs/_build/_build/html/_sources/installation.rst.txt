@@ -5,43 +5,54 @@ Installation
 .. toctree::
    :maxdepth: 2
 
-MSM PELE installation requires several dependencies they must be set
-before practice. Furthermore MSM PELE requires Schrodinger and PELE installation.
-
-Conda Installation (Recommended)
----------------------------------
-
-**Instructions**::
-
-  conda create --name py36 python=3.6
-
-  source activate py36
-
-  git clone https://github.com/danielSoler93/MSM_PELE.git
-
-  pip install numpy cython
-
-  python MSM_PELE/setup.py install --schr </path/to/schrodinger> --pele </path/to/pele/> --pele-license </path/to/pele/licenses> --pele-exec </path/to/pele/bin> --mpirun </path/to/mpi> 
-
-  export $PYTHONPATH=$PYTHONPATH:/folder/before/MSM_PELE/:/folder/MSM_PELE/
-
-
-Source Code Installation
+Third Parties Requirements
 ---------------------------
 
-**Instructions**::
-    
+ - Schrodinger > 2018
+
+ - Pele 2.15
+
+
+Conda(Recommended)
+---------------------------------
+
+::
+
+  conda create --name msm_pele python=2.7
+
+  source activate msm_pele
+
+  conda install -c NostrumBioDiscovery
+
+  change schrodinger & PELE constants path on your machine under site-packages/msm_pele/constants.py
+
+
+Pypi
+-------------------
+
+::
+    pip install msm_pele
+
+    change schrodinger & PELE constants path on your machine under site-packages/msm_pele/constants.py
+
+
+Source Code 
+---------------------------
+
+::
+
   git clone https://github.com/danielSoler93/MSM_PELE.git
 
-  python MSM_PELE/setup.py install --schr </path/to/schrodinger> --pele </path/to/pele/> --pele-license </path/to/pele/licenses> --pele-exec </path/to/pele/bin> --mpirun </path/to/mpi> 
+  python MSM_PELE/setup.py install
 
-  export $PYTHONPATH=$PYTHONPATH:/folder/before/MSM_PELE/:/folder/MSM_PELE/
+  change schrodinger & PELE constants path on your machine under site-packages/msm_pele/constants.py
+
 
 Update latest changes from Github Code (once already installed)
 -------------------------------------------------------------------
 
-**Instructions**::
- 
+::
+
  cd MSM_FOLDER
  cp constants.py ../save_loc/
  git stash
