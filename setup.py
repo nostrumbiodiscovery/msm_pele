@@ -122,19 +122,24 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 setup(
     name="msm_pele",
-    version="2.1",
+    version="2.1.0",
     description='Markov State Model analysis on MC simulation to calculate absolute free energies',
     long_description=long_description,
-    url="https://github.com/danielSoler93/msm_pele/",
+    url="https://github.com/danielSoler93/msm_pele/tree/devel",
     author='Daniel Soler Viladrich, Joan Francesc Gilabert',
     author_email='daniel.soler@nostrumbiodiscovery.com, cescgina@gmail.com',
     license='',
     packages=find_packages(exclude=['docs', 'tests']),
     package_data={"msm_pele/AdaptivePELE/atomset": ['*.pxd'], "msm_pele/Templates": ["*.pdb", "*.conf"] },
     include_package_data=True,
-    install_requires=['pyemma', 'future', 'fpdf'],
+    install_requires=['numpy', 'mdtraj', 'scipy', 'pyemma', 'future', 'fpdf'],
     cmdclass=cmdclass,
     ext_modules=ext_modules,  # accepts a glob pattern
-    include_dirs=[numpy.get_include()]
+    include_dirs=[numpy.get_include()],
+    classifiers=(
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 2.7",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Science/Research"),
 )
 
