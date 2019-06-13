@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 MSM_PELE -  MSM Free Energy Calculation Algorithm 
-==================================================
+===================================================
 
 MSM PELE  is a Python library with the aim to calculate absolute free energies
 through MSM analysis over paralel monte carlo simulations. Currently, MSM PELE
