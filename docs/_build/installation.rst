@@ -32,9 +32,9 @@ Pypi
 
 ::
 
-    pip install msm_pele
-
-    change schrodinger & PELE constants path on your machine under site-packages/msm_pele/constants.py
+  pip install msm_pele
+  
+  change schrodinger & PELE constants path on your machine under site-packages/msm_pele/constants.py
 
 
 Source Code 
