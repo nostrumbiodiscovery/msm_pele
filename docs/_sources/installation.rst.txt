@@ -22,7 +22,7 @@ Conda(Recommended)
 
   source activate msm_pele
 
-  conda install -c NostrumBioDiscovery
+  conda install -c NostrumBioDiscovery msm_pele
 
   change schrodinger & PELE constants path on your machine under site-packages/msm_pele/constants.py
 
@@ -41,7 +41,7 @@ Source Code
 
 ::
 
-  git clone https://github.com/danielSoler93/MSM_PELE.git
+  git clone https://github.com/NostrumBioDiscovery/msm_pele.git
 
   python MSM_PELE/setup.py install
 

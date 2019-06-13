@@ -5,7 +5,7 @@ Getting Started
 .. toctree::
    :maxdepth: 2
 
-These MSM Pele cookbook shows how to use basics of the platform and walk you
+These msm pele cookbook shows how to use basics of the platform and walk you
 through your first steps.
 
 Launch your first MSM job
@@ -18,10 +18,10 @@ Launch your first MSM job
 
 **Launch MSM_Pele with OPLS charges (pdb file)**::
 
-    python2.X main.py PDB ligand_resname ligand_chain --cpus X --iterations 3
+    python -m msm_pele.main complex_PDB ligand_resname ligand_chain --cpus X --iterations 3
 
 
 **Launch MSM_Pele with QM charges (receptor pdb and ligand as .mae)**::
 
-    python2.X main.py receptor_PDB ligand_resname ligand_chain --mae_lig ligand.mae --cpus X --iterations 3
+    python -m msm_pele.main receptor_PDB ligand_resname ligand_chain --mae_lig ligand.mae --cpus X --iterations 3
 

@@ -5,16 +5,16 @@ Tutorial
 ========
 
 This section will walk you through your first MSM job  and posterior analysis.
-We will apply MSM_PELE over a already docked progesteron receptor inhibitor.
+We will apply msm_pele over a already docked progesteron receptor inhibitor.
 
 
 Launch the job
 ---------------
 ::
     
-    python -m MSM_PELE.main <complex.pdb> <resname> <chain> --cpus <cpus> --iterations <n_repetitions>
+    python -m msm_pele.main <complex.pdb> <resname> <chain> --cpus <cpus> --iterations <n_repetitions>
 
-    python -m MSM_PELE.main MSM_PELE/Examples/PR_1A28_xray_-_minimized.pdb STR Z --cpus 120 --iterations 3
+    python -m msm_pele.main msm_pele/Examples/PR_1A28_xray_-_minimized.pdb STR Z --cpus 120 --iterations 3
 
 Analise the exit path
 -----------------------------
@@ -44,7 +44,7 @@ the exploration was good enough. Run the next commands under **Pele_STR/output_p
 
 `Transition Study`::
 
-  python -m MSM_PELE.AdaptivePELE.analysis.adaptivePlot 5 6 1000 -rmsd | gnuplot -p
+  python -m msm_pele.AdaptivePELE.analysis.adaptivePlot 5 6 1000 -rmsd | gnuplot -p
 
 If there are some trajectories connecting the binding site to the bulk
 as seen in the image we can presume the MSM states will be correctly
@@ -81,7 +81,7 @@ your own box trying to exclude that part of the system from the simulation.
 In order to include your own box pass the flag --box box.pdb and change the CENTER and RADIUS line inside the pdb as you want
 to define the properties of the box/es (you can have more than one box per file).
 
-If your PMF looks completely scatter with no minimum close to the binding site as the plot below and the box limitation does not make any change to the results,  your system may not suitable for a MSM_PELE calculation as PELE finds too many false positive. We are currently working on that problem.
+If your PMF looks completely scatter with no minimum close to the binding site as the plot below and the box limitation does not make any change to the results,  your system may not suitable for a msm_pele calculation as PELE finds too many false positive. We are currently working on that problem.
 
 
 .. figure:: PMF_wrong.png
@@ -91,9 +91,9 @@ If your PMF looks completely scatter with no minimum close to the binding site a
 
 `Visualizing most important Clusters`::
 
-  python -m MSM_PELE.Analysis.extract_cluster_representative <initial_input>  <last_MSM_folder> --dgmin <min limit dG> --dgmax <max limit dg> --distmin <min limit distance> --distmax <max limit distance>
+  python -m msm_pele.Analysis.extract_cluster_representative <initial_input>  <last_MSM_folder> --dgmin <min limit dG> --dgmax <max limit dg> --distmin <min limit distance> --distmax <max limit distance>
 
-  python -m MSM_PELE.Analysis.extract_cluster_representative 4p1r_receptor_complex_processed.pdb 2KR output_pele/MSM_2/ --dgmin 0 --dgmax 2 --distmin 0 --distmax 6
+  python -m msm_pele.Analysis.extract_cluster_representative 4p1r_receptor_complex_processed.pdb 2KR output_pele/MSM_2/ --dgmin 0 --dgmax 2 --distmin 0 --distmax 6
 
 This will create a folder called most_important_clusters with all the structures of the clusters laying inside the square
 determined by dg [0 - 2] and dist [0 -6] on the PMF*.png plot. It is higly

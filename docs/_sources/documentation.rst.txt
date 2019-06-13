@@ -24,9 +24,9 @@ If you want to use OPLS2005 charges:
 
 ::
 
-    i.e.0 python -m MSM_PELE.main complex.pbd resname chain --cpus number_cpus --time seconds --temp temperature
+    i.e.0 python -m msm_pele.main complex.pbd resname chain --cpus number_cpus --time seconds --temp temperature
     
-    i.e.1 python -m MSM_PELE.main complex.pbd LIG Z  --cpus 128 --time 25000 --temp 1000
+    i.e.1 python -m msm_pele.main complex.pbd LIG Z  --cpus 128 --time 25000 --temp 1000
 
 If you want to use external charges:
 
@@ -47,9 +47,9 @@ If you want to use external charges:
 
 ::
 
-    i.e.0 python -m MSM_PELE.main complex.pbd resname chain --mae_lig ligand.mae --cpus number_cpus --time seconds --temp temperature
+    i.e.0 python -m msm_pele.main complex.pbd resname chain --mae_lig ligand.mae --cpus number_cpus --time seconds --temp temperature
     
-    i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --mae_lig ligand.mae --cpus 128 --time 25000 --temp 1000
+    i.e.1 python -m msm_pele.main complex.pbd LIG Z --mae_lig ligand.mae --cpus 128 --time 25000 --temp 1000
 
 Output Parameters
 -------------------
@@ -59,25 +59,25 @@ Output Parameters
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --folder folder_name
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --folder folder_name
 
-  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --folder LIG_MSM
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --folder LIG_MSM
 
 - **--pdb** use pdb format as output file (default=.xtc)
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --pdb
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --pdb
 
-  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --pdb
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --pdb
 
 - **--log** print a log simulation file for each CPU whenever running a PELE simulation
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --log
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --log
 
-  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --log
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --log
 
 
 Restart Parameters
@@ -94,13 +94,13 @@ Restart Parameters
 
 ::
 
-    i.e.0 python -m MSM_PELE.main complex.pbd resname chain --restart [adaptive, pele, msm, analyse]
+    i.e.0 python -m msm_pele.main complex.pbd resname chain --restart [adaptive, pele, msm, analyse]
 
-    i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --restart adaptive
+    i.e.1 python -m msm_pele.main complex.pbd LIG Z --restart adaptive
 
-    i.e.2 python -m MSM_PELE.main complex.pbd LIG Z --restart pele
+    i.e.2 python -m msm_pele.main complex.pbd LIG Z --restart pele
 
-    i.e.3 python -m MSM_PELE.main complex.pbd LIG Z --restart msm
+    i.e.3 python -m msm_pele.main complex.pbd LIG Z --restart msm
 
 
 Input Preparation Parameters
@@ -112,50 +112,50 @@ The input complex will be processed by the software checking  next features:
 
 ::
 
- i.e.0 python -m MSM_PELE.main complex.pbd resname chain --charge_ter
+ i.e.0 python -m msm_pele.main complex.pbd resname chain --charge_ter
 
- i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --charge_ter
+ i.e.1 python -m msm_pele.main complex.pbd LIG Z --charge_ter
 
 - **--gaps_ter** cap gaps or leave them as connected atoms.
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --gaps_ter
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --gaps_ter
 
-  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --gaps_ter
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --gaps_ter
 
 - **--forcefield** forcefield to use to describe the protein. Options:
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --forcefield [OPLS2005 (default), Amber99sb]
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --forcefield [OPLS2005 (default), Amber99sb]
 
-  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --forcefield OPLS2005
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --forcefield OPLS2005
 
 - **--core** Specify an atom from the ligand that will be use as center of a 
   rigid core to identify flexible sidechains and rotamers
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --core atomnumber
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --core atomnumber
 
-  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --core 1456
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --core 1456
 
 - **--mtor** Maximum number of rotamers per sidechain [defaut=4]
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --mtor number
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --mtor number
 
-  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --mtor 3
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --mtor 3
 
 - **--n** Maximum number of sidechains [default=None]
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --n number
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --n number
 
-  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --n 10
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --n 10
 
 - **--gridres** Rotamers resolution. Every how many degrees the rotamers will
   be moved in simulation. As bigger the faste the sofware while loosing exploration.
@@ -163,9 +163,9 @@ The input complex will be processed by the software checking  next features:
 
 ::
 
-  i.e. python -m MSM_PELE.main complex.pbd resname chain --gridres (degrees of rotation)
+  i.e. python -m msm_pele.main complex.pbd resname chain --gridres (degrees of rotation)
 
-  i.e. python -m MSM_PELE.main complex.pbd LIG Z --gridres 30
+  i.e. python -m msm_pele.main complex.pbd LIG Z --gridres 30
 
 Exit Simulation Parameters
 ----------------------------
@@ -175,17 +175,17 @@ Exit Simulation Parameters
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --clust number_of_clusters
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --clust number_of_clusters
 
-  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --clust 60
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --clust 60
 
 - **--cpus** number of cpus to use [default=50]
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --cpus number_of_cpus
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --cpus number_of_cpus
 
-  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z--cpus 128
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z--cpus 128
 
 Exit simulation clustering Parameters
 -------------------------------------
@@ -196,9 +196,9 @@ An adaptive PELE exit simulation will be performed over the docked complex until
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --no_sasa
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --no_sasa
 
-  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --no_sasa
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --no_sasa
 
 - **--sasa** Cluster with K-means and divide clusters in 3 intervals
   of treshold: [x<sasa_min, sasa_min<x<sasa_max, x>sasa_max]. 25% of the processors
@@ -207,9 +207,9 @@ An adaptive PELE exit simulation will be performed over the docked complex until
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd complex.pbd resname chain --sasa (minimum sasa value, maximum sasa value)
+  i.e.0 python -m msm_pele.main complex.pbd complex.pbd resname chain --sasa (minimum sasa value, maximum sasa value)
 
-  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --sasa 0.2 0.6 (25% of the processors will starts from
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --sasa 0.2 0.6 (25% of the processors will starts from
   clusters of the exit simulation under sasa 0.2, 50% on clusters with sasa in between 0.2 and 0.6  and
   25% on the clusters with more than sasa 0.6).
 
@@ -218,9 +218,9 @@ An adaptive PELE exit simulation will be performed over the docked complex until
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd complex.pbd resname chain --perc_sasa (percentage1, percentage2, percentage3)  
+  i.e.0 python -m msm_pele.main complex.pbd complex.pbd resname chain --perc_sasa (percentage1, percentage2, percentage3)  
 
-  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --perc_sasa 0.3 0.6 0.1
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --perc_sasa 0.3 0.6 0.1
 
 Box Parameters
 ---------------
@@ -230,19 +230,19 @@ Box Parameters
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --box_type (type of box)
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --box_type (type of box)
 
-  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --box_type fixed
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --box_type fixed
 
-  i.e.2 python -m MSM_PELE.main complex.pbd LIG Z --box_type multiple
+  i.e.2 python -m msm_pele.main complex.pbd LIG Z --box_type multiple
 
 - **--box** Use box from other simulations. default [None]
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --box (pdb with box)
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --box (pdb with box)
 
-  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --box box.pdb
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --box box.pdb
 
 - **--user_center** Specfy a single or multiple centers of the box . default [None]
   **--user_radius** Specfy a single or multiple radius of the box . default [None]
@@ -251,11 +251,11 @@ Box Parameters
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --user_center (centerx centery centerz) --user_radius (radius)
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --user_center (centerx centery centerz) --user_radius (radius)
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --user_center 22.2 -3.4 12.5 --radius 22 (1 box)
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --user_center 22.2 -3.4 12.5 --radius 22 (1 box)
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --user_center 22.2 -3.4 12.5 31.24 32.59.76 --radius 21 8 (2 boxes)
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --user_center 22.2 -3.4 12.5 31.24 32.59.76 --radius 21 8 (2 boxes)
 
 Exploration Parameters
 -------------------------
@@ -270,10 +270,10 @@ through a KMeans algorithm.
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --confile
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --confile
   /path/to/myconfile.conf --native native.pdb
 
-  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --confile pele.conf 
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --confile pele.conf 
   --native x_ray_complex.pdb
 
 
@@ -281,25 +281,25 @@ through a KMeans algorithm.
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --confile
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --confile
   /path/to/myconfile.conf
 
-  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --confile pele.conf
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --confile pele.conf
 
 - **precision** Use a more aggresive control file. Useful when dealing
   with higly charged and exposed ligands. 
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --precision
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --precision
 
 - **test** Run short test after. Usefull after instalation.
 
 ::
 
-  i.e.0 python -m MSM_PELE.main complex.pbd resname chain --test
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --test
 
-  i.e.1 python -m MSM_PELE.main complex.pbd LIG Z --test
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --test
 
 
 MSM Analysis

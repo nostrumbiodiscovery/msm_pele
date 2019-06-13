@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# PelePlop documentation build configuration file, created by
+# msm_pele documentation build configuration file, created by
 # sphinx-quickstart on Mon Dec  4 11:58:09 2017.
 #
 # This file is execfile()d with the current directory set to its
@@ -21,7 +21,6 @@
 # import os
 import sys
 import sphinx_rtd_theme
-sys.path.insert(0,"../msm_pele/")
 
 # -- General configuration ------------------------------------------------
 
@@ -103,7 +102,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'PelePlopdoc'
+htmlhelp_basename = 'msm_peledoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -130,7 +129,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'PelePlop.tex', 'PelePlop Documentation',
+    (master_doc, 'msm_pele.tex', 'msm_pele Documentation',
      'Daniel Soler Viladrich', 'manual'),
 ]
 
@@ -140,7 +139,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'peleplop', 'PelePlop Documentation',
+    (master_doc, 'msm_pele', 'msm_pele Documentation',
      [author], 1)
 ]
 
@@ -151,9 +150,9 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'PelePlop', 'PelePlop Documentation',
-     author, 'PelePlop', 'One line description of project.',
-     'Miscellaneous'),
+    (master_doc, 'msm_pele', 'msm_pele Documentation',
+     author, 'Daniel Soler', 'msm pele is a Python library with the aim to calculate absolute free energies through MSM analysis over paralel monte carlo simulations. Currently, MSM PELE is build on top of of next softwares',
+     'msm_pele'),
 ]
 
 
