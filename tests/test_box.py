@@ -2,13 +2,13 @@ import pytest
 import sys
 import os
 import shutil
-import MSM_PELE.Box.box as bx
-import MSM_PELE.Helpers.pele_env as pele
-import MSM_PELE.Helpers.clusterAdaptiveRun as cl
-import MSM_PELE.main as main
-import MSM_PELE.Helpers.helpers as hp
-import MSM_PELE.constants as cs
-import MSM_PELE.test.test_helpers as thp
+import msm_pele.Box.box as bx
+import msm_pele.Helpers.pele_env as pele
+import msm_pele.Helpers.clusterAdaptiveRun as cl
+import msm_pele.main as main
+import msm_pele.Helpers.helpers as hp
+import msm_pele.constants as cs
+import msm_pele.test.test_helpers as thp
 
 test_path = os.path.join(cs.DIR, "test/data")
 BOX_ARGS = ["water_epbh.pdb", "L02", "L", "--mae_lig", "L02_INIT.mae",  "-wf", os.path.join(test_path, "L02_TEST"), "--restart", "pele", "--cpus", "1", "--box", os.path.join(test_path, "box_fixed.pdb")]

@@ -3,13 +3,13 @@ import shutil
 import sys
 import os
 import glob
-import MSM_PELE.Box.box as bx
-import MSM_PELE.Helpers.pele_env as pele
-import MSM_PELE.Helpers.clusterAdaptiveRun as cl
-import MSM_PELE.main as main
-import MSM_PELE.Helpers.helpers as hp
-import MSM_PELE.constants as cs
-import MSM_PELE.Helpers.simulation as ad
+import msm_pele.Box.box as bx
+import msm_pele.Helpers.pele_env as pele
+import msm_pele.Helpers.clusterAdaptiveRun as cl
+import msm_pele.main as main
+import msm_pele.Helpers.helpers as hp
+import msm_pele.constants as cs
+import msm_pele.Helpers.simulation as ad
 
 
 test_path = os.path.join(cs.DIR, "test/data")
