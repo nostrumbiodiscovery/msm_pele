@@ -21,7 +21,7 @@
 # import os
 import sys
 import sphinx_rtd_theme
-sys.path.insert(0,"../MSM_PELE/")
+sys.path.insert(0,"../msm_pele/")
 
 # -- General configuration ------------------------------------------------
 
@@ -48,7 +48,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'MSM_PELE'
+project = 'msm_pele'
 copyright = '2017, Daniel Soler Viladrich'
 author = 'Daniel Soler Viladrich'
 
