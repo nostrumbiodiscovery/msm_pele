@@ -1,0 +1,39 @@
+# must do conda install -c NostrumBioDiscovery msm_pele 
+package:
+  name: msm_pele
+  version: "2.0.0"
+
+about:
+  home: https://github.com/danielSoler93/msm_pele
+  license: Apache
+  license_file: LICENSE
+  summary: Calculate absolute dG from applying Markov Stat Model analysis to Monte Carlo simulations
+
+source:
+  path: ../
+
+build:
+  script: python -m pip install . --no-deps -vv
+  number: 0
+
+requirements:
+  host:
+    - python
+    - numpy
+
+  run:
+    # Base dependencies
+    - python
+    - pyemma
+    - future
+    - cython
+    - scikit-learn 
+    - prody
+    - fpdf
+    - numpy >=1.16
+
+test:
+  imports:
+    - msm_pele
+  command:
+    - python -m msm_pele.main -h 

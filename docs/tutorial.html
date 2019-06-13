@@ -1,0 +1,321 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Tutorial &mdash; MSM_PELE 2.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Parameters" href="documentation.html" />
+    <link rel="prev" title="Getting Started" href="cookbook.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MSM_PELE
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Unit Tests</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cookbook.html">Getting Started</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#launch-the-job">Launch the job</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#analise-the-exit-path">Analise the exit path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#analise-the-mc-exploration">Analise the MC exploration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#analise-the-msm">Analise the MSM</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="documentation.html">Parameters</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="benchmark.html">Benchmark</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Support</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MSM_PELE</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Tutorial</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/tutorial.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tutorial">
+<span id="id1"></span><h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<p>This section will walk you through your first MSM job  and posterior analysis.
+We will apply MSM_PELE over a already docked progesteron receptor inhibitor.</p>
+<div class="section" id="launch-the-job">
+<h2>Launch the job<a class="headerlink" href="#launch-the-job" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MSM_PELE</span><span class="o">.</span><span class="n">main</span> <span class="o">&lt;</span><span class="nb">complex</span><span class="o">.</span><span class="n">pdb</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">resname</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">chain</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">cpus</span> <span class="o">&lt;</span><span class="n">cpus</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">iterations</span> <span class="o">&lt;</span><span class="n">n_repetitions</span><span class="o">&gt;</span>
+
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MSM_PELE</span><span class="o">.</span><span class="n">main</span> <span class="n">MSM_PELE</span><span class="o">/</span><span class="n">Examples</span><span class="o">/</span><span class="n">PR_1A28_xray_</span><span class="o">-</span><span class="n">_minimized</span><span class="o">.</span><span class="n">pdb</span> <span class="n">STR</span> <span class="n">Z</span> <span class="o">--</span><span class="n">cpus</span> <span class="mi">120</span> <span class="o">--</span><span class="n">iterations</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="analise-the-exit-path">
+<h2>Analise the exit path<a class="headerlink" href="#analise-the-exit-path" title="Permalink to this headline">¶</a></h2>
+<p>First, a complete in-out simulation (from minimum SASA to SASA 1) is performed, and all conformations are
+clusterize along the exit path. In order to ensure good correlation between ligand the next instructions should be followed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">maestro</span> <span class="o">&lt;</span><span class="n">processed_input</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">produced_box</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">all_exit_path_clusters</span><span class="o">&gt;</span>
+<span class="n">maestro</span> <span class="n">Pele_STR</span><span class="o">/</span><span class="n">PR_1A28_xray_</span><span class="o">-</span><span class="n">_minimized_processed</span><span class="o">.</span><span class="n">pdb</span> <span class="n">Pele_STR</span><span class="o">/</span><span class="n">box</span><span class="o">.</span><span class="n">pdb</span> <span class="n">Pele_STR</span><span class="o">/</span><span class="n">ouput_clustering</span><span class="o">/</span><span class="n">iteration_</span><span class="o">*/</span><span class="n">clustering_</span><span class="o">*</span><span class="n">_Kmeans</span><span class="o">.</span><span class="n">pdb</span>
+</pre></div>
+</div>
+<p>The user must check that all ligand’s exit path simulations are similar (same exit path),
+and that the shown clusters should be representative of the entire exit path (clusters scattered along the entire path)
+otherwise simulation may not be comparable</p>
+<p>The representative structure of each cluster for each iteration can be found under <strong>PELE_STR/output_clustering/iteration_X</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">maestro</span> <span class="n">PELE_STR</span><span class="o">/</span><span class="n">ouput_clustering</span><span class="o">/</span><span class="n">iteration_X</span><span class="o">/</span><span class="n">initial_number_cluster</span><span class="o">.</span><span class="n">pdb</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="analise-the-mc-exploration">
+<h2>Analise the MC exploration<a class="headerlink" href="#analise-the-mc-exploration" title="Permalink to this headline">¶</a></h2>
+<p>An exhaustive PELE exploration and a posterior MSM analysis is performed
+starting from all the exit path clusters. There are several features we can check to know whether
+the exploration was good enough. Run the next commands under <strong>Pele_STR/output_pele/</strong>:</p>
+<p><cite>Transition Study</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MSM_PELE</span><span class="o">.</span><span class="n">AdaptivePELE</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">adaptivePlot</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">1000</span> <span class="o">-</span><span class="n">rmsd</span> <span class="o">|</span> <span class="n">gnuplot</span> <span class="o">-</span><span class="n">p</span>
+</pre></div>
+</div>
+<p>If there are some trajectories connecting the binding site to the bulk
+as seen in the image we can presume the MSM states will be correctly
+connected. If there would be no transitions between the low and high part
+of the chart we would recommend to increase the temperature of the simulation
+with –temp 1500 and rerun the MSM again.</p>
+<div class="figure align-center">
+<img alt="Install need it plugin to visualize the image" src="_images/transitions.png" />
+</div>
+</div>
+<div class="section" id="analise-the-msm">
+<h2>Analise the MSM<a class="headerlink" href="#analise-the-msm" title="Permalink to this headline">¶</a></h2>
+<p>To check the validity of the final MSM we can check the most important clusters
+to validate it’s importance to the final dG.</p>
+<p><cite>Visualizing the dG landscape</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">display</span> <span class="n">Pele_STR</span><span class="o">/</span><span class="n">ouput_pele</span><span class="o">/</span><span class="n">MSM_2</span><span class="p">(</span><span class="n">last</span> <span class="n">msm</span> <span class="n">folder</span><span class="p">)</span><span class="o">/</span><span class="n">PMF_plot</span><span class="o">/</span><span class="n">PMF</span><span class="o">*.</span><span class="n">png</span>
+</pre></div>
+</div>
+<p>The clusters close to the binding site (dist = 0-3) should be the lowest dG as they should represent the slowest
+transitions between states while the clusters on the bulk should be the highest as they represent the
+highest transitions path (less important). We are chasing a profile like the next:</p>
+<div class="figure align-center">
+<img alt="Install need it plugin to visualize the image" src="_images/PMF.png" />
+</div>
+<p>Sometimes false minimas may appear (next to metals or next to the protein surface). In order to avoid that we suggest to enter
+your own box trying to exclude that part of the system from the simulation.</p>
+<p>In order to include your own box pass the flag –box box.pdb and change the CENTER and RADIUS line inside the pdb as you want
+to define the properties of the box/es (you can have more than one box per file).</p>
+<p>If your PMF looks completely scatter with no minimum close to the binding site as the plot below and the box limitation does not make any change to the results,  your system may not suitable for a MSM_PELE calculation as PELE finds too many false positive. We are currently working on that problem.</p>
+<div class="figure align-center">
+<img alt="Install need it plugin to visualize the image" src="_images/PMF_wrong.png" />
+</div>
+<p><cite>Visualizing most important Clusters</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MSM_PELE</span><span class="o">.</span><span class="n">Analysis</span><span class="o">.</span><span class="n">extract_cluster_representative</span> <span class="o">&lt;</span><span class="n">initial_input</span><span class="o">&gt;</span>  <span class="o">&lt;</span><span class="n">last_MSM_folder</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">dgmin</span> <span class="o">&lt;</span><span class="nb">min</span> <span class="n">limit</span> <span class="n">dG</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">dgmax</span> <span class="o">&lt;</span><span class="nb">max</span> <span class="n">limit</span> <span class="n">dg</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">distmin</span> <span class="o">&lt;</span><span class="nb">min</span> <span class="n">limit</span> <span class="n">distance</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">distmax</span> <span class="o">&lt;</span><span class="nb">max</span> <span class="n">limit</span> <span class="n">distance</span><span class="o">&gt;</span>
+
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MSM_PELE</span><span class="o">.</span><span class="n">Analysis</span><span class="o">.</span><span class="n">extract_cluster_representative</span> <span class="mi">4</span><span class="n">p1r_receptor_complex_processed</span><span class="o">.</span><span class="n">pdb</span> <span class="mi">2</span><span class="n">KR</span> <span class="n">output_pele</span><span class="o">/</span><span class="n">MSM_2</span><span class="o">/</span> <span class="o">--</span><span class="n">dgmin</span> <span class="mi">0</span> <span class="o">--</span><span class="n">dgmax</span> <span class="mi">2</span> <span class="o">--</span><span class="n">distmin</span> <span class="mi">0</span> <span class="o">--</span><span class="n">distmax</span> <span class="mi">6</span>
+</pre></div>
+</div>
+<p>This will create a folder called most_important_clusters with all the structures of the clusters laying inside the square
+determined by dg [0 - 2] and dist [0 -6] on the PMF*.png plot. It is higly
+important that the lowest dG clusters make sense to the user. (Close
+to binding site and making the reported catalytic interaction if known)</p>
+<p><cite>Results</cite></p>
+<p>If all the requisits before are met we can check the final results under: <strong>Pele_STR/results</strong></p>
+<p>Where we will find a final MSM pdf report with the final dG+-std together with a PMF, probability and transition plot.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="documentation.html" class="btn btn-neutral float-right" title="Parameters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cookbook.html" class="btn btn-neutral" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Daniel Soler Viladrich
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
