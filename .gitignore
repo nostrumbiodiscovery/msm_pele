@@ -7,9 +7,9 @@
 *.swn
 *.swl
 *.swm
-AdaptivePELE/freeEnergies/*.c
-AdaptivePELE/freeEnergies/*.so
-AdaptivePELE/atomset/*.c
-AdaptivePELE/atomset/*.so
+msm_pele/AdaptivePELE/freeEnergies/*.c
+msm_pele/AdaptivePELE/freeEnergies/*.so
+msm_pele/AdaptivePELE/atomset/*.c
+msm_pele/AdaptivePELE/atomset/*.so
 build/
 makeReleasePlatform_nord
