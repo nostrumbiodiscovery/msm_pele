@@ -1,24 +1,24 @@
-============
-Unit Tests
-============
+================
+Production Test
+================
 
 .. toctree::
    :maxdepth: 2
 
 
-Run unit test
--------------
+Run production test
+-----------------------
 
 
-  It is recommended to run the unit tests after installation by:
+  It is recommended to run the production tests after installation by:
 
 1- **Extract test data**::
 
-  tar -xvf MSM_PELE/test/data.tar.gz
+  tar -xvf msm_pele/test/data.tar.gz
 
 2- **Run test**::
 
   cd /path/where/you/want/to/runTheTest/from/
 
-  sbatch MSM_PEE/test/test.sl
+  sbatch msm_pele/test/test.sl
 

@@ -12,14 +12,10 @@ Monte Carlo Protein Energy Landscape Exploration (PELE) coupled with Markov Stat
 
 # Installation
 -------------------
-0) git clone https://github.com/miniaoshi/MSM_PELE.git
 
-1) python MSM_PELE/setup.py install --schr </path/to/schrodinger> --pele </path/to/pele/> --pele-license </path/to/pele/licenses> --pele-exec </path/to/pele/bin> --mpirun </path/to/mpi>
+conda install -c NostrumBioDiscovery msm_pele
 
-i.e python MSM_PELE/setup.py install --scht /opt/schrodinger-2017/ --pele /opts/pelerev1234 --pele-license /opts/pelerev1234/license --pele-exec /opts/pelerev1234/bin/ --mpirun /usr/bin/mpirun
+# Documentation:
+------------------
 
-
-# Documentatin:
----------------
-
-- https://danielsoler93.github.io/MSM_PELE/
+https://nostrumbiodiscovery.github.io/msm_pele/
