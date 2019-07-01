@@ -53,3 +53,20 @@ def preproces_lines(lines):
         line = line.strip('\n').strip().split()
         lines[i] = line
     return lines
+
+
+def find_coords(pdb, resnum, chain, atom="OW"):
+    with open(pdb, "r") as f:
+        for line in f:
+            if line:
+                if line.startswith("HETATM") and line[22:26].strip() == resnum and line[21:22] == chain:
+                    return [float(coord) for coord in line[30:54].split()]
+
+
+def find_centroid(points):
+    x = [cx for cx, cy, cz in points]
+    y = [cy for cx, cy, cz in points]
+    z = [cz for cx, cy, cz in points]
+    n_points = len(points)
+    centroid = (sum(x) / n_points, sum(y) / n_points, sum(z) / n_points)
+    return centroid

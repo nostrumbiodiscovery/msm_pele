@@ -11,6 +11,8 @@ AMINOACIDS = ["VAL", "ASN", "GLY", "LEU", "ILE",
 
 TER_CONSTR = 5
 
+HETATM_CONSTR = 50
+
 BACK_CONSTR = 0.5
 
 CONSTR_ATOM = '''{{ "type": "constrainAtomToPosition", "springConstant": {0}, "equilibriumDistance": 0.0, "constrainThisAtom": "{1}:{2}:{3}" }},'''
@@ -21,14 +23,16 @@ CONSTR_CALPHA = '''{{ "type": "constrainAtomToPosition", "springConstant": {2}, 
 
 class ConstraintBuilder(object):
 
-    def __init__(self, pdb, gaps, metals):
+    def __init__(self, pdb, gaps, metals, dynamic_waters):
         self.pdb = pdb
         self.gaps = gaps
         self.metals = metals
+        self.dynamic_waters = dynamic_waters
 
     def parse_atoms(self, interval=10):
         residues = {}
         initial_res = None
+        waters = []
         with open(self.pdb, "r") as pdb:
             for line in pdb:
                 resname = line[16:21].strip()
@@ -48,9 +52,11 @@ class ConstraintBuilder(object):
                             residues[resnum] = chain
                     except ValueError:
                         continue
-        return residues
+                elif line.startswith("HETATM") and resname == "HOH" and atomtype == "OW":
+                    waters.append([chain, resnum])
+        return residues, waters
 
-    def build_constraint(self, residues, BACK_CONSTR=BACK_CONSTR, TER_CONSTR=TER_CONSTR):
+    def build_constraint(self, residues, BACK_CONSTR=BACK_CONSTR, TER_CONSTR=TER_CONSTR, waters=[]):
 
         init_constr = ['''"constraints":[''', ]
 
@@ -60,11 +66,14 @@ class ConstraintBuilder(object):
 
         metal_constr = self.metal_constraints()
 
+        if waters:
+            water_constr = self.water_constraints(waters)
+
         terminal_constr = [CONSTR_CALPHA.format(residues["initial"][0], residues["initial"][1], TER_CONSTR), CONSTR_CALPHA.format(residues["terminal"][0], residues["terminal"][1], TER_CONSTR).strip(",")]
 
         final_constr = ["],"]
 
-        constraints = init_constr + back_constr + gaps_constr + metal_constr + terminal_constr + final_constr
+        constraints = init_constr + back_constr + gaps_constr + metal_constr + water_constr + terminal_constr + final_constr
 
         return constraints
 
@@ -83,14 +92,21 @@ class ConstraintBuilder(object):
             for ligand in ligands:
                 ligand_info, bond_lenght = ligand
                 resname, resnum, chain, ligname = ligand_info.split(" ")
-                metal_constr.append(CONSTR_DIST.format(TER_CONSTR, bond_lenght, chain, resnum, ligname, chain, metnum, metal_name))
+                metal_constr.append(CONSTR_DIST.format(HETATM_CONSTR, bond_lenght, chain, resnum, ligname, chain, metnum, metal_name))
         return metal_constr
 
+    def water_constraints(self, waters):
+        water_constr = []
+        for chain, residue in waters:
+            if "{}:{}".format(chain, residue) not in self.dynamic_waters:
+                water_constr.append(CONSTR_ATOM.format(HETATM_CONSTR, chain, residue, "_OW_"))
+        return water_constr
 
-def retrieve_constraints(pdb_file, gaps, metal, back_constr=BACK_CONSTR, ter_constr=TER_CONSTR, interval=10):
-    constr = ConstraintBuilder(pdb_file, gaps, metal)
-    residues = constr.parse_atoms(interval=interval)
-    constraints = constr.build_constraint(residues, back_constr, ter_constr)
+
+def retrieve_constraints(pdb_file, gaps, metal, back_constr=BACK_CONSTR, ter_constr=TER_CONSTR, interval=10, dynamic_waters=[]):
+    constr = ConstraintBuilder(pdb_file, gaps, metal, dynamic_waters)
+    residues, waters = constr.parse_atoms(interval=interval)
+    constraints = constr.build_constraint(residues, back_constr, ter_constr, waters)
     return constraints
 
 def parseargs():
