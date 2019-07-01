@@ -141,12 +141,15 @@ class BoxBuilder():
         string = []
         if box_type == "fixed":
             string.append('"type": "sphericalBox",\n')
+            for center, radius in zip(centers, radiuses):
+                string.append('\n"radius": {},\n"fixedCenter":[{}]\n,'.format(radius, ",".join([str(coord) for coord in center])))
+            string[-1] = string[-1].strip(",")
         elif box_type == "multiple":
             string.append('"type": "multiSphericalBox",\n"listOfSpheres":[')
-        for center, radius in zip(centers, radiuses):
-            string.append('{{\n"radius": {},\n"fixedCenter":[{}]\n}},'.format(radius, ",".join([str(coord) for coord in center])))
-        string[-1] = string[-1].strip(",")
-        string.append(']')
+            for center, radius in zip(centers, radiuses):
+                string.append('{{\n"radius": {},\n"fixedCenter":[{}]\n}},'.format(radius, ",".join([str(coord) for coord in center])))
+            string[-1] = string[-1].strip(",")
+            string.append(']')
         return "\n".join(string)
 
     def remove_clusters_out_of_box(self, cluster_center, file_path=".", cluster_name="initial_{}.pdb"):

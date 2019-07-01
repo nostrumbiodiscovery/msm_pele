@@ -27,8 +27,8 @@ def find_non_contact_points(system, centroid, bs):
     contacts = pd.measure.Contacts(atoms)
 
     point = np.array(bs, dtype=float)
-    number_of_contacts = False
-    while number_of_contacts > 0 or number_of_contacts is False:
+    number_of_contacts = True
+    while number_of_contacts:
         number_of_contacts = contacts.select(5, point)
         point = np.array(point, dtype=float) + directior_unitary
     return point.tolist()
