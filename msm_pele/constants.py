@@ -8,8 +8,8 @@ import os
 machine = socket.getfqdn()
 if "bsc.mn" in machine:
     SCHRODINGER = "/gpfs/projects/bsc72/SCHRODINGER_ACADEMIC"
-    PELE = "/gpfs/projects/bsc72/MultiBoxPELE/bin/"
-    PELE_BIN = "/gpfs/projects/bsc72/MultiBoxPELE/build/PELE-1.5"
+    PELE = "/gpfs/projects/bsc72/WATERPELE_2.0/"
+    PELE_BIN = "/gpfs/projects/bsc72/WATERPELE_2.0/builds/MN4/PELE-1.5_mpi"
     MPIRUN = "/apps/INTEL/2017.4/impi/2017.3.196/bin64"
     LICENSE = "/gpfs/projects/bsc72/PELE++/license"
     MMSHARE = None
@@ -19,8 +19,8 @@ if "bsc.mn" in machine:
 
 elif "mn.bsc" in machine:
     SCHRODINGER = "/gpfs/projects/bsc72/SCHRODINGER_ACADEMIC_NORD"
-    PELE = "/gpfs/projects/bsc72/PELE_Multibox_nord"
-    PELE_BIN = "/gpfs/projects/bsc72/PELE_Multibox_nord/build/PELE-1.5"
+    PELE = "/gpfs/projects/bsc72/WATERPELE_2.0/"
+    PELE_BIN = "/gpfs/projects/bsc72/WATERPELE_2.0/builds/MN4/PELE-1.5_mpi"
     MPIRUN = "/apps/OPENMPI/1.8.1-mellanox/bin"
     LICENSE = "/gpfs/projects/bsc72/PELE++/license"
     MMSHARE = None
@@ -84,7 +84,7 @@ GRIDRES = '10.0'
 # TEMPLATE KEYWORDS
 ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "SEED", "STEPS", "ITERATIONS", "MSM_CLUST", "LAGTIME", "MIN_POS"]
 EX_ADAPTIVE_KEYWORDS = ["RESTART", "OUTPUT", "INPUT", "CPUS", "PELE_CFILE", "LIG_RES", "EQ_STEPS", "SEED", "EXIT_ITERS", "EQ_STRUCT"]
-EX_PELE_KEYWORDS = ["NATIVE", "FORCEFIELD", "CHAIN", "CONSTRAINTS", "LICENSES", "LOGFILE", "SOLVENT"]
+EX_PELE_KEYWORDS = ["NATIVE", "FORCEFIELD", "CHAIN", "CONSTRAINTS", "LICENSES", "LOGFILE", "SOLVENT", "WATER"]
 PELE_KEYWORDS = [ "RESTART", "OUTPUT", "INPUT", "SEED", "STEPS", "BOX", "BOX_METRIC", "SASA_min", "SASA_max", "TEMP" ]
 NATIVE = '''
                         {{
@@ -182,6 +182,26 @@ FILES_TEST = [os.path.join(DIR, "Templates/box.pdb"), os.path.join(DIR, "Templat
 
 FILES_NAME = ["box.pdb", "pele.conf", "adaptive_exit.conf",  "pele_exit.conf"]
 
+#WATER
+
+WATER = '''
+         "WaterPerturbation":
+         {{
+             "Box" :
+             {{
+                 "radius" : 10,
+                 "fixedCenter": [{}],
+                 "type" : "sphericalBox"
+             }},
+             "watersToPerturb": {{ "links": {{ "ids": [ {} ] }} }},
+             "parameters":
+             {{
+                 "temperature": 500,
+                 "numberOfStericTrials": 1000,
+                 "COMConstraintConstant": 0.2
+             }}
+         }}, 
+'''
 
 # ERRORS
 CLUSTER_ERROR = "Number of cpus ({}) must be bigger than clusters ({})"

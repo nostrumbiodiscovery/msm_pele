@@ -276,6 +276,15 @@ through a KMeans algorithm.
   i.e.1 python -m msm_pele.main complex.pbd LIG Z --confile pele.conf 
   --native x_ray_complex.pdb
 
+- **--water** waters to move using MC water exploration step.
+  All other waters will be automatically constrained.
+
+::
+
+  i.e.0 python -m msm_pele.main complex.pbd resname chain --water chain_water:residue_water
+
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --water M:1 M:2
+
 
 - **--confile** Use your own pele exploration configuration file
 
