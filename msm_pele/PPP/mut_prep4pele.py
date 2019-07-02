@@ -26,7 +26,7 @@ addNonstdAminoacid('LYN', 'neutral', 'acyclic', 'large', 'polar', 'buried')
 
 
 def main(input_pdb, pele_dir, output_pdb=["",], no_gaps_ter=False, charge_terminals=False, make_unique=False,
-         remove_terminal_missing=False, mutant_multiple=False, mutation="", mid_chain_nonstd_residue=[], renumber=True):
+         remove_terminal_missing=False, mutant_multiple=False, mutation="", mid_chain_nonstd_residue=[], renumber=True, dynamic_waters=[]):
     if not output_pdb[0]:
         output = os.path.splitext(os.path.basename(input_pdb))[0]
         output_pdb[0] = os.path.join(pele_dir,"{}_processed.pdb".format(output))
@@ -91,7 +91,7 @@ def main(input_pdb, pele_dir, output_pdb=["",], no_gaps_ter=False, charge_termin
                           calcDistance(metal, at)[0]] for at in atoms_list]
             if len(atoms_list) in [x[1] for x in coordination_geometries.itervalues()]:
                 coordinated_atoms_ids[metal_id] = atoms_ids
-        constr = ct.retrieve_constraints(output_pdb[0], gaps, coordinated_atoms_ids)
+        constr = ct.retrieve_constraints(output_pdb[0], gaps, coordinated_atoms_ids, dynamic_waters=dynamic_waters)
         return output_pdb[0], residues_without_template, gaps, coordinated_atoms_ids, constr
     else:
         clashes = []

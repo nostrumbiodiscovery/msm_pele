@@ -38,7 +38,7 @@ def run(args):
 
         # Prepare System
         system_fix, missing_residues, gaps, metals, protein_constraints = ppp.main(syst.system, env.pele_dir, charge_terminals=args.charge_ter,
-                no_gaps_ter=args.gaps_ter, mid_chain_nonstd_residue=env.nonstandard, renumber=env.renumber)
+                no_gaps_ter=args.gaps_ter, mid_chain_nonstd_residue=env.nonstandard, renumber=env.renumber, dynamic_waters=env.water)
         env.logger.info(cs.SYSTEM.format(system_fix, missing_residues, gaps, metals))
 
         # Parametrize Ligand
@@ -63,7 +63,7 @@ def run(args):
 
         # Fill in Simulation Templates
         ad.SimulationBuilder(env.pele_exit_temp,  env.topology, cs.EX_PELE_KEYWORDS, env.native, args.forcefield, args.chain, "\n".join(protein_constraints), env.license, env.log, env.solvent)
-        ad.SimulationBuilder(env.pele_temp,  env.topology, cs.EX_PELE_KEYWORDS, env.native, args.forcefield, args.chain, "\n".join(protein_constraints),  env.license, env.log, env.solvent)
+        ad.SimulationBuilder(env.pele_temp,  env.topology, cs.EX_PELE_KEYWORDS, env.native, args.forcefield, args.chain, "\n".join(protein_constraints),  env.license, env.log, env.solvent, env.dynamic_water)
 
 
 
@@ -179,7 +179,8 @@ def parse_args(args=[]):
     parser.add_argument('--eq_struct', type=int, help='Number of structures extracted from inital equilibration to launch exit simulation. default [10] i.e. --eq_struct 1', default=10)
     parser.add_argument('--solvent', type=str, help='Type of implicit solvent (OBC/VDGBNP). default [OBC]. i.e. --solvent VDGBNP', default="OBC")
     parser.add_argument("--one_exit",  action='store_true', help="Perform only one adaptive exit simulation")
-    parser.add_argument("--noRMSD",  action='store_true', help="De not use keep track RMSD to the initial position")
+    parser.add_argument("--noRMSD",  action='store_true', help="De not use keep track RMSD to the initial position. NOT TESTED.")
+    parser.add_argument("--water",  nargs="+", help="Waters to perturb. i.e B:1 B:2 B:3")
     
     args = parser.parse_args(args) if args else parser.parse_args()
     return args

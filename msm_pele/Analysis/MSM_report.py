@@ -71,7 +71,10 @@ def get_dG_line(env):
         lines = f.readlines()
         for line in reversed(lines):
             if not line.startswith("#"):
-                _, dg, std, _, _, _ = line.strip("\n").split()
+                try:
+                    _, dg, std, _, _, _ = line.strip("\n").split()
+                except ValueError:
+                    _, dg, std, _, _ = line.strip("\n").split()
                 return dg + " +- " + std 
 
     

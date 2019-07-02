@@ -4,6 +4,7 @@ import warnings
 import random
 import logging
 import msm_pele.constants as cs
+import msm_pele.Helpers.helpers as hp
 
 
 class EnviroBuilder(object):
@@ -31,6 +32,7 @@ class EnviroBuilder(object):
         self.box_metric = cs.BOX_METRIC if args.box_metric else " "
         self.iterations = args.iterations
         self.forcefield = args.forcefield
+        self.water = args.water if args.water else None
         self.residue = args.residue
         self.templates = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), "PeleTemplates"))
         self.restart = args.restart
@@ -64,6 +66,7 @@ class EnviroBuilder(object):
         #Build constants for each module
         self.build_sasa_constants()
         self.build_msm_constants()
+        self.build_water_constants()
         self.build_path_constants()
 
 
@@ -98,6 +101,20 @@ class EnviroBuilder(object):
             self.steps = 10
 
 
+    def build_water_constants(self):
+        """
+        Build water constants to run
+        water MC PELE
+        """
+        if self.water:
+            cms = [ hp.find_coords(self.system, water.split(":")[1], water.split(":")[0]) for water in self.water]
+            cm = [str(coord) for coord in hp.find_centroid(cms)]
+            water_atoms = [ '"' + water + '"' for water in self.water] 
+            self.dynamic_water = cs.WATER.format(",".join(cm), ",".join(water_atoms))
+        else:
+            self.water = []
+            self.dynamic_water = ""
+
     def build_sasa_constants(self):
         """
         Build sasa related constants for later
@@ -106,7 +123,7 @@ class EnviroBuilder(object):
         self.perc_sasa_min, self.perc_sasa_int, self.perc_sasa_max = self.perc_sasa
         self.sasamin, self.sasamax = self.sasa if self.sasa else [None, None]
         self.sasa = True if not self.nosasa and not self.test else False
-            
+
 
     def build_path_constants(self):
 
