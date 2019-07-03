@@ -1,4 +1,3 @@
-import sys
 import os
 import argparse
 import msm_pele.Helpers.template_builder as tb
@@ -20,6 +19,7 @@ CONSTR_ATOM = '''{{ "type": "constrainAtomToPosition", "springConstant": {0}, "e
 CONSTR_DIST = '''{{ "type": "constrainAtomsDistance", "springConstant": {}, "equilibriumDistance": {}, "constrainThisAtom": "{}:{}:{}", "toThisOtherAtom": "{}:{}:{}" }},'''
 
 CONSTR_CALPHA = '''{{ "type": "constrainAtomToPosition", "springConstant": {2}, "equilibriumDistance": 0.0, "constrainThisAtom": "{0}:{1}:_CA_" }},'''
+
 
 class ConstraintBuilder(object):
 
@@ -68,6 +68,8 @@ class ConstraintBuilder(object):
 
         if waters:
             water_constr = self.water_constraints(waters)
+        else:
+            water_constr = []
 
         terminal_constr = [CONSTR_CALPHA.format(residues["initial"][0], residues["initial"][1], TER_CONSTR), CONSTR_CALPHA.format(residues["terminal"][0], residues["terminal"][1], TER_CONSTR).strip(",")]
 
@@ -78,7 +80,7 @@ class ConstraintBuilder(object):
         return constraints
 
     def gaps_constraints(self):
-        #self.gaps = {}
+        # self.gaps = {}
         gaps_constr = []
         for chain, residues in self.gaps.items():
             gaps_constr = [CONSTR_ATOM.format(TER_CONSTR, chain, terminal, "_CA_") for terminals in residues for terminal in terminals]
@@ -109,6 +111,7 @@ def retrieve_constraints(pdb_file, gaps, metal, back_constr=BACK_CONSTR, ter_con
     constraints = constr.build_constraint(residues, back_constr, ter_constr, waters)
     return constraints
 
+
 def parseargs():
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('pdb', type=str, help='pdb to create the contraints on')
@@ -122,4 +125,4 @@ def parseargs():
 if __name__ == "__main__":
     pdb, conf, interval, conf, back_constr, ter_constr = parseargs()
     constraints = retrieve_constraints(pdb, {}, {}, back_constr, ter_constr, interval)
-    tb.TemplateBuilder(conf, { "CONSTRAINTS" : "\n".join(constraints) }) 
+    tb.TemplateBuilder(conf, {"CONSTRAINTS": "\n".join(constraints)})
