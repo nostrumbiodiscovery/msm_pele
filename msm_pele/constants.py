@@ -20,7 +20,7 @@ if "bsc.mn" in machine:
 elif "mn.bsc" in machine:
     SCHRODINGER = "/gpfs/projects/bsc72/SCHRODINGER_ACADEMIC_NORD"
     PELE = "/gpfs/projects/bsc72/WATERPELE_2.0/"
-    PELE_BIN = "/gpfs/projects/bsc72/WATERPELE_2.0/builds/MN4/PELE-1.5_mpi"
+    PELE_BIN = "/gpfs/projects/bsc72/WATERPELE_2.0/builds/N3/PELE-1.5_mpi"
     MPIRUN = "/apps/OPENMPI/1.8.1-mellanox/bin"
     LICENSE = "/gpfs/projects/bsc72/PELE++/license"
     MMSHARE = None
@@ -200,7 +200,7 @@ WATER = '''
                  "numberOfStericTrials": 1000,
                  "COMConstraintConstant": 0.2
              }}
-         }}, 
+         }},
 '''
 
 # ERRORS
