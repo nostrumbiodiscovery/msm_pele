@@ -181,6 +181,10 @@ def parse_args(args=[]):
     parser.add_argument("--one_exit",  action='store_true', help="Perform only one adaptive exit simulation")
     parser.add_argument("--noRMSD",  action='store_true', help="De not use keep track RMSD to the initial position. NOT TESTED.")
     parser.add_argument("--water",  nargs="+", help="Waters to perturb. i.e B:1 B:2 B:3")
+    parser.add_argument("--water_radius",  type=float, help="Radius of the box to define the exploration area of MC waters. i.e --water_radius 7 default=10", default=10)
+    parser.add_argument("--water_temp",  type=int, help="Temperature of water MC. i.e --water_temp 1000 default=500", default=500)
+    parser.add_argument("--water_constr",  type=float, help="Constraint on the waters MC. i.e ----water_const 0.5 default=0.2", default=0.2)
+    parser.add_argument("--water_trials",  type=int, help="Steric trials on the waters MC. i.e --water_trials 2000 default=1000", default=1000)
     
     args = parser.parse_args(args) if args else parser.parse_args()
     return args

@@ -1,5 +1,7 @@
 import matplotlib
 matplotlib.use('Agg')
+import sys
+sys.path.append("../../")
 import matplotlib.pyplot as plt
 from builtins import range
 import os
