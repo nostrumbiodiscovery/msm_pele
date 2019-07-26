@@ -336,6 +336,8 @@ waters
 
 protocol
 ++++++++++++++
+=======
+>>>>>>> 2692228d02aeb973fac5a688b7321107625e9531
 
 - **--confile** Use your own pele exploration configuration file
 

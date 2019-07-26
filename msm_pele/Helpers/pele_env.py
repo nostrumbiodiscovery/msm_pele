@@ -112,11 +112,11 @@ class EnviroBuilder(object):
         water MC PELE
         """
         if self.water:
+            cms = [ hp.find_coords(self.system, water.split(":")[1], water.split(":")[0]) for water in self.water]
             try:
-                cms = [ hp.find_coords(self.system, water.split(":")[1], water.split(":")[0]) for water in self.water]
                 cm = [str(coord) for coord in hp.find_centroid(cms)]
             except TypeError:
-                raise TypeError("Waters {} not found. Check you pdb file".format(self.water))
+                raise TypeError("Check the specified waters exist")
             water_atoms = [ '"' + water + '"' for water in self.water] 
             self.dynamic_water = cs.WATER.format(self.water_radius, ",".join(cm), ",".join(water_atoms),
                 self.water_temp, self.water_trials, self.water_constr)
