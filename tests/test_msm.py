@@ -13,7 +13,7 @@ import msm_pele.Helpers.simulation as ad
 
 
 test_path = os.path.join(cs.DIR, "test/data")
-SIM_ARGS = [os.path.join(test_path, "water_epbh.pdb"), "L02", "L", "--mae_lig", os.path.join(test_path, "L02_INIT.mae"), "--test", "--precision", "--iterations", "2", "--time", "240", "--steps", "100", "--restart", "pele", "--solvent", "OBC"]
+SIM_ARGS = [os.path.join(test_path, "water_epbh.pdb"), "L02", "L", "--mae_lig", os.path.join(test_path, "L02_INIT.mae"), "--test", "--precision", "--iterations", "2", "--time", "240", "--steps", "100", "--restart", "pele", "--solvent", "OBC", "--water", "M:1", "--water_temp", "2000", "--water_contr", "0.5", "water_radius", "7", "water_trials", "500"]
 
 
 @pytest.mark.parametrize("ext_args", [
