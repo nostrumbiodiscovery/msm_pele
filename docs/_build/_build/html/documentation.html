@@ -96,14 +96,27 @@
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Parameters</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#required-paramaters">Required Paramaters:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#required-paramaters">Required Paramaters:</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#opls2005-charges">OPLS2005 charges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#qm-charges">QM charges</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#output-parameters">Output Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#restart-parameters">Restart Parameters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#input-preparation-parameters">Input Preparation Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#input-preparation-parameters">Input Preparation Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#receptor">receptor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ligand">ligand</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#exit-simulation-parameters">Exit Simulation Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#exit-simulation-clustering-parameters">Exit simulation clustering Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#box-parameters">Box Parameters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#exploration-parameters">Exploration Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exploration-parameters">Exploration Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#metrics">metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#waters">waters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#protocol">protocol</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#msm-analysis">MSM Analysis</a></li>
 </ul>
 </li>
@@ -186,6 +199,8 @@
 </div>
 <div class="section" id="required-paramaters">
 <h2>Required Paramaters:<a class="headerlink" href="#required-paramaters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="opls2005-charges">
+<h3>OPLS2005 charges<a class="headerlink" href="#opls2005-charges" title="Permalink to this headline">¶</a></h3>
 <p>If you want to use OPLS2005 charges:</p>
 <ul class="simple">
 <li><strong>complex.pdb</strong> initial pdb with receptor and ligand already docked</li>
@@ -200,6 +215,9 @@
 <span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">1</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">LIG</span> <span class="n">Z</span>  <span class="o">--</span><span class="n">cpus</span> <span class="mi">128</span> <span class="o">--</span><span class="n">time</span> <span class="mi">25000</span> <span class="o">--</span><span class="n">temp</span> <span class="mi">1000</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="qm-charges">
+<h3>QM charges<a class="headerlink" href="#qm-charges" title="Permalink to this headline">¶</a></h3>
 <p>If you want to use external charges:</p>
 <ul class="simple">
 <li><strong>receptor.pdb</strong> pdb of the receptor with the bound conformation to the docked ligand</li>
@@ -214,6 +232,7 @@
 
 <span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">1</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">LIG</span> <span class="n">Z</span> <span class="o">--</span><span class="n">mae_lig</span> <span class="n">ligand</span><span class="o">.</span><span class="n">mae</span> <span class="o">--</span><span class="n">cpus</span> <span class="mi">128</span> <span class="o">--</span><span class="n">time</span> <span class="mi">25000</span> <span class="o">--</span><span class="n">temp</span> <span class="mi">1000</span>
 </pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="output-parameters">
@@ -272,6 +291,8 @@
 </div>
 <div class="section" id="input-preparation-parameters">
 <h2>Input Preparation Parameters<a class="headerlink" href="#input-preparation-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="receptor">
+<h3>receptor<a class="headerlink" href="#receptor" title="Permalink to this headline">¶</a></h3>
 <p>The input complex will be processed by the software checking  next features:</p>
 <ul class="simple">
 <li><strong>–charge_ter</strong> to charge all terminal resiues of the receptor.</li>
@@ -297,6 +318,9 @@
 <span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">1</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">LIG</span> <span class="n">Z</span> <span class="o">--</span><span class="n">forcefield</span> <span class="n">OPLS2005</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="ligand">
+<h3>ligand<a class="headerlink" href="#ligand" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><strong>–core</strong> Specify an atom from the ligand that will be use as center of a
 rigid core to identify flexible sidechains and rotamers</li>
@@ -331,6 +355,7 @@ be moved in simulation. As bigger the faste the sofware while loosing exploratio
 
 <span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">LIG</span> <span class="n">Z</span> <span class="o">--</span><span class="n">gridres</span> <span class="mi">30</span>
 </pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="exit-simulation-parameters">
@@ -428,6 +453,8 @@ little boxes to limit this and speed up calculations. default [multiple]</li>
 different initial postions of the ligand to explore as much transitions as
 posible between the slowest binding modes. Then, points will be clusterize
 through a KMeans algorithm.</p>
+<div class="section" id="metrics">
+<h3>metrics<a class="headerlink" href="#metrics" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><strong>–native</strong> calculate RMSd of each step in respect to an external pdb</li>
 </ul>
@@ -438,6 +465,53 @@ through a KMeans algorithm.</p>
 <span class="o">--</span><span class="n">native</span> <span class="n">x_ray_complex</span><span class="o">.</span><span class="n">pdb</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="waters">
+<h3>waters<a class="headerlink" href="#waters" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><strong>–water</strong> waters to move using MC water exploration step.
+All other waters will be automatically constrained.</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">water</span> <span class="n">chain_water</span><span class="p">:</span><span class="n">residue_water</span>
+
+<span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">1</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">LIG</span> <span class="n">Z</span> <span class="o">--</span><span class="n">water</span> <span class="n">M</span><span class="p">:</span><span class="mi">1</span> <span class="n">M</span><span class="p">:</span><span class="mi">2</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><strong>–water_radius</strong> radius of the exploration box in the water’s MC</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">ei</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">water</span> <span class="n">M</span><span class="p">:</span><span class="mi">1</span> <span class="o">--</span><span class="n">water_radius</span> <span class="n">radius_of_box</span> <span class="p">(</span><span class="n">Angstroms</span><span class="p">)</span>
+
+<span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">1</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">LIG</span> <span class="n">Z</span> <span class="o">--</span><span class="n">water</span> <span class="n">M</span><span class="p">:</span><span class="mi">1</span> <span class="n">M</span><span class="p">:</span><span class="mi">2</span> <span class="o">--</span><span class="n">water_radius</span> <span class="mi">7</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><strong>–water_temp</strong> temperature parameter in the water’s MC</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">ei</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">water</span> <span class="n">M</span><span class="p">:</span><span class="mi">1</span> <span class="o">--</span><span class="n">water_temp</span> <span class="n">temperature</span> <span class="p">(</span><span class="n">K</span><span class="p">)</span>
+
+<span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">1</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">LIG</span> <span class="n">Z</span> <span class="o">--</span><span class="n">water</span> <span class="n">M</span><span class="p">:</span><span class="mi">1</span> <span class="n">M</span><span class="p">:</span><span class="mi">2</span> <span class="o">--</span><span class="n">water_temp</span> <span class="mi">1000</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><strong>–water_trials</strong> steric trials parameter in the water’s MC</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">ei</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">water</span> <span class="n">M</span><span class="p">:</span><span class="mi">1</span> <span class="o">--</span><span class="n">water_trials</span> <span class="n">number_of_trials</span>
+
+<span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">1</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">LIG</span> <span class="n">Z</span> <span class="o">--</span><span class="n">water</span> <span class="n">M</span><span class="p">:</span><span class="mi">1</span> <span class="n">M</span><span class="p">:</span><span class="mi">2</span> <span class="o">--</span><span class="n">water_trials</span> <span class="mi">2000</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><strong>–water_constr</strong> constrain applied to the waters during the minimization that follows the water perturbation. Slightly forces the water to keep in place to avoid them to shift because of steric clashes of the sidechains.</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">ei</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">water</span> <span class="n">M</span><span class="p">:</span><span class="mi">1</span> <span class="o">--</span><span class="n">water_constr</span> <span class="n">constraint</span> <span class="p">(</span><span class="n">kcal</span><span class="o">/</span><span class="n">mol</span><span class="p">)</span>
+
+<span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">1</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">LIG</span> <span class="n">Z</span> <span class="o">--</span><span class="n">water</span> <span class="n">M</span><span class="p">:</span><span class="mi">1</span> <span class="n">M</span><span class="p">:</span><span class="mi">2</span> <span class="o">--</span><span class="n">water_constr</span> <span class="mf">3.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="protocol">
+<h3>protocol<a class="headerlink" href="#protocol" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><strong>–confile</strong> Use your own pele exploration configuration file</li>
 </ul>
@@ -461,6 +535,7 @@ with higly charged and exposed ligands.</li>
 
 <span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">1</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">LIG</span> <span class="n">Z</span> <span class="o">--</span><span class="n">test</span>
 </pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="msm-analysis">
