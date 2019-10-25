@@ -21,7 +21,7 @@ Installation
 
 conda install -c NostrumBioDiscovery msm_pele
 
- Documentation:
+Documentation:
 ######################
 
 https://nostrumbiodiscovery.github.io/msm_pele/
