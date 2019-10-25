@@ -1,5 +1,6 @@
-# MSM_Pele
---------------
+MSM_Pele
+############
+
 Monte Carlo Protein Energy Landscape Exploration (PELE) coupled with Markov State Model (MSM) analysis  with the aim to calculate absolute free energies.
 
 .. image:: https://anaconda.org/nostrumbiodiscovery/msm_pele/badges/version.svg
@@ -11,26 +12,26 @@ Monte Carlo Protein Energy Landscape Exploration (PELE) coupled with Markov Stat
 .. image:: https://img.shields.io/badge/License-MIT-blue.svg
        :target: https://lbesson.mit-license.org/
 
-.. image:: https://img.shields.io/github/release/NostrumBioDiscovery/msm_pele.svg
-       :target: https://github.com/NostrumBioDiscovery/msm_pele/releases/
+.. image:: https://img.shields.io/github/release/nostrumbiodiscovery/msm_pele.svg
+       :target: https://github.com/nostrumbiodiscovery/msm_pele/releases/
 
 .. image:: https://zenodo.org/badge/120748955.svg
        :target: https://zenodo.org/badge/latestdoi/120748955
 
 
-# Installation
--------------------
+Installation
+#################
 
 conda install -c NostrumBioDiscovery msm_pele
 
-# Documentation:
-------------------
+Documentation:
+######################
 
 https://nostrumbiodiscovery.github.io/msm_pele/
 
 
-# Citation:
-------------
+Citation:
+#################
 
 MSM_PELE is research software. If you make use of MSM_PELE in scientific publications, please cite it. The BibTeX reference is::
 
