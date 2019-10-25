@@ -8,6 +8,9 @@ Parameters
 Required Paramaters:
 ------------------------
 
+OPLS2005 charges
+++++++++++++++++++
+
 If you want to use OPLS2005 charges:
 
 - **complex.pdb** initial pdb with receptor and ligand already docked
@@ -27,6 +30,9 @@ If you want to use OPLS2005 charges:
     i.e.0 python -m msm_pele.main complex.pbd resname chain --cpus number_cpus --time seconds --temp temperature
     
     i.e.1 python -m msm_pele.main complex.pbd LIG Z  --cpus 128 --time 25000 --temp 1000
+
+QM charges
++++++++++++
 
 If you want to use external charges:
 
@@ -106,6 +112,9 @@ Restart Parameters
 Input Preparation Parameters
 -----------------------------
 
+receptor
+++++++++++++++
+
 The input complex will be processed by the software checking  next features:
 
 - **--charge_ter** to charge all terminal resiues of the receptor.
@@ -131,6 +140,9 @@ The input complex will be processed by the software checking  next features:
   i.e.0 python -m msm_pele.main complex.pbd resname chain --forcefield [OPLS2005 (default), Amber99sb]
 
   i.e.1 python -m msm_pele.main complex.pbd LIG Z --forcefield OPLS2005
+
+ligand
+++++++++++
 
 - **--core** Specify an atom from the ligand that will be use as center of a 
   rigid core to identify flexible sidechains and rotamers
@@ -265,6 +277,8 @@ different initial postions of the ligand to explore as much transitions as
 posible between the slowest binding modes. Then, points will be clusterize
 through a KMeans algorithm.
 
+metrics
+++++++++++
 
 - **--native** calculate RMSd of each step in respect to an external pdb
 
@@ -276,6 +290,9 @@ through a KMeans algorithm.
   i.e.1 python -m msm_pele.main complex.pbd LIG Z --confile pele.conf 
   --native x_ray_complex.pdb
 
+waters
++++++++
+
 - **--water** waters to move using MC water exploration step.
   All other waters will be automatically constrained.
 
@@ -285,6 +302,40 @@ through a KMeans algorithm.
 
   i.e.1 python -m msm_pele.main complex.pbd LIG Z --water M:1 M:2
 
+- **--water_radius** radius of the exploration box in the water's MC
+
+::
+
+  i.ei.0 python -m msm_pele.main complex.pbd resname chain --water M:1 --water_radius radius_of_box (Angstroms)
+
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --water M:1 M:2 --water_radius 7
+
+- **--water_temp** temperature parameter in the water's MC
+
+::
+
+  i.ei.0 python -m msm_pele.main complex.pbd resname chain --water M:1 --water_temp temperature (K)
+
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --water M:1 M:2 --water_temp 1000
+
+- **--water_trials** steric trials parameter in the water's MC
+
+::
+
+  i.ei.0 python -m msm_pele.main complex.pbd resname chain --water M:1 --water_trials number_of_trials
+
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --water M:1 M:2 --water_trials 2000
+
+- **--water_constr** constrain applied to the waters during the minimization that follows the water perturbation. Slightly forces the water to keep in place to avoid them to shift because of steric clashes of the sidechains.
+
+::
+
+  i.ei.0 python -m msm_pele.main complex.pbd resname chain --water M:1 --water_constr constraint (kcal/mol)
+
+  i.e.1 python -m msm_pele.main complex.pbd LIG Z --water M:1 M:2 --water_constr 3.
+
+protocol
+++++++++++++++
 
 - **--confile** Use your own pele exploration configuration file
 
@@ -301,6 +352,7 @@ through a KMeans algorithm.
 ::
 
   i.e.0 python -m msm_pele.main complex.pbd resname chain --precision
+
 
 - **test** Run short test after. Usefull after instalation.
 

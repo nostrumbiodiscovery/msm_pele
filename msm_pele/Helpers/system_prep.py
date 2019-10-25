@@ -2,7 +2,7 @@ import os
 import sys
 import subprocess
 import argparse
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname((os.path.abspath(__file__))))))
 import msm_pele.constants as cs
 
 class SystemBuilder(object):
@@ -11,23 +11,18 @@ class SystemBuilder(object):
         self.ligand = ligand
         self.residue = residue
         self.pele_dir = pele_dir
-        self.system = None if self.ligand else self.receptor
+        self.system = self.receptor
 
     @classmethod
     def build_system(cls, receptor, ligand, residue, pele_dir, output=False):
-        print(ligand)
         SPYTHON = os.path.join(cs.SCHRODINGER, "utilities/python")
-        if ligand:
-            system = cls(receptor, ligand, residue, pele_dir)
-            system.lig_ref = os.path.join(pele_dir, "ligand.pdb")
-            subprocess.call("{} {} {} {} --mae".format(SPYTHON, __file__, system.ligand, system.lig_ref).split())
-            system.system = system.build_complex()
-        else:
-            system = cls(receptor, ligand, residue, pele_dir)
-            system.receptor, system.lig_ref = system.retrieve_receptor(output=output)
-            subprocess.call("{} {} {} {}".format(SPYTHON, __file__, system.lig_ref, pele_dir).split())
-            system.lig = "{}.mae".format(residue)
-            system.residue = residue
+        if not os.path.exists(SPYTHON):
+            SPYTHON = os.path.join(cs.SCHRODINGER, "run")
+        system = cls(receptor, ligand, residue, pele_dir)
+        system.receptor, system.lig_ref = system.retrieve_receptor(output=output)
+        system.lig = os.path.abspath(ligand) if ligand else "{}.mae".format(residue)
+        subprocess.call("{} {} {} {}".format(SPYTHON, __file__, system.lig_ref, pele_dir).split())
+        system.residue = residue
         return system
 
     def build_complex(self):
@@ -62,7 +57,6 @@ class SystemBuilder(object):
         """
            Desciption: From each structure retrieve
            a .mae file of the ligand in the receptor.
-
            Output:
                 structure_mae: ligand
                 res = residue
@@ -84,21 +78,23 @@ class SystemBuilder(object):
     def retrieve_receptor(self, output=False):
         """
         This function returns receptor of the complex of interest.
-
         :param complex: system format pdb
-
         :output: receptor text
         """
-        ligand = output if output else os.path.join(self.pele_dir, "ligand.pdb")    
+        ligand = output if output else os.path.join(self.pele_dir, "ligand.pdb")
+        receptor =  os.path.join(self.pele_dir, "receptor.pdb")
 
         with open(self.receptor, 'r') as pdb_file:
-            receptor_text = [line for line in pdb_file if line.startswith("ATOM")]
+            lines = [line for line in pdb_file if line.startswith("ATOM") or line.startswith("HETATM")]
+            receptor_text = [line for line in lines if line.startswith("ATOM") or (line.startswith("HETATM") and line[17:20].strip() != self.residue)]
         with open(self.receptor, 'r') as pdb_file:
             ligand_text = [line for line in pdb_file if line[17:20].strip() == self.residue]
         if not receptor_text  or not ligand_text:
             raise ValueError("Something went wrong when extracting the ligand. Check residue&Chain on input")
         with open(ligand, "w") as fout:
             fout.write("".join(ligand_text))
+        with open(receptor, "w") as fout:
+            fout.write("".join(receptor_text))
 
         return "".join(receptor_text), ligand
 
@@ -142,10 +138,8 @@ def parse_args():
 
 if __name__ == "__main__":
     input_file, output_dir, ligand_mae = parse_args()
-    print(input_file)
     if ligand_mae:
         convert_pdb(input_file, output_dir)
     else:
         convert_mae(input_file, output_dir)
         
-

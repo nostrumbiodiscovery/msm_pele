@@ -17,10 +17,21 @@ if "bsc.mn" in machine:
     ACCEPTED_STEPS_NAME = "numberOfAcceptedPeleSteps"
     CRITERIA = "sasaLig"
 
+elif "nbdcalc" in machine:
+    SCHRODINGER = "/opt/schrodinger2019-1/"
+    PELE = "/home/dsoler/local_deps/PELE-repo/"
+    PELE_BIN = "/home/dsoler/local_deps/PELE-repo/build/PELE-1.5"
+    MPIRUN = "/usr/lib64/openmpi/bin/"
+    LICENSE = "/home/dsoler"
+    MMSHARE = None
+    # Provisional workaround until best_struct.py is fixed
+    ACCEPTED_STEPS_NAME = "numberOfAcceptedPeleSteps"
+    CRITERIA = "sasaLig"
+
 elif "mn.bsc" in machine:
     SCHRODINGER = "/gpfs/projects/bsc72/SCHRODINGER_ACADEMIC_NORD"
     PELE = "/gpfs/projects/bsc72/WATERPELE_2.0/"
-    PELE_BIN = "/gpfs/projects/bsc72/WATERPELE_2.0/builds/MN4/PELE-1.5_mpi"
+    PELE_BIN = "/gpfs/projects/bsc72/WATERPELE_2.0/builds/N3/PELE-1.5_mpi"
     MPIRUN = "/apps/OPENMPI/1.8.1-mellanox/bin"
     LICENSE = "/gpfs/projects/bsc72/PELE++/license"
     MMSHARE = None
@@ -52,11 +63,11 @@ elif "NBD" in machine:
     ACCEPTED_STEPS_NAME = "numberOfAcceptedPeleSteps"
     CRITERIA = "sasaLig"
 else:
-    SCHRODINGER = "Will be substitued to schr path installation"
-    PELE = "Will be substitued to pele path installation"
-    PELE_BIN = "Will be substitued to pele bin path installation"
-    MPIRUN = "Will be substitued to mpirun path installation"
-    LICENSE = "Will be substitued to license path installation"
+    SCHRODINGER = "/opt/schrodinger2018-1/"
+    PELE = "/opt/PELE/"
+    PELE_BIN = "/opt/PELE/bin/PELE-1.5"
+    MPIRUN = "/usr/lib64/openmpi/bin/"
+    LICENSE = "/home/ywest/"
     MMSHARE = None
     # Provisional workaround until best_struct.py is fixed
     ACCEPTED_STEPS_NAME = "numberOfAcceptedPeleSteps"
@@ -189,16 +200,16 @@ WATER = '''
          {{
              "Box" :
              {{
-                 "radius" : 10,
+                 "radius" : {},
                  "fixedCenter": [{}],
                  "type" : "sphericalBox"
              }},
              "watersToPerturb": {{ "links": {{ "ids": [ {} ] }} }},
              "parameters":
              {{
-                 "temperature": 500,
-                 "numberOfStericTrials": 1000,
-                 "COMConstraintConstant": 0.2
+                 "temperature": {},
+                 "numberOfStericTrials": {},
+                 "COMConstraintConstant": {}
              }}
          }}, 
 '''

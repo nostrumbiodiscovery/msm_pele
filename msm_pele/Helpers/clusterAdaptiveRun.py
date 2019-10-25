@@ -124,7 +124,7 @@ def update_cluster(centers_info, sasa_max,sasa_int, sasa_min, perc_sasa_min=0.25
     return centers_info
 
 def repite_clusters(centers_info, chosen_clusters, sasa_min, limit_clusters, extra_clust):
-    for i in range(limit_clusters):
+    for i in range(int(limit_clusters)):
         chosen_clusters[extra_clust] = sorted(sasa_min, key=lambda x: x[1])[i%len(sasa_min)][1]
         centers_info[extra_clust] = centers_info[sorted(sasa_min, key=lambda x: x[1])[i%len(sasa_min)][0]]
         extra_clust +=1
