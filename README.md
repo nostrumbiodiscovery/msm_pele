@@ -3,16 +3,16 @@
 Monte Carlo Protein Energy Landscape Exploration (PELE) coupled with Markov State Model (MSM) analysis  with the aim to calculate absolute free energies.
 
 .. image:: https://anaconda.org/nostrumbiodiscovery/msm_pele/badges/version.svg
-   :target: https://anaconda.org/nostrumbiodiscovery/msm_pele
+       :target: https://anaconda.org/nostrumbiodiscovery/msm_pele
 
 .. image:: https://img.shields.io/pypi/v/msm_pele.svg
-    :target: https://pypi.org/project/msm_pele/
+       :target: https://pypi.org/project/msm_pele/
 
 .. image:: https://img.shields.io/badge/License-MIT-blue.svg
-   :target: https://lbesson.mit-license.org/
+       :target: https://lbesson.mit-license.org/
 
 .. image:: https://img.shields.io/github/release/NostrumBioDiscovery/msm_pele.svg
-    :target: https://github.com/NostrumBioDiscovery/msm_pele/releases/
+       :target: https://github.com/NostrumBioDiscovery/msm_pele/releases/
 
 
 # Installation
