@@ -1,28 +1,28 @@
 import os
 import msm_pele.constants as cs
 import msm_pele.Helpers.helpers as hp
+
 try:
     import subprocess32 as subprocess
 except ImportError:
     import subprocess
+except SyntaxError:
+    import subprocess
 
-def parametrize_miss_residues(args, env, syst):
+def parametrize_miss_residues(args, env, syst, resname=None):
+    resname = args.residue if not resname else resname
     SPYTHON = os.path.join(cs.SCHRODINGER, "utilities/python")
+    if not os.path.exists(SPYTHON):
+        SPYTHON = os.path.join(cs.SCHRODINGER, "run")
     file_path = os.path.abspath(os.path.join(cs.DIR, "PlopRotTemp/main.py"))
-    print(file_path)
     options = retrieve_options(args, env)
-    if args.mae_lig:
-        mae_charges = True
-        print("Running Plop from mae")
-        print("{} {} {} {} {} {}".format(SPYTHON, file_path, options, env.mae_lig, args.residue, env.pele_dir))
-        subprocess.call("{} {} {} {} {} {}".format(SPYTHON, file_path, options, env.mae_lig, args.residue, env.pele_dir).split())
-        hp.silentremove([syst.system])
-    else:
-        mae_charges = False
-        print("Running Plop from pdb")
-        print("{} {} {} {} {} {}".format(SPYTHON, file_path, options, env.mae_lig, args.residue, env.pele_dir))
-        subprocess.call("{} {} {} {} {} {}".format(SPYTHON, file_path, options, syst.lig, args.residue, env.pele_dir).split())
-        hp.silentremove([syst.lig])
+    templatedir = os.path.join(env.pele_dir, "DataLocal/Templates/OPLS2005/HeteroAtoms")
+    rotamerdir = os.path.join(env.pele_dir, "DataLocal/LigandRotamerLibs")  
+    mae_cahrges = True if args.mae_lig else False
+    print("Running Plop")
+    print("{} {} {} {} --outputname {} --templatedir {} --rotamerdir {}".format(SPYTHON, file_path, options, syst.lig, resname, templatedir, rotamerdir))
+    subprocess.call("{} {} {} {} --outputname {} --templatedir {} --rotamerdir {}".format(SPYTHON, file_path, options, syst.lig, resname, templatedir, rotamerdir).split())
+    #hp.silentremove([syst.lig])
 
 
 def retrieve_options(args, env):

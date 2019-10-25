@@ -9,6 +9,6 @@ module purge
 module load  
 unset PYTHONPATH
 #Charge MSM and MSM/AdaptivePELE inside the path if they are not in the default python libraries
-export PYTHONPATH=/gpfs/projects/bsc72/MSM_XTC/bin/v2.0.0/:/gpfs/projects/bsc72/MSM_XTC/bin/v2.0.0/MSM_PELE/:/gpfs/projects/bsc72/lib/site-packages/:/gpfs/projects/bsc72/lib_msm/site-packages/:$PYTHONPATH
+export PYTHONPATH=/path/to/folder/before_msm_pele/:/path/to/folder/msm_pele/:/gpfs/projects/bsc72/lib/site-packages/:/gpfs/projects/bsc72/lib_msm/site-packages/:$PYTHONPATH
 #Run tests
-pytest /gpfs/projects/bsc72/MSM_XTC/bin/v2.0.0/MSM_PELE/test/ -vv > out.txt
+pytest . -vv > out.txt

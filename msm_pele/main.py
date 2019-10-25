@@ -93,10 +93,9 @@ def run(args):
                 # KMeans Clustering with different seed
                 env.logger.info("Running Exit Path Clustering")
                 with hp.cd(env.adap_ex_output):
-                    seed = 742304 if env.test else random.randint(1,1000000)
-                    env.logger.info(seed)
+                    env.logger.info("Seed {}".format(env.random_num))
                     cluster_centers = cl.main(env.clusters, env.cluster_output, args.residue, "", env.cpus, env.adap_ex_output,
-                       env.topology, env.sasamin, env.sasamax, env.sasa, env.perc_sasa_min, env.perc_sasa_int, seed=seed, iteration=i)
+                       env.topology, env.sasamin, env.sasamax, env.sasa, env.perc_sasa_min, env.perc_sasa_int, seed=env.random_num, iteration=i)
                 env.logger.info("Exit Path Clustering run successfully")
 
             # Create Exploration Box
@@ -110,7 +109,7 @@ def run(args):
             output = os.path.join(env.adap_l_output, str(i))
             if not os.path.isdir(output):
                 os.mkdir(output)
-            hp.change_output(env.pele_temp, output)
+            hp.change_output(env.pele_temp, output, i)
             simulation = ad.SimulationBuilder(env.pele_temp,  env.topology, cs.PELE_KEYWORDS, cs.RESTART, os.path.join(env.adap_l_output, output),
                 ",\n".join(inputs), env.random_num, env.steps, box, env.box_metric, BS_sasa_min, BS_sasa_max, env.temp)
             time_sim = simulation.run_pele(env, limitTime=env.time)

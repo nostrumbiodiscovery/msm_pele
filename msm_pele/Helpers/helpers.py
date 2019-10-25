@@ -16,7 +16,7 @@ def silentremove(*args, **kwargs):
 def is_exit_finish(path, test, criteria="7"):
     return bs.main(path, criteria=criteria, test=test)
 
-def change_output(inp_file, out_folder):
+def change_output(inp_file, out_folder, i):
     with open(inp_file, "r") as f:
         lines = f.readlines()
 
@@ -24,6 +24,9 @@ def change_output(inp_file, out_folder):
     for line in lines:
         if "reportPath" in line:
             new_lines.append('        "reportPath" : "{}",\n'.format(os.path.join(out_folder, "report")))
+        elif '"files" : [ { "path"' in line:
+            new_lines.append(line.replace("output_clustering/iteration{}".format(i),
+                "output_clustering/iteration{}".format(i+1)))
         elif "trajectoryPath" in line:
             new_lines.append('        "trajectoryPath" : "{}"\n'.format(os.path.join(out_folder, "trajectory.xtc")))
         elif "seed" in line:
@@ -70,3 +73,4 @@ def find_centroid(points):
     n_points = len(points)
     centroid = (sum(x) / n_points, sum(y) / n_points, sum(z) / n_points)
     return centroid
+

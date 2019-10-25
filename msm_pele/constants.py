@@ -17,6 +17,17 @@ if "bsc.mn" in machine:
     ACCEPTED_STEPS_NAME = "numberOfAcceptedPeleSteps"
     CRITERIA = "sasaLig"
 
+elif "nbdcalc" in machine:
+    SCHRODINGER = "/opt/schrodinger2019-1/"
+    PELE = "/home/dsoler/local_deps/PELE-repo/"
+    PELE_BIN = "/home/dsoler/local_deps/PELE-repo/build/PELE-1.5"
+    MPIRUN = "/usr/lib64/openmpi/bin/"
+    LICENSE = "/home/dsoler"
+    MMSHARE = None
+    # Provisional workaround until best_struct.py is fixed
+    ACCEPTED_STEPS_NAME = "numberOfAcceptedPeleSteps"
+    CRITERIA = "sasaLig"
+
 elif "mn.bsc" in machine:
     SCHRODINGER = "/gpfs/projects/bsc72/SCHRODINGER_ACADEMIC_NORD"
     PELE = "/gpfs/projects/bsc72/WATERPELE_2.0/"

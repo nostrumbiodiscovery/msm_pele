@@ -103,7 +103,7 @@ class EnviroBuilder(object):
             if self.time: self.steps = 10000
             else: self.steps = self.steps
         else:
-            self.steps = 10
+            self.steps = 2
 
 
     def build_water_constants(self):
@@ -138,7 +138,7 @@ class EnviroBuilder(object):
 
         self.template = None
         self.rotamers_file = None
-        self.random_num = random.randrange(1, 70000)
+        self.random_num = random.randrange(1, 70000) if not self.test else 1234 
         self.license = '''"{}"'''.format(cs.LICENSE)
 
         if self.test:
@@ -153,10 +153,7 @@ class EnviroBuilder(object):
         else:
             self.pele_dir = os.path.abspath(self.folder)
 
-        if self.mae_lig:
-            self.system_fix = os.path.join(self.pele_dir, "{}_complex_processed.pdb".format(os.path.splitext(os.path.basename(self.system))[0]))
-        else:
-            self.system_fix = os.path.join(self.pele_dir, "{}_processed.pdb".format(os.path.splitext(os.path.basename(self.system))[0]))
+        self.system_fix = os.path.join(self.pele_dir, "{}_processed.pdb".format(os.path.splitext(os.path.basename(self.system))[0]))
 
         for f in self.ext_temp:
             cs.FILES_NAME.append(os.path.join("DataLocal/Templates/{}/HeteroAtoms/".format(self.forcefield), os.path.basename(f)))
