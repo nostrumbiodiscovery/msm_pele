@@ -16,7 +16,7 @@ Monte Carlo Protein Energy Landscape Exploration (PELE) coupled with Markov Stat
        :target: https://github.com/nostrumbiodiscovery/msm_pele/releases/
 
 
- Installation
+Installation
 #################
 
 conda install -c NostrumBioDiscovery msm_pele
