@@ -14,6 +14,9 @@ Monte Carlo Protein Energy Landscape Exploration (PELE) coupled with Markov Stat
 .. image:: https://img.shields.io/github/release/NostrumBioDiscovery/msm_pele.svg
        :target: https://github.com/NostrumBioDiscovery/msm_pele/releases/
 
+.. image:: https://zenodo.org/badge/120748955.svg
+       :target: https://zenodo.org/badge/latestdoi/120748955
+
 
 # Installation
 -------------------
