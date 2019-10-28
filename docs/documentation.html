@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Benchmark" href="benchmark.html" />
     <link rel="prev" title="Tutorial" href="tutorial.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -98,7 +100,6 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Parameters</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#required-paramaters">Required Paramaters:</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#opls2005-charges">OPLS2005 charges</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#qm-charges">QM charges</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#output-parameters">Output Parameters</a></li>
@@ -203,34 +204,17 @@
 <h3>OPLS2005 charges<a class="headerlink" href="#opls2005-charges" title="Permalink to this headline">¶</a></h3>
 <p>If you want to use OPLS2005 charges:</p>
 <ul class="simple">
-<li><strong>complex.pdb</strong> initial pdb with receptor and ligand already docked</li>
-<li><strong>resname</strong> residue name of the ligand</li>
-<li><strong>chain</strong> chain of the ligand</li>
-<li><strong>–cpus</strong> number of cpus to use</li>
-<li><strong>–time</strong> number of seconds to run each iteration</li>
-<li><strong>–temp</strong> temperature to run the simulation (binding exposed cavities 1500, charged ligands 1500, other 1000)</li>
+<li><p><strong>complex.pdb</strong> initial pdb with receptor and ligand already docked</p></li>
+<li><p><strong>resname</strong> residue name of the ligand</p></li>
+<li><p><strong>chain</strong> chain of the ligand</p></li>
+<li><p><strong>–cpus</strong> number of cpus to use</p></li>
+<li><p><strong>–time</strong> number of seconds to run each iteration</p></li>
+<li><p><strong>–temp</strong> temperature to run the simulation (binding exposed cavities 1500, charged ligands 1500, other 1000)</p></li>
+<li><p><strong>–mae_lig ligand.mae</strong> mae file of the ligand with QM charges</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">cpus</span> <span class="n">number_cpus</span> <span class="o">--</span><span class="n">time</span> <span class="n">seconds</span> <span class="o">--</span><span class="n">temp</span> <span class="n">temperature</span>
 
-<span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">1</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">LIG</span> <span class="n">Z</span>  <span class="o">--</span><span class="n">cpus</span> <span class="mi">128</span> <span class="o">--</span><span class="n">time</span> <span class="mi">25000</span> <span class="o">--</span><span class="n">temp</span> <span class="mi">1000</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="qm-charges">
-<h3>QM charges<a class="headerlink" href="#qm-charges" title="Permalink to this headline">¶</a></h3>
-<p>If you want to use external charges:</p>
-<ul class="simple">
-<li><strong>receptor.pdb</strong> pdb of the receptor with the bound conformation to the docked ligand</li>
-<li><strong>resname</strong> residue name of the ligand</li>
-<li><strong>chain</strong> chain of the ligand</li>
-<li><strong>–mae_lig ligand.mae</strong> mae file of the ligand with QM charges</li>
-<li><strong>–cpus</strong> number of cpus to use</li>
-<li><strong>–time</strong> number of seconds to run each iteration</li>
-<li><strong>–temp</strong> temperature to run the simulation (binding exposed cavities 1500, charged ligands 1500, other 1000)</li>
-</ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">mae_lig</span> <span class="n">ligand</span><span class="o">.</span><span class="n">mae</span> <span class="o">--</span><span class="n">cpus</span> <span class="n">number_cpus</span> <span class="o">--</span><span class="n">time</span> <span class="n">seconds</span> <span class="o">--</span><span class="n">temp</span> <span class="n">temperature</span>
-
-<span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">1</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">LIG</span> <span class="n">Z</span> <span class="o">--</span><span class="n">mae_lig</span> <span class="n">ligand</span><span class="o">.</span><span class="n">mae</span> <span class="o">--</span><span class="n">cpus</span> <span class="mi">128</span> <span class="o">--</span><span class="n">time</span> <span class="mi">25000</span> <span class="o">--</span><span class="n">temp</span> <span class="mi">1000</span>
+<span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">1</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">LIG</span> <span class="n">Z</span>  <span class="o">--</span><span class="n">cpus</span> <span class="mi">128</span> <span class="o">--</span><span class="n">time</span> <span class="mi">25000</span> <span class="o">--</span><span class="n">temp</span> <span class="mi">1000</span> <span class="o">--</span><span class="n">mae_lig</span> <span class="n">ligand</span><span class="o">.</span><span class="n">mae</span>
 </pre></div>
 </div>
 </div>
@@ -238,7 +222,7 @@
 <div class="section" id="output-parameters">
 <h2>Output Parameters<a class="headerlink" href="#output-parameters" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><strong>–folder</strong> specify the output name of the folder</li>
+<li><p><strong>–folder</strong> specify the output name of the folder</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">folder</span> <span class="n">folder_name</span>
 
@@ -246,7 +230,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li><strong>–pdb</strong> use pdb format as output file (default=.xtc)</li>
+<li><p><strong>–pdb</strong> use pdb format as output file (default=.xtc)</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">pdb</span>
 
@@ -254,7 +238,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li><strong>–log</strong> print a log simulation file for each CPU whenever running a PELE simulation</li>
+<li><p><strong>–log</strong> print a log simulation file for each CPU whenever running a PELE simulation</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">log</span>
 
@@ -266,13 +250,14 @@
 <h2>Restart Parameters<a class="headerlink" href="#restart-parameters" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
-<li><strong>- - restart</strong> restart the simulation from [adaptive, pele, msm]:<ul>
-<li><strong>adaptive</strong>  flag will luch the exit simulation with the already processed input pdb.</li>
-<li><strong>pele</strong> flag will lunch a Monte Carlo simulation that will be later analyse via MSM.</li>
-<li><strong>msm</strong> flag will  perform MSM analysis over the previous monte carlo simulation.</li>
-<li><dl class="first docutils">
-<dt><strong>analyse</strong> flag will perform the analysis of the MSM extracting representative structures</dt>
-<dd>and PMF and probability plots.</dd>
+<li><p><strong>- - restart</strong> restart the simulation from [adaptive, pele, msm]:</p>
+<ul>
+<li><p><strong>adaptive</strong>  flag will luch the exit simulation with the already processed input pdb.</p></li>
+<li><p><strong>pele</strong> flag will lunch a Monte Carlo simulation that will be later analyse via MSM.</p></li>
+<li><p><strong>msm</strong> flag will  perform MSM analysis over the previous monte carlo simulation.</p></li>
+<li><dl class="simple">
+<dt><strong>analyse</strong> flag will perform the analysis of the MSM extracting representative structures</dt><dd><p>and PMF and probability plots.</p>
+</dd>
 </dl>
 </li>
 </ul>
@@ -295,7 +280,7 @@
 <h3>receptor<a class="headerlink" href="#receptor" title="Permalink to this headline">¶</a></h3>
 <p>The input complex will be processed by the software checking  next features:</p>
 <ul class="simple">
-<li><strong>–charge_ter</strong> to charge all terminal resiues of the receptor.</li>
+<li><p><strong>–charge_ter</strong> to charge all terminal resiues of the receptor.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">charge_ter</span>
 
@@ -303,7 +288,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li><strong>–gaps_ter</strong> cap gaps or leave them as connected atoms.</li>
+<li><p><strong>–gaps_ter</strong> cap gaps or leave them as connected atoms.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">gaps_ter</span>
 
@@ -311,7 +296,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li><strong>–forcefield</strong> forcefield to use to describe the protein. Options:</li>
+<li><p><strong>–forcefield</strong> forcefield to use to describe the protein. Options:</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">forcefield</span> <span class="p">[</span><span class="n">OPLS2005</span> <span class="p">(</span><span class="n">default</span><span class="p">),</span> <span class="n">Amber99sb</span><span class="p">]</span>
 
@@ -322,8 +307,8 @@
 <div class="section" id="ligand">
 <h3>ligand<a class="headerlink" href="#ligand" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><strong>–core</strong> Specify an atom from the ligand that will be use as center of a
-rigid core to identify flexible sidechains and rotamers</li>
+<li><p><strong>–core</strong> Specify an atom from the ligand that will be use as center of a
+rigid core to identify flexible sidechains and rotamers</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">core</span> <span class="n">atomnumber</span>
 
@@ -331,7 +316,7 @@ rigid core to identify flexible sidechains and rotamers</li>
 </pre></div>
 </div>
 <ul class="simple">
-<li><strong>–mtor</strong> Maximum number of rotamers per sidechain [defaut=4]</li>
+<li><p><strong>–mtor</strong> Maximum number of rotamers per sidechain [defaut=4]</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">mtor</span> <span class="n">number</span>
 
@@ -339,7 +324,7 @@ rigid core to identify flexible sidechains and rotamers</li>
 </pre></div>
 </div>
 <ul class="simple">
-<li><strong>–n</strong> Maximum number of sidechains [default=None]</li>
+<li><p><strong>–n</strong> Maximum number of sidechains [default=None]</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">n</span> <span class="n">number</span>
 
@@ -347,9 +332,9 @@ rigid core to identify flexible sidechains and rotamers</li>
 </pre></div>
 </div>
 <ul class="simple">
-<li><strong>–gridres</strong> Rotamers resolution. Every how many degrees the rotamers will
+<li><p><strong>–gridres</strong> Rotamers resolution. Every how many degrees the rotamers will
 be moved in simulation. As bigger the faste the sofware while loosing exploration.
-[default=10]</li>
+[default=10]</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">gridres</span> <span class="p">(</span><span class="n">degrees</span> <span class="n">of</span> <span class="n">rotation</span><span class="p">)</span>
 
@@ -361,8 +346,8 @@ be moved in simulation. As bigger the faste the sofware while loosing exploratio
 <div class="section" id="exit-simulation-parameters">
 <h2>Exit Simulation Parameters<a class="headerlink" href="#exit-simulation-parameters" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><strong>–clust</strong> number of clusters after adaptive exit simulation. It must always
-be smaller than the number of cpu power. [default=40]</li>
+<li><p><strong>–clust</strong> number of clusters after adaptive exit simulation. It must always
+be smaller than the number of cpu power. [default=40]</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">clust</span> <span class="n">number_of_clusters</span>
 
@@ -370,7 +355,7 @@ be smaller than the number of cpu power. [default=40]</li>
 </pre></div>
 </div>
 <ul class="simple">
-<li><strong>–cpus</strong> number of cpus to use [default=50]</li>
+<li><p><strong>–cpus</strong> number of cpus to use [default=50]</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">cpus</span> <span class="n">number_of_cpus</span>
 
@@ -382,7 +367,7 @@ be smaller than the number of cpu power. [default=40]</li>
 <h2>Exit simulation clustering Parameters<a class="headerlink" href="#exit-simulation-clustering-parameters" title="Permalink to this headline">¶</a></h2>
 <p>An adaptive PELE exit simulation will be performed over the docked complex until 5 trajectories reach a SASA bigger than 0.95. Then, the exit path will be clusterize using KMeans algorithm and this will serve as input on the next PELE explortion simulation.</p>
 <ul class="simple">
-<li><strong>–no_sasa</strong> Cluster with K-means and start from all clusters with the same probability</li>
+<li><p><strong>–no_sasa</strong> Cluster with K-means and start from all clusters with the same probability</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">no_sasa</span>
 
@@ -390,10 +375,10 @@ be smaller than the number of cpu power. [default=40]</li>
 </pre></div>
 </div>
 <ul class="simple">
-<li><strong>–sasa</strong> Cluster with K-means and divide clusters in 3 intervals
+<li><p><strong>–sasa</strong> Cluster with K-means and divide clusters in 3 intervals
 of treshold: [x&lt;sasa_min, sasa_min&lt;x&lt;sasa_max, x&gt;sasa_max]. 25% of the processors
 will start from clusters of the first interval, 50% from the second one and another
-25% from the third.</li>
+25% from the third.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">sasa</span> <span class="p">(</span><span class="n">minimum</span> <span class="n">sasa</span> <span class="n">value</span><span class="p">,</span> <span class="n">maximum</span> <span class="n">sasa</span> <span class="n">value</span><span class="p">)</span>
 
@@ -403,8 +388,8 @@ will start from clusters of the first interval, 50% from the second one and anot
 </pre></div>
 </div>
 <ul class="simple">
-<li><strong>–perc_sasa</strong> Cluster with K-mean and divide the three intervals explained above
-between the processors with probability [x,y,z] default [0.25, 0.5, 0.25]</li>
+<li><p><strong>–perc_sasa</strong> Cluster with K-mean and divide the three intervals explained above
+between the processors with probability [x,y,z] default [0.25, 0.5, 0.25]</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">perc_sasa</span> <span class="p">(</span><span class="n">percentage1</span><span class="p">,</span> <span class="n">percentage2</span><span class="p">,</span> <span class="n">percentage3</span><span class="p">)</span>
 
@@ -415,8 +400,8 @@ between the processors with probability [x,y,z] default [0.25, 0.5, 0.25]</li>
 <div class="section" id="box-parameters">
 <h2>Box Parameters<a class="headerlink" href="#box-parameters" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><strong>–box_type</strong> One single big box to most conformational space or multiple
-little boxes to limit this and speed up calculations. default [multiple]</li>
+<li><p><strong>–box_type</strong> One single big box to most conformational space or multiple
+little boxes to limit this and speed up calculations. default [multiple]</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">box_type</span> <span class="p">(</span><span class="nb">type</span> <span class="n">of</span> <span class="n">box</span><span class="p">)</span>
 
@@ -426,7 +411,7 @@ little boxes to limit this and speed up calculations. default [multiple]</li>
 </pre></div>
 </div>
 <ul class="simple">
-<li><strong>–box</strong> Use box from other simulations. default [None]</li>
+<li><p><strong>–box</strong> Use box from other simulations. default [None]</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">box</span> <span class="p">(</span><span class="n">pdb</span> <span class="k">with</span> <span class="n">box</span><span class="p">)</span>
 
@@ -434,7 +419,7 @@ little boxes to limit this and speed up calculations. default [multiple]</li>
 </pre></div>
 </div>
 <ul>
-<li><p class="first"><strong>–user_center</strong> Specfy a single or multiple centers of the box . default [None]
+<li><p><strong>–user_center</strong> Specfy a single or multiple centers of the box . default [None]
 <strong>–user_radius</strong> Specfy a single or multiple radius of the box . default [None]</p>
 <p>user_center &amp; user_radius  must be used together.</p>
 </li>
@@ -456,7 +441,7 @@ through a KMeans algorithm.</p>
 <div class="section" id="metrics">
 <h3>metrics<a class="headerlink" href="#metrics" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><strong>–native</strong> calculate RMSd of each step in respect to an external pdb</li>
+<li><p><strong>–native</strong> calculate RMSd of each step in respect to an external pdb</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">confile</span>
 <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">myconfile</span><span class="o">.</span><span class="n">conf</span> <span class="o">--</span><span class="n">native</span> <span class="n">native</span><span class="o">.</span><span class="n">pdb</span>
@@ -469,8 +454,8 @@ through a KMeans algorithm.</p>
 <div class="section" id="waters">
 <h3>waters<a class="headerlink" href="#waters" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><strong>–water</strong> waters to move using MC water exploration step.
-All other waters will be automatically constrained.</li>
+<li><p><strong>–water</strong> waters to move using MC water exploration step.
+All other waters will be automatically constrained.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">water</span> <span class="n">chain_water</span><span class="p">:</span><span class="n">residue_water</span>
 
@@ -478,7 +463,7 @@ All other waters will be automatically constrained.</li>
 </pre></div>
 </div>
 <ul class="simple">
-<li><strong>–water_radius</strong> radius of the exploration box in the water’s MC</li>
+<li><p><strong>–water_radius</strong> radius of the exploration box in the water’s MC</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">ei</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">water</span> <span class="n">M</span><span class="p">:</span><span class="mi">1</span> <span class="o">--</span><span class="n">water_radius</span> <span class="n">radius_of_box</span> <span class="p">(</span><span class="n">Angstroms</span><span class="p">)</span>
 
@@ -486,7 +471,7 @@ All other waters will be automatically constrained.</li>
 </pre></div>
 </div>
 <ul class="simple">
-<li><strong>–water_temp</strong> temperature parameter in the water’s MC</li>
+<li><p><strong>–water_temp</strong> temperature parameter in the water’s MC</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">ei</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">water</span> <span class="n">M</span><span class="p">:</span><span class="mi">1</span> <span class="o">--</span><span class="n">water_temp</span> <span class="n">temperature</span> <span class="p">(</span><span class="n">K</span><span class="p">)</span>
 
@@ -494,7 +479,7 @@ All other waters will be automatically constrained.</li>
 </pre></div>
 </div>
 <ul class="simple">
-<li><strong>–water_trials</strong> steric trials parameter in the water’s MC</li>
+<li><p><strong>–water_trials</strong> steric trials parameter in the water’s MC</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">ei</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">water</span> <span class="n">M</span><span class="p">:</span><span class="mi">1</span> <span class="o">--</span><span class="n">water_trials</span> <span class="n">number_of_trials</span>
 
@@ -502,7 +487,7 @@ All other waters will be automatically constrained.</li>
 </pre></div>
 </div>
 <ul class="simple">
-<li><strong>–water_constr</strong> constrain applied to the waters during the minimization that follows the water perturbation. Slightly forces the water to keep in place to avoid them to shift because of steric clashes of the sidechains.</li>
+<li><p><strong>–water_constr</strong> constrain applied to the waters during the minimization that follows the water perturbation. Slightly forces the water to keep in place to avoid them to shift because of steric clashes of the sidechains.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">ei</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">water</span> <span class="n">M</span><span class="p">:</span><span class="mi">1</span> <span class="o">--</span><span class="n">water_constr</span> <span class="n">constraint</span> <span class="p">(</span><span class="n">kcal</span><span class="o">/</span><span class="n">mol</span><span class="p">)</span>
 
@@ -513,7 +498,7 @@ All other waters will be automatically constrained.</li>
 <div class="section" id="protocol">
 <h3>protocol<a class="headerlink" href="#protocol" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><strong>–confile</strong> Use your own pele exploration configuration file</li>
+<li><p><strong>–confile</strong> Use your own pele exploration configuration file</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">confile</span>
 <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">myconfile</span><span class="o">.</span><span class="n">conf</span>
@@ -522,14 +507,14 @@ All other waters will be automatically constrained.</li>
 </pre></div>
 </div>
 <ul class="simple">
-<li><strong>precision</strong> Use a more aggresive control file. Useful when dealing
-with higly charged and exposed ligands.</li>
+<li><p><strong>precision</strong> Use a more aggresive control file. Useful when dealing
+with higly charged and exposed ligands.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">precision</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><strong>test</strong> Run short test after. Usefull after instalation.</li>
+<li><p><strong>test</strong> Run short test after. Usefull after instalation.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="mi">0</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">msm_pele</span><span class="o">.</span><span class="n">main</span> <span class="nb">complex</span><span class="o">.</span><span class="n">pbd</span> <span class="n">resname</span> <span class="n">chain</span> <span class="o">--</span><span class="n">test</span>
 
@@ -558,7 +543,7 @@ stimated as well as system’s markovianity.</p>
         <a href="benchmark.html" class="btn btn-neutral float-right" title="Benchmark" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="tutorial.html" class="btn btn-neutral" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="tutorial.html" class="btn btn-neutral float-left" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -584,26 +569,16 @@ stimated as well as system’s markovianity.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
