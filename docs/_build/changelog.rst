@@ -11,6 +11,7 @@ Here we report all MSM changes thorugh all different releases on: `MSM github <h
 2.1 - 28-10-2019
 ---------------------------------
     - Add water MC step
+    - Deprecate receptor.pdb + .mae input
     - Paper released
     - Fix minor bugs
 
