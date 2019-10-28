@@ -4,16 +4,11 @@ import sys
 import os
 import glob
 import shutil
-import msm_pele.Box.box as bx
-import msm_pele.Helpers.pele_env as pele
-import msm_pele.Helpers.clusterAdaptiveRun as cl
 import msm_pele.main as main
-import msm_pele.Helpers.helpers as hp
 import msm_pele.constants as cs
-import msm_pele.Helpers.simulation as ad
 
 
-test_path = os.path.join(os.path.dirname(cs.DIR), "tests/data")
+test_path = "data"
 SIM_ARGS = [os.path.join(test_path, "L02.pdb"), "L02", "L", "--mae_lig", os.path.join(test_path, "L02_INIT.mae"), "--test", "--precision", "--iterations", "2", "--time", "240", "--steps", "100", "--solvent", "OBC", "--water", "M:1", "--water_temp", "2000", "--water_constr", "0.5", "--water_radius", "7", "--water_trials", "500"]
 BOX_VALUES = ["11.662  7.469  11.464", "RADIUS 9", "3.648  4.900  8.275", "-4.367  2.331  5.086", 
   "-12.381  -0.237  1.897", "-20.395  -2.806  -1.293", "-28.410  -5.375  -4.482"]

@@ -1,5 +1,6 @@
 import matplotlib
 matplotlib.use('Agg')
+import sys
 from pyemma import config
 config.show_progress_bars = False
 #config.mute = True
@@ -11,6 +12,7 @@ import random
 import glob
 import argparse
 import msm_pele.constants as cs
+sys.path.append(cs.DIR)
 import msm_pele.PlopRotTemp.launcher as plop
 import msm_pele.Helpers.helpers as hp
 import msm_pele.Helpers.pele_env as pele
