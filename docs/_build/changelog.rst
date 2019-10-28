@@ -8,6 +8,13 @@ Changelog
 
 Here we report all MSM changes thorugh all different releases on: `MSM github <https://github.com/danielSoler93/MSM_PELE/releases>`_
 
+2.1 - 28-10-2019
+---------------------------------
+    - Add water MC step
+    - Paper released
+    - Fix minor bugs
+
+
 2.0 - 21-02-2019
 ---------------------------------
 
