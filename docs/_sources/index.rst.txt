@@ -47,11 +47,6 @@ Tests
 .. toctree::
    tests
 
-Cookbook
-========
-.. toctree::
-   cookbook
-
 Tutorial
 ========
 .. toctree::

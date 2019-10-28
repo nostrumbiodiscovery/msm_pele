@@ -8,10 +8,6 @@ Parameters
 Required Paramaters:
 ------------------------
 
-OPLS2005 charges
-++++++++++++++++++
-
-If you want to use OPLS2005 charges:
 
 - **complex.pdb** initial pdb with receptor and ligand already docked
 
@@ -25,37 +21,14 @@ If you want to use OPLS2005 charges:
 
 - **--temp** temperature to run the simulation (binding exposed cavities 1500, charged ligands 1500, other 1000)
 
+- **--mae_lig** mae file of the ligand with QM charges (if you want to use QM charges instead of OPLS2005)
+
 ::
 
     i.e.0 python -m msm_pele.main complex.pbd resname chain --cpus number_cpus --time seconds --temp temperature
     
-    i.e.1 python -m msm_pele.main complex.pbd LIG Z  --cpus 128 --time 25000 --temp 1000
+    i.e.1 python -m msm_pele.main complex.pbd LIG Z  --cpus 128 --time 25000 --temp 1000 --mae_lig ligand.mae
 
-QM charges
-+++++++++++
-
-If you want to use external charges:
-
-- **receptor.pdb** pdb of the receptor with the bound conformation to the docked ligand
-
-- **resname** residue name of the ligand
-
-- **chain** chain of the ligand
-
-- **--mae_lig ligand.mae** mae file of the ligand with QM charges 
-
-- **--cpus** number of cpus to use
-
-- **--time** number of seconds to run each iteration
-
-- **--temp** temperature to run the simulation (binding exposed cavities 1500, charged ligands 1500, other 1000)
-
-
-::
-
-    i.e.0 python -m msm_pele.main complex.pbd resname chain --mae_lig ligand.mae --cpus number_cpus --time seconds --temp temperature
-    
-    i.e.1 python -m msm_pele.main complex.pbd LIG Z --mae_lig ligand.mae --cpus 128 --time 25000 --temp 1000
 
 Output Parameters
 -------------------
