@@ -61,7 +61,7 @@ def test_msm(ext_args):
     try:
         main.run(args) 
     except RuntimeError:
-        errors = check_for_errors(errors)
+        errors = check_for_errors(errors, only_one_it=True)
         assert not errors
     ####FUNCTION TO TEST######
 
@@ -69,15 +69,20 @@ def test_msm(ext_args):
     assert not errors
 
 
-def check_for_errors(errors):
+def check_for_errors(errors, only_one_it=False):
     folder = glob.glob("L02_Pele*")[0]
     if not folder:
         errors.append("Input folder not created. Problem preprocessing the pdb")
-    errors = check_folder_count(folder, "output_adaptive_exit/iteration*", 2, errors)
-    errors = check_folder_count(folder, "output_clustering/iteration*", 2, errors)
+    if only_one_it:
+        errors = check_folder_count(folder, "output_adaptive_exit/iteration*", 1, errors)
+        errors = check_folder_count(folder, "output_clustering/iteration*", 1, errors)
+        errors = check_folder_count(folder, "output_pele/MSM_*", 1, errors)
+    else:
+        errors = check_folder_count(folder, "output_adaptive_exit/iteration*", 2, errors)
+        errors = check_folder_count(folder, "output_clustering/iteration*", 2, errors)
+        errors = check_folder_count(folder, "output_pele/MSM_*", 2, errors)
     errors = check_folder_count(folder, "output_clustering/iteration1/*_KMeans_allSnapshots.pdb", 1, errors)
     errors = check_folder_count(folder, "output_clustering/iteration1/*exit_path*.pdb", 1, errors)
-    errors = check_folder_count(folder, "output_pele/MSM_*", 2, errors)
     errors = check_folder_count(folder, "results/result*", 1, errors)
     errors = check_folder_count(folder, "L02.log", 1, errors)
     errors = check_folder_count(folder, "box.pdb", 1, errors)
