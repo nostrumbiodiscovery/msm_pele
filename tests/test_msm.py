@@ -61,7 +61,8 @@ def test_msm(ext_args):
     try:
         main.run(args) 
     except RuntimeError:
-        pass
+        errors = check_for_errors(errors)
+        assert not errors
     ####FUNCTION TO TEST######
 
     errors = check_for_errors(errors)

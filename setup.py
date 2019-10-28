@@ -132,7 +132,7 @@ setup(
     packages=find_packages(exclude=['docs', 'tests']),
     package_data={"msm_pele/AdaptivePELE/atomset": ['*.pxd'], "msm_pele/Templates": ["*.pdb", "*.conf"] },
     include_package_data=True,
-    install_requires=['numpy', 'mdtraj', 'scipy', 'pyemma', 'future', 'fpdf', 'pandas'],
+    install_requires=['numpy', 'mdtraj', 'scipy', 'pyemma', 'future', 'fpdf', 'pandas', 'prody'],
     cmdclass=cmdclass,
     ext_modules=ext_modules,  # accepts a glob pattern
     include_dirs=[numpy.get_include()],
