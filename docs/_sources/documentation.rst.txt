@@ -8,10 +8,6 @@ Parameters
 Required Paramaters:
 ------------------------
 
-OPLS2005 charges
-++++++++++++++++++
-
-If you want to use OPLS2005 charges:
 
 - **complex.pdb** initial pdb with receptor and ligand already docked
 
@@ -25,7 +21,7 @@ If you want to use OPLS2005 charges:
 
 - **--temp** temperature to run the simulation (binding exposed cavities 1500, charged ligands 1500, other 1000)
 
-- **--mae_lig** mae file of the ligand with QM charges 
+- **--mae_lig** mae file of the ligand with QM charges (if you want to use QM charges instead of OPLS2005)
 
 ::
 
