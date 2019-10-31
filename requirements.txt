@@ -5,3 +5,5 @@ wheel
 scipy
 setuptools
 pyemma
+pandas
+prody

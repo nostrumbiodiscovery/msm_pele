@@ -12,13 +12,9 @@ Run production test
 
   It is recommended to run the production tests after installation by:
 
-1- **Extract test data**::
+**Run test**::
 
-  tar -xvf msm_pele/test/data.tar.gz
+  cd msm_pele/tests
 
-2- **Run test**::
-
-  cd /path/where/you/want/to/runTheTest/from/
-
-  sbatch msm_pele/test/test.sl
+  python -m pytest .
 

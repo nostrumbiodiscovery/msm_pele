@@ -4,16 +4,11 @@ import sys
 import os
 import glob
 import shutil
-import msm_pele.Box.box as bx
-import msm_pele.Helpers.pele_env as pele
-import msm_pele.Helpers.clusterAdaptiveRun as cl
 import msm_pele.main as main
-import msm_pele.Helpers.helpers as hp
 import msm_pele.constants as cs
-import msm_pele.Helpers.simulation as ad
 
 
-test_path = os.path.join(os.path.dirname(cs.DIR), "tests/data")
+test_path = "data"
 SIM_ARGS = [os.path.join(test_path, "L02.pdb"), "L02", "L", "--mae_lig", os.path.join(test_path, "L02_INIT.mae"), "--test", "--precision", "--iterations", "2", "--time", "240", "--steps", "100", "--solvent", "OBC", "--water", "M:1", "--water_temp", "2000", "--water_constr", "0.5", "--water_radius", "7", "--water_trials", "500"]
 BOX_VALUES = ["11.662  7.469  11.464", "RADIUS 9", "3.648  4.900  8.275", "-4.367  2.331  5.086", 
   "-12.381  -0.237  1.897", "-20.395  -2.806  -1.293", "-28.410  -5.375  -4.482"]
@@ -66,22 +61,28 @@ def test_msm(ext_args):
     try:
         main.run(args) 
     except RuntimeError:
-        pass
+        errors = check_for_errors(errors, only_one_it=True)
+        assert not errors
     ####FUNCTION TO TEST######
 
     errors = check_for_errors(errors)
     assert not errors
 
 
-def check_for_errors(errors):
+def check_for_errors(errors, only_one_it=False):
     folder = glob.glob("L02_Pele*")[0]
     if not folder:
         errors.append("Input folder not created. Problem preprocessing the pdb")
-    errors = check_folder_count(folder, "output_adaptive_exit/iteration*", 2, errors)
-    errors = check_folder_count(folder, "output_clustering/iteration*", 2, errors)
+    if only_one_it:
+        errors = check_folder_count(folder, "output_adaptive_exit/iteration*", 1, errors)
+        errors = check_folder_count(folder, "output_clustering/iteration*", 1, errors)
+        errors = check_folder_count(folder, "output_pele/MSM_*", 1, errors)
+    else:
+        errors = check_folder_count(folder, "output_adaptive_exit/iteration*", 2, errors)
+        errors = check_folder_count(folder, "output_clustering/iteration*", 2, errors)
+        errors = check_folder_count(folder, "output_pele/MSM_*", 2, errors)
     errors = check_folder_count(folder, "output_clustering/iteration1/*_KMeans_allSnapshots.pdb", 1, errors)
     errors = check_folder_count(folder, "output_clustering/iteration1/*exit_path*.pdb", 1, errors)
-    errors = check_folder_count(folder, "output_pele/MSM_*", 2, errors)
     errors = check_folder_count(folder, "results/result*", 1, errors)
     errors = check_folder_count(folder, "L02.log", 1, errors)
     errors = check_folder_count(folder, "box.pdb", 1, errors)

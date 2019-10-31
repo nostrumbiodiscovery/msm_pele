@@ -8,9 +8,9 @@ Installation
 Third Parties Requirements
 ---------------------------
 
- - Schrodinger > 2018
+ - Schrodinger > 2016
 
- - Pele 2.15
+ - Pele > 1.5
 
 
 Conda(Recommended)
@@ -18,7 +18,7 @@ Conda(Recommended)
 
 ::
 
-  conda create --name msm_pele python=2.7
+  conda create --name msm_pele python=3.6
 
   source activate msm_pele
 

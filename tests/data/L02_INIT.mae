@@ -1,0 +1,282 @@
+{ 
+ s_m_m2io_version
+ :::
+ 2.0.0 
+} 
+
+f_m_ct { 
+ s_m_title
+ i_m_stars
+ s_m_entry_id
+ s_m_entry_name
+ s_m_Source_Path
+ s_m_Source_File
+ i_m_Source_File_Index
+ r_sd_ephb4\_IC50\_uM
+ b_sd_chiral_flag
+ i_sd_version
+ i_m_ct_enhanced_stereo_status
+ i_m_Molecular_charge
+ i_m_Spin_multiplicity
+ s_j_Task
+ s_j_Jaguar_input_file
+ s_j_Jaguar_restart_input_file
+ s_j_Jaguar_restart_mae_file
+ s_j_Jaguar_output_file
+ s_j_Jaguar_log_file
+ s_j_Jaguar_mae_file
+ s_j_QM_Method
+ s_j_QM_Basis
+ i_j_Number_of_canonical_orbitals
+ r_j_Gas_Phase_Energy
+ r_j_Solution_Phase_Energy
+ r_j_Solvation_Energy_(kcal/mol)
+ r_j_HOMO
+ r_j_LUMO
+ s_ppw_entry_id_backup
+ b_ppw_prepared
+ s_ppw_prepared_with_version
+ s_ppw_group_name_backup
+ r_i_target_temperature
+ b_ppw_ran_impref
+ s_m_job_name
+ s_i_glide_gridfile
+ i_i_glide_lignum
+ i_i_glide_rotatable_bonds
+ r_i_docking_score
+ r_i_glide_ligand_efficiency
+ r_i_glide_ligand_efficiency_sa
+ r_i_glide_ligand_efficiency_ln
+ r_i_glide_gscore
+ r_i_glide_lipo
+ r_i_glide_hbond
+ r_i_glide_metal
+ r_i_glide_rewards
+ r_i_glide_evdw
+ r_i_glide_ecoul
+ r_i_glide_erotb
+ r_i_glide_esite
+ r_i_glide_emodel
+ r_i_glide_energy
+ r_i_glide_einternal
+ i_i_glide_confnum
+ i_i_glide_posenum
+ r_i_glide_eff_state_penalty
+ s_m_subgroup_title
+ s_m_subgroupid
+ b_m_subgroup_collapsed
+ i_m_ct_format
+ :::
+ "L02 QM-PB" 
+  3
+  396 
+  ephb4_fep_ligands.32 
+  /Users/victorguallar/Desktop/MSM_TEST/EPH4 
+  jag_L02.mae 
+  1
+  0.077
+  1
+  0
+  1
+  0
+  1
+  Optimization 
+  /Users/victorguallar/PROJECTS/AZ-MSM/FINAL_TEST/EPHB4/LIGS/L02_QM_PBF/L02_QM_PBF.in 
+  /Users/victorguallar/PROJECTS/AZ-MSM/FINAL_TEST/EPHB4/LIGS/L02_QM_PBF/L02_QM_PBF.01.in 
+  /Users/victorguallar/PROJECTS/AZ-MSM/FINAL_TEST/EPHB4/LIGS/L02_QM_PBF/L02_QM_PBF.01.mae 
+  /Users/victorguallar/PROJECTS/AZ-MSM/FINAL_TEST/EPHB4/LIGS/L02_QM_PBF/L02_QM_PBF.out 
+  /Users/victorguallar/PROJECTS/AZ-MSM/FINAL_TEST/EPHB4/LIGS/L02_QM_PBF/L02_QM_PBF.log 
+  /Users/victorguallar/PROJECTS/AZ-MSM/FINAL_TEST/EPHB4/LIGS/L02_QM_PBF/L02_QM_PBF.mae 
+  DFT(b3lyp)/SOLV 
+  6-31g** 
+  527
+  -1822.70630562796
+  -1822.76351134482
+  -35.8971290670287
+  -0.215874978476421
+  -0.0496605348105251
+  3 
+  1
+  2017-2 
+  EPHB4 
+  298
+  1
+  EPHB4_1CONS_SP 
+  EPHB4_1CONS 
+  2
+  6
+  -10.6731223312432
+  -0.355770744374773
+  -1.1054624203354
+  -2.42504968664059
+  -10.6731223312432
+  -2.79321530766078
+  -0.822955811251895
+  0
+  -2.59323694620517
+  -50.5909042358398
+  -14.6708898544312
+  0.305091548856844
+  -0.0386271250255208
+  -117.383443339375
+  -65.261794090271
+  2.48792481422424
+  1
+  1
+  0
+  EPHB4->EPHB4_1CONS_SP_pv1 
+  EPHB4->EPHB4_1CONS_SP_pv1 
+  0
+  2
+ m_depend[18] { 
+  # First column is dependency index #
+  i_m_depend_dependency
+  s_m_depend_property
+  :::
+  1 20 i_m_Molecular_charge 
+  2 20 i_m_Spin_multiplicity 
+  3 20 s_j_Task 
+  4 20 s_j_Jaguar_input_file 
+  5 20 s_j_Jaguar_restart_input_file 
+  6 20 s_j_Jaguar_restart_mae_file 
+  7 20 s_j_Jaguar_output_file 
+  8 20 s_j_Jaguar_log_file 
+  9 20 s_j_Jaguar_mae_file 
+  10 20 s_j_QM_Method 
+  11 20 s_j_QM_Basis 
+  12 20 i_j_Number_of_canonical_orbitals 
+  13 20 r_j_Gas_Phase_Energy 
+  14 20 r_j_Solution_Phase_Energy 
+  15 20 r_j_Solvation_Energy_(kcal/mol) 
+  16 20 r_j_HOMO 
+  17 20 r_j_LUMO 
+  18 30 s_m_job_name 
+  :::
+ } 
+ m_atom[45] { 
+  # First column is atom index #
+  i_m_mmod_type
+  r_m_x_coord
+  r_m_y_coord
+  r_m_z_coord
+  i_m_residue_number
+  s_m_chain_name
+  i_m_color
+  r_m_charge1
+  r_m_charge2
+  s_m_pdb_residue_name
+  s_m_pdb_atom_name
+  i_m_atomic_number
+  s_m_color_rgb
+  s_m_atom_name
+  r_j_ESP_Charges
+  i_i_constraint
+  i_i_internal_atom_index
+  :::
+  1 2 12.266198 3.925973 12.505264 900 L 117 -0.75621 -0.75621 "L02 " " C1 " 6 00FF00  C1  -0.756214971542485 0 1
+  2 2 11.349486 4.880240 12.091854 900 L 117 0.85537 0.85537 "L02 " " C2 " 6 00FF00  C2  0.855365935572054 0 2
+  3 25 11.726484 6.103650 11.684804 900 L 38 -0.89665 -0.89665 "L02 " " N1 " 7 2F2FFF  N3  -0.896645262567524 0 3
+  4 2 13.048832 6.369831 11.703988 900 L 117 1.19345 1.19345 "L02 " " C3 " 6 00FF00  C4  1.19345173030577 0 4
+  5 25 14.012423 5.521274 12.107288 900 L 38 -0.92017 -0.92017 "L02 " " N2 " 7 2F2FFF  N5  -0.920165860285147 0 5
+  6 2 13.601757 4.296403 12.504192 900 L 117 0.50172 0.50172 "L02 " " C4 " 6 00FF00  C6  0.501724272380839 0 6
+  7 41 11.961602 2.945574 12.824577 900 L 21 0.23869 0.23869 "L02 " " H1 " 1 FFFFFF  H7  0.23868693365018 0 7
+  8 41 14.368114 3.602859 12.807701 900 L 21 0.07165 0.07165 "L02 " " H2 " 1 FFFFFF  H8  0.071645059372992 0 8
+  9 43 9.555849 5.243585 11.318280 900 L 21 0.41061 0.41061 "L02 " " H3 " 1 FFFFFF  H9  0.410607361845088 0 9
+  10 25 9.989256 4.618292 11.978163 900 L 38 -0.64734 -0.64734 "L02 " " N3 " 7 2F2FFF  N10  -0.647339198541404 0 10
+  11 43 14.549291 7.605741 11.313032 900 L 21 0.42892 0.42892 "L02 " " H4 " 1 FFFFFF  H11  0.428918755761367 0 11
+  12 25 13.537807 7.592027 11.262560 900 L 38 -0.90634 -0.90634 "L02 " " N4 " 7 2F2FFF  N12  -0.906343201972602 0 12
+  13 2 11.816985 11.311208 10.379896 900 L 117 -0.23658 -0.23658 "L02 " " C5 " 6 00FF00  C13  -0.236580452509538 0 13
+  14 2 10.993866 10.178402 10.364422 900 L 117 0.03622 0.03622 "L02 " " C6 " 6 00FF00  C14  0.0362198551338147 0 14
+  15 2 11.570788 8.934971 10.638836 900 L 117 -0.40281 -0.40281 "L02 " " C7 " 6 00FF00  C15  -0.402807569902454 0 15
+  16 2 12.930238 8.808848 10.930668 900 L 117 0.62066 0.62066 "L02 " " C8 " 6 00FF00  C16  0.620662268588304 0 16
+  17 2 13.736604 9.948568 10.905029 900 L 117 -0.37367 -0.37367 "L02 " " C9 " 6 00FF00  C17  -0.373669717369258 0 17
+  18 2 13.190567 11.215934 10.638674 900 L 117 0.00525 0.00525 "L02 " " C10" 6 00FF00  C18  0.0052483340947522 0 18
+  19 41 11.386939 12.289045 10.206340 900 L 21 0.13424 0.13424 "L02 " " H5 " 1 FFFFFF  H19  0.134238543806871 0 19
+  20 41 10.927455 8.071477 10.620061 900 L 21 0.19098 0.19098 "L02 " " H6 " 1 FFFFFF  H20  0.190981653029521 0 20
+  21 41 14.789064 9.845677 11.124461 900 L 21 0.18797 0.18797 "L02 " " H7 " 1 FFFFFF  H21  0.187968119678237 0 21
+  22 2 7.868577 1.055243 12.874364 900 L 117 -0.37997 -0.37997 "L02 " " C11" 6 00FF00  C22  -0.379970332852601 0 22
+  23 2 7.942088 1.525279 11.557862 900 L 117 -0.09370 -0.09370 "L02 " " C12" 6 00FF00  C23  -0.0937040859701615 0 23
+  24 2 8.639591 2.707859 11.252846 900 L 117 -0.12314 -0.12314 "L02 " " C13" 6 00FF00  C24  -0.123139646890292 0 24
+  25 2 9.289218 3.438284 12.269797 900 L 117 0.26085 0.26085 "L02 " " C14" 6 00FF00  C25  0.260853435038156 0 25
+  26 41 7.313737 0.156236 13.103813 900 L 21 0.23589 0.23589 "L02 " " H8 " 1 FFFFFF  H26  0.235886622664633 0 26
+  27 41 7.435417 0.973658 10.774236 900 L 21 0.16233 0.16233 "L02 " " H9 " 1 FFFFFF  H27  0.16233185371925 0 27
+  28 57 8.660297 3.242319 9.605359 900 L 9 -0.09576 -0.09576 "L02 " "CL1 " 17 006400  Cl28  -0.0957551538339099 0 28
+  29 3 9.312266 2.587609 15.748584 900 L 117 0.38244 0.38244 "L02 " " C15" 6 00FF00  C29  0.382443672924473 0 29
+  30 16 9.705024 3.460546 14.724260 900 L 75 -0.37733 -0.37733 "L02 " " O1 " 8 FF5757  O30  -0.377333107395668 0 30
+  31 2 9.205198 2.935056 13.571880 900 L 117 0.13215 0.13215 "L02 " " C16" 6 00FF00  C31  0.132150959134996 0 31
+  32 2 8.512195 1.791958 13.858878 900 L 117 0.34274 0.34274 "L02 " " C17" 6 00FF00  C32  0.342739229168637 0 32
+  33 16 8.529207 1.564284 15.195056 900 L 75 -0.41882 -0.41882 "L02 " " O2 " 8 FF5757  O33  -0.418816420089796 0 33
+  34 41 10.188577 2.169442 16.244837 900 L 21 0.08386 0.08386 "L02 " " H10" 1 FFFFFF  H34  0.0838646897399713 0 34
+  35 41 8.743895 3.126362 16.504765 900 L 21 0.06743 0.06743 "L02 " " H11" 1 FFFFFF  H35  0.06743059900857 0 35
+  36 2 9.511140 10.277809 10.078541 900 L 117 0.70434 0.70434 "L02 " " C18" 6 00FF00  C36  0.70434172447131 0 36
+  37 15 8.710619 9.443563 10.492321 900 L 75 -0.63120 -0.63120 "L02 " " O3 " 8 FF5757  O37  -0.631198956761811 0 37
+  38 43 8.127289 11.304841 9.038144 900 L 21 0.44293 0.44293 "L02 " " H12" 1 FFFFFF  H38  0.442928732067709 0 38
+  39 25 9.098121 11.277957 9.303161 900 L 38 -0.92193 -0.92193 "L02 " " N5 " 7 2F2FFF  N39  -0.92193144638249 0 39
+  40 43 9.710836 12.051012 9.098423 900 L 21 0.44721 0.44721 "L02 " " H13" 1 FFFFFF  H40  0.447209910947542 0 40
+  41 2 14.023664 12.479218 10.660815 900 L 117 0.71500 0.71500 "L02 " " C19" 6 00FF00  C41  0.714996599763173 0 41
+  42 15 13.525751 13.576021 10.905866 900 L 75 -0.64296 -0.64296 "L02 " " O4 " 8 FF5757  O42  -0.642964843238205 0 42
+  43 43 15.813943 13.271921 10.281491 900 L 21 0.44010 0.44010 "L02 " " H14" 1 FFFFFF  H43  0.440100285149577 0 43
+  44 25 15.311984 12.401500 10.336812 900 L 38 -0.89724 -0.89724 "L02 " " N6 " 7 2F2FFF  N44  -0.897235496364756 0 44
+  45 43 15.835488 11.533301 10.280859 900 L 21 0.42882 0.42882 "L02 " " H15" 1 FFFFFF  H45  0.428818587452309 0 45
+  :::
+ } 
+ m_bond[48] { 
+  # First column is bond index #
+  i_m_from
+  i_m_to
+  i_m_order
+  i_m_from_rep
+  i_m_to_rep
+  :::
+  1 1 2 2 2 2
+  2 1 6 1 2 2
+  3 1 7 1 2 2
+  4 2 3 1 2 2
+  5 2 10 1 2 2
+  6 3 4 2 2 2
+  7 4 5 1 2 2
+  8 4 12 1 2 2
+  9 5 6 2 2 2
+  10 6 8 1 2 2
+  11 9 10 1 2 2
+  12 10 25 1 2 2
+  13 11 12 1 2 2
+  14 12 16 1 2 2
+  15 13 14 2 2 2
+  16 13 18 1 2 2
+  17 13 19 1 2 2
+  18 14 15 1 2 2
+  19 14 36 1 2 2
+  20 15 16 2 2 2
+  21 15 20 1 2 2
+  22 16 17 1 2 2
+  23 17 18 2 2 2
+  24 17 21 1 2 2
+  25 18 41 1 2 2
+  26 22 23 2 2 2
+  27 22 26 1 2 2
+  28 22 32 1 2 2
+  29 23 24 1 2 2
+  30 23 27 1 2 2
+  31 24 25 2 2 2
+  32 24 28 1 2 2
+  33 25 31 1 2 2
+  34 29 30 1 2 2
+  35 29 33 1 2 2
+  36 29 34 1 2 2
+  37 29 35 1 2 2
+  38 30 31 1 2 2
+  39 31 32 2 2 2
+  40 32 33 1 2 2
+  41 36 37 2 2 2
+  42 36 39 1 2 2
+  43 38 39 1 2 2
+  44 39 40 1 2 2
+  45 41 42 2 2 2
+  46 41 44 1 2 2
+  47 43 44 1 2 2
+  48 44 45 1 2 2
+  :::
+ } 
+} 
+
