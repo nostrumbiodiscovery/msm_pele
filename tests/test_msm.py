@@ -11,7 +11,7 @@ import msm_pele.constants as cs
 test_path = "data"
 SIM_ARGS = [os.path.join(test_path, "L02.pdb"), "L02", "L", "--mae_lig", os.path.join(test_path, "L02_INIT.mae"), "--test", "--precision", "--iterations", "2", "--time", "240", "--steps", "100", "--solvent", "OBC", "--water", "M:1", "--water_temp", "2000", "--water_constr", "0.5", "--water_radius", "7", "--water_trials", "500"]
 BOX_VALUES = ["11.662  7.469  11.464", "RADIUS 9", "3.648  4.900  8.275", "-4.367  2.331  5.086", 
-  "-12.381  -0.237  1.897", "-20.395  -2.806  -1.293", "-28.410  -5.375  -4.482"]
+  "-12.381  -0.238  1.897", "-20.395  -2.806  -1.293", "-28.410  -5.375  -4.482"]
 PELE_VALUES = ["iteration2", "output_pele/1", 
 #check constraints
    '"springConstant": 50, "equilibriumDistance": 0.0, "constrainThisAtom": "A:2112:_OW_"',
@@ -111,10 +111,21 @@ def check_folder_count(folder, folder_name, n, errors):
     return errors
 
 def check_file(folder, filename, values, errors):
+   import pdb; pdb.set_trace()
    filename = os.path.join(folder, filename)
    with open(filename, "r") as f:
+      lines = "".join(f.readlines())
       for value in values:
-          lines = f.readlines()
-          if value in lines:
+          if value not in lines:
               errors.append(filename) 
    return errors
+
+
+if __name__ == "__main__":
+    folder = "L02_Pele"
+    errors = []
+    errors = check_file(folder, "box.pdb", BOX_VALUES, errors)
+    errors = check_file(folder, "pele.conf", PELE_VALUES, errors)
+    errors = check_file(folder, "adaptive_exit.conf", ADAPTIVE_VALUES, errors)
+    errors = check_file(folder, "results/results.txt", RESULTS_VALUES, errors) 
+    print(errors)
