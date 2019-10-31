@@ -1,12 +1,15 @@
 import os
+import sys
+from string import Template
 import argparse
-import msm_pele.Helpers.template_builder as tb
 
 AMINOACIDS = ["VAL", "ASN", "GLY", "LEU", "ILE",
               "SER", "ASP", "LYS", "MET", "GLN",
               "TRP", "ARG", "ALA", "THR", "PRO",
               "PHE", "GLU", "HIS", "HIP", "TYR",
               "CYS", "HID"]
+
+IONS = ["CA", "MG", "ZN", "MN", "NA", "CL"]
 
 TER_CONSTR = 5
 
@@ -30,52 +33,61 @@ class ConstraintBuilder(object):
         self.dynamic_waters = dynamic_waters
 
     def parse_atoms(self, interval=10):
-        residues = {}
+        residues = []
         initial_res = None
         waters = []
+        ions = []
         with open(self.pdb, "r") as pdb:
             for line in pdb:
                 resname = line[16:21].strip()
                 atomtype = line[11:16].strip()
                 resnum = line[22:26].strip()
-                chain = line[20:22].strip()
+                chain = line[20:23].strip()
                 if line.startswith("ATOM") and resname in AMINOACIDS and atomtype == "CA":
                     try:
                         if not initial_res:
-                            residues["initial"] = [chain, line[22:26].strip()]
+                            initial = [chain, line[22:26].strip()]
                             initial_res = True
+                            initial_resnum = line[22:26].strip()
                             continue
                         # Apply constraint every 10 residues
-                        elif int(resnum) % interval != 1:
-                            residues["terminal"] = [chain, line[22:26].strip()]
-                        elif int(resnum) % interval == 1 and line.startswith("ATOM") and resname in AMINOACIDS and atomtype == "CA":
-                            residues[resnum] = chain
+                        elif (int(resnum)-int(initial_resnum)) % interval == 0 and line.startswith("ATOM") and resname in AMINOACIDS and atomtype == "CA":
+                            residues.append([resnum, chain])
+                            terminal = [chain, line[22:26].strip()]
                     except ValueError:
                         continue
                 elif line.startswith("HETATM") and resname == "HOH" and atomtype == "OW":
-                    waters.append([chain, resnum])
-        return residues, waters
+                    waters.append([atomtype, chain, resnum])
+                elif line.startswith("HETATM") and resname in  IONS:
+                    ions.append([atomtype, chain, resnum])
+        return initial, residues, terminal, waters, ions
 
-    def build_constraint(self, residues, BACK_CONSTR=BACK_CONSTR, TER_CONSTR=TER_CONSTR, waters=[]):
+    def build_constraint(self, initial, residues, terminal, BACK_CONSTR=BACK_CONSTR, TER_CONSTR=TER_CONSTR, waters=[], constraint_water=HETATM_CONSTR, ions=[]):
 
         init_constr = ['''"constraints":[''', ]
 
-        back_constr = [CONSTR_CALPHA.format(chain, resnum, BACK_CONSTR) for resnum, chain in residues.items() if resnum.isdigit()]
+        back_constr = [CONSTR_CALPHA.format(chain, resnum, BACK_CONSTR) for resnum, chain in residues if resnum.isdigit()]
 
         gaps_constr = self.gaps_constraints()
 
         metal_constr = self.metal_constraints()
 
         if waters:
-            water_constr = self.water_constraints(waters)
+            water_constr = self.create_constraints(waters, constraint_water)
         else:
             water_constr = []
 
-        terminal_constr = [CONSTR_CALPHA.format(residues["initial"][0], residues["initial"][1], TER_CONSTR), CONSTR_CALPHA.format(residues["terminal"][0], residues["terminal"][1], TER_CONSTR).strip(",")]
+       
+        if ions:
+            ions_constr = self.create_constraints(ions, constraint_water)
+        else:
+            ions_constr = []
+
+        terminal_constr = [CONSTR_CALPHA.format(initial[0], initial[1], TER_CONSTR), CONSTR_CALPHA.format(terminal[0], terminal[1], TER_CONSTR).strip(",")]
 
         final_constr = ["],"]
 
-        constraints = init_constr + back_constr + gaps_constr + metal_constr + water_constr + terminal_constr + final_constr
+        constraints = init_constr + back_constr + gaps_constr + metal_constr + ions_constr + water_constr + terminal_constr + final_constr
 
         return constraints
 
@@ -97,32 +109,57 @@ class ConstraintBuilder(object):
                 metal_constr.append(CONSTR_DIST.format(HETATM_CONSTR, bond_lenght, chain, resnum, ligname, chain, metnum, metal_name))
         return metal_constr
 
-    def water_constraints(self, waters):
+    def create_constraints(self, waters, constraint_water):
         water_constr = []
-        for chain, residue in waters:
+        for atom, chain, residue in waters:
             if "{}:{}".format(chain, residue) not in self.dynamic_waters:
-                water_constr.append(CONSTR_ATOM.format(HETATM_CONSTR, chain, residue, "_OW_"))
+                if atom == "OW":
+                    water_constr.append(CONSTR_ATOM.format(constraint_water, chain, residue, "_"+atom+"_"))
+                else:
+                    water_constr.append(CONSTR_ATOM.format(constraint_water, chain, residue, atom+"__"))
         return water_constr
 
 
-def retrieve_constraints(pdb_file, gaps, metal, back_constr=BACK_CONSTR, ter_constr=TER_CONSTR, interval=10, dynamic_waters=[]):
+def retrieve_constraints(pdb_file, gaps, metal, back_constr=BACK_CONSTR, ter_constr=TER_CONSTR, interval=10,  dynamic_waters=[], constr_waters=HETATM_CONSTR):
     constr = ConstraintBuilder(pdb_file, gaps, metal, dynamic_waters)
-    residues, waters = constr.parse_atoms(interval=interval)
-    constraints = constr.build_constraint(residues, back_constr, ter_constr, waters)
+    initial, residues, terminal, waters, ions = constr.parse_atoms(interval=interval)
+    constraints = constr.build_constraint(initial, residues, terminal, back_constr, ter_constr, waters, constr_waters, ions)
     return constraints
 
+class TemplateBuilder(object):
+
+    def __init__(self, file, keywords):
+
+        self.file = file
+        self.keywords = keywords
+        self.fill_in()
+
+    def fill_in(self):
+        """
+        Fill the control file in
+        """
+        with open(os.path.join(self.file), 'r') as infile:
+            confile_data = infile.read()
+
+        confile_template = Template(confile_data)
+
+        confile_text = confile_template.safe_substitute(self.keywords)
+
+        with open(os.path.join(self.file), 'w') as outfile:
+            outfile.write(confile_text)
 
 def parseargs():
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('pdb', type=str, help='pdb to create the contraints on')
     parser.add_argument('conf', help='Control file to fill in. It need to templetazide with $CONSTRAINTS')
-    parser.add_argument('--interval', type=int, help="Every how many CA to constraint")
+    parser.add_argument('--interval', type=int, help="Every how many CA to constraint", default=10)
     parser.add_argument('--ca', type=float, help="Constraint value to use on backbone CA", default=BACK_CONSTR)
     parser.add_argument('--terminal', type=float, help="Constraint value to use on terminal CA", default=TER_CONSTR)
+    parser.add_argument('--water', type=float, help="Constraint value to use on waters", default=HETATM_CONSTR)
     args = parser.parse_args()
-    return os.path.abspath(args.pdb), os.path.abspath(args.conf), args.interval, args.conf, args.ca, args.terminal
+    return os.path.abspath(args.pdb), os.path.abspath(args.conf), args.interval, args.conf, args.ca, args.terminal, args.water
 
 if __name__ == "__main__":
-    pdb, conf, interval, conf, back_constr, ter_constr = parseargs()
-    constraints = retrieve_constraints(pdb, {}, {}, back_constr, ter_constr, interval)
-    tb.TemplateBuilder(conf, {"CONSTRAINTS": "\n".join(constraints)})
+    pdb, conf, interval, conf, back_constr, ter_constr, water = parseargs()
+    constraints = retrieve_constraints(pdb, {}, {}, back_constr, ter_constr, interval, [], water)
+    TemplateBuilder(conf, {"CONSTRAINTS": "\n".join(constraints)})
