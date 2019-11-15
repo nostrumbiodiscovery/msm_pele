@@ -73,7 +73,7 @@ def run(args):
 
         #Check restart variables
         try:
-            initial_iteration = max([ int(os.path.basename(os.path.normpath(folder))) for folder in glob.glob(os.path.join(env.adap_l_output, "*/")) if os.path.basename(os.path.normpath(folder)).isdigit() ])
+            initial_iteration = max([ int(os.path.basename(os.path.normpath(folder))) for folder in glob.glob(os.path.join(env.adap_l_output, "*/")) if os.path.basename(os.path.normpath(folder)).isdigit() ]) + 1
         except ValueError: 
             initial_iteration = 0
 
