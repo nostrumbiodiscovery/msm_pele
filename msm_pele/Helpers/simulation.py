@@ -2,7 +2,7 @@ import os
 import signal
 import time
 from msm_pele.Helpers import helpers, template_builder
-import msm_pele.AdaptivePELE.adaptiveSampling as ad
+import AdaptivePELE.adaptiveSampling as ad
 import msm_pele.constants as cs
 try:
     import subprocess32 as subprocess

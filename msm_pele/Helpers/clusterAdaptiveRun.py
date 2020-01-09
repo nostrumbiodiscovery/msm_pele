@@ -5,9 +5,9 @@ import os
 import glob
 import numpy as np
 import argparse
-from msm_pele.AdaptivePELE.utilities import utilities
-from msm_pele.AdaptivePELE.freeEnergies import cluster, extractCoords
-from msm_pele.AdaptivePELE.analysis import splitTrajectory
+from AdaptivePELE.utilities import utilities
+from AdaptivePELE.freeEnergies import cluster, extractCoords
+from AdaptivePELE.analysis import splitTrajectory
 import msm_pele.constants as cs
 import pandas as pd
 

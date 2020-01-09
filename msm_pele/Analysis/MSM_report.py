@@ -3,7 +3,7 @@ import re
 import sys
 import os
 import subprocess
-from msm_pele.AdaptivePELE.analysis import plotAdaptive
+from AdaptivePELE.analysis import plotAdaptive
 import msm_pele.Helpers.helpers as hp
 import argparse
 
