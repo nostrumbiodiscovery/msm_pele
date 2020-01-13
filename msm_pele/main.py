@@ -111,7 +111,7 @@ def run(args):
             output = os.path.join(env.adap_l_output, str(i))
             if not os.path.isdir(output):
                 os.mkdir(output)
-            hp.change_output(env.pele_temp, output, i)
+            hp.change_output(env.pele_temp, output, i, inputs)
             simulation = ad.SimulationBuilder(env.pele_temp,  env.topology, cs.PELE_KEYWORDS, cs.RESTART, os.path.join(env.adap_l_output, output),
                 ",\n".join(inputs), env.random_num, env.steps, box, env.box_metric, BS_sasa_min, BS_sasa_max, env.temp)
             time_sim = simulation.run_pele(env, limitTime=env.time)

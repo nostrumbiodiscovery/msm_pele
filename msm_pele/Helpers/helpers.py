@@ -4,6 +4,9 @@ import random
 import msm_pele.Helpers.best_structs as bs
 
 
+INPUT_LINE = '{{ "files" : [ {{ "path" : "{}" }} ] }},\n'
+
+
 def silentremove(*args, **kwargs):
     for files in args:
         for filename in files:
@@ -16,17 +19,23 @@ def silentremove(*args, **kwargs):
 def is_exit_finish(path, test, criteria="7"):
     return bs.main(path, criteria=criteria, test=test)
 
-def change_output(inp_file, out_folder, i):
+def change_output(inp_file, out_folder, i, inputs):
     with open(inp_file, "r") as f:
         lines = f.readlines()
 
     new_lines = []
     for line in lines:
-        if "reportPath" in line:
-            new_lines.append('        "reportPath" : "{}",\n'.format(os.path.join(out_folder, "report")))
+        # When Multicomplex is present all input lines
+        if "MultipleComplex" in line:
+            new_lines.append('"MultipleComplex": [\n')
+            for i, input in enumerate(inputs):
+                new_line =  input + ",\n" if i!=len(inputs)-1 else input + "],\n"
+                new_lines.append(new_line)
+        #Input lines from last iterations are removed
         elif '"files" : [ { "path"' in line:
-            new_lines.append(line.replace("output_clustering/iteration{}".format(i),
-                "output_clustering/iteration{}".format(i+1)))
+            pass
+        elif "reportPath" in line:
+            new_lines.append('        "reportPath" : "{}",\n'.format(os.path.join(out_folder, "report")))
         elif "trajectoryPath" in line:
             new_lines.append('        "trajectoryPath" : "{}"\n'.format(os.path.join(out_folder, "trajectory.xtc")))
         elif "seed" in line:
