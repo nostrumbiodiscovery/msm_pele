@@ -27,7 +27,7 @@ class SimulationBuilder(template_builder.TemplateBuilder):
 
     def run_pele(self, env, limitTime=False):
         with helpers.cd(os.path.dirname(self.file)):
-            toRun = ["mpirun", "-np", str(env.cpus), cs.PELE_BIN, env.pele_temp]
+            toRun = ["mpirun", "-np", str(env.cpus), env.pele_bin, env.pele_temp]
             print(" ".join(toRun))
             startTime = time.time()
 
