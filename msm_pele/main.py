@@ -74,7 +74,7 @@ def run(args):
         #Check restart variables
         try:
             initial_iteration = max([ int(os.path.basename(os.path.normpath(folder))) for folder in glob.glob(os.path.join(env.adap_l_output, "*/")) if os.path.basename(os.path.normpath(folder)).isdigit() ])
-        except ValueError: 
+        except ValueError:
             initial_iteration = 0
 
         # For each iteration
@@ -87,10 +87,10 @@ def run(args):
                 shutil.copy(env.adap_exit_template, env.ad_ex_temp)
                 simulation = ad.SimulationBuilder(env.ad_ex_temp, env.topology, cs.EX_ADAPTIVE_KEYWORDS, cs.RESTART, env.adap_ex_output,
                     env.adap_ex_input, env.cpus, env.pele_exit_temp, env.residue, env.equil_steps, env.random_num, env.exit_iters,
-                    env.eq_struct)
+                    env.eq_struct, env.pele_bin, env.pele_data, env.pele_documents)
                 simulation.run_adaptive(env, hook=True)
                 env.logger.info("ExitPath Adaptive run successfully")
-                
+
 
                 # KMeans Clustering with different seed
                 env.logger.info("Running Exit Path Clustering")
@@ -186,7 +186,9 @@ def parse_args(args=[]):
     parser.add_argument("--water_temp",  type=int, help="Temperature of water MC. i.e --water_temp 1000 default=500", default=500)
     parser.add_argument("--water_constr",  type=float, help="Constraint on the waters MC. i.e ----water_const 0.5 default=0.2", default=0.2)
     parser.add_argument("--water_trials",  type=int, help="Steric trials on the waters MC. i.e --water_trials 2000 default=1000", default=1000)
-    
+    parser.add_argument("--pele_folder", type=str, help="Path where the PELE Data and Documents are", default=None)
+    parser.add_argument("--pele_bin", type=str, help="Path to PELE executable to use", default=None)
+
     args = parser.parse_args(args) if args else parser.parse_args()
     return args
 
